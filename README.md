@@ -1,4 +1,4 @@
-# AI-GM-Engine (v5.4)
+# AI-GM-Engine (v6)
 
 A rule set and a small Python helper that turn a chat AI into a Game Master
 that keeps track of things.

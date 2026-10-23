@@ -509,9 +509,11 @@ locations:
     name:
     conditions: {}
     challenge_band: {min: , max: , basis: }
+    danger:             # none | rare | occasional | frequent, or {day: , night: }
+    encounters: []      # what an encounter roll draws from here, hostile kinds included
 ```
 
-A band constrains what causes can plausibly exist in a place; its `basis` says why. Record only places the opening actually needs; a place first entered in play gets its band then (engine §13.4).
+A band constrains what causes can plausibly exist in a place; its `basis` says why. `danger` sets how often the place throws an encounter and `encounters` what it throws: list the setting's real threats there (beasts, demons, bandits, patrols) beside ordinary trouble, never only the harmless kind (engine §13.3, §13.4). Record only places the opening actually needs; a place first entered in play gets its band then (engine §13.4).
 
 ---
 

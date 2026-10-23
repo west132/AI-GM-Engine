@@ -1,4 +1,4 @@
-# AI RULES — v5.4
+# AI RULES — v5.4 (edit 1)
 
 For `NEW ENGINE v5.4`. Each line carries the version whose run added it (v5.2e1: the Cyberpunk RED run; v5.4: the Ashfall, SCP Ch2 and TWWH runs); v5.3 added the chapter-break procedure in §3.
 
@@ -48,7 +48,6 @@ Every model applies every section until a test shows it does not need a line. Th
 - A problem that shows up mid-job (unexpected obstacle): stop there and ask; never carry on into its consequence (v5.2e1).
 - Default neutral, never cold: a new relationship starts neutral unless the meeting established otherwise (v2.9); a neutral stranger is civil and an ordinary professional does their job (v4.2). Neutral is not nice: a TEMPER-difficult character stays difficult (v4.3).
 - Decide what any local would know: shops, cafés, job ads, a desk taking calls, workers chatting on a break. Dice only where the outcome could honestly go either way for that actor (v4.2).
-- The world is ordinary, not hostile: difficulty comes from real opposition (an actor with a reason, a real hazard), never from scenery, staff, or availability (v4.2).
 - Before an open-question roll, write the obvious answer; if one exists, use it and do not roll. Never roll to avoid being the one who said yes (v4.2).
 - Open questions: never search for one more fact on either side (v2.7).
 - Inside a rolled band, and for every unrolled reaction, take the version the actor's state and drives support, weighing credit and grievance both; never the worst for the PC by default (v5.2e1).
@@ -101,7 +100,7 @@ GM-Δ (engine §8.1), mistakes from runs → right form (v5.4)
 - I3: Facts created because the player's plan needs them.
 - I4: Writing player belief, feeling, trust, or acceptance as fact. Allies obeying because they are allies.
 - I5: NPCs acting on GM omniscience. Reporting off-screen events with no channel.
-- I6: Railroading, and equally: softening the world because anti-railroading was mistaken for gentleness.
+- I6: Railroading; difficulty from scenery, staff, or availability instead of real opposition; and equally: softening the world because anti-railroading was mistaken for gentleness, incl. steering around a fight, encounter, or danger the world produces.
 - I7: Rebuilding counters, XP, inventory, or rewards from prose. Double application. Silent loss.
 - I8: The same impairment in two channels; the same value paid twice; challenge counted in both Challenge and Difficulty.
 - I9: Narration revealing causes, awarding resources, resolving quests, moving actors, creating obligations.

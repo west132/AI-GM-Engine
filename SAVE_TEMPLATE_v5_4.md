@@ -192,6 +192,8 @@ locations:
     name:
     conditions: {}
     challenge_band: {min: , max: , basis: }
+    danger:                        # none | rare | occasional | frequent, or {day: , night: }
+    encounters: []
 
 rights_obligations:
   right_id: {type: , parties: [], state: {}}

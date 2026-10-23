@@ -90,7 +90,7 @@ physical harm, healing, or MP spend  §10.5
 actor, faction, or process could act  §13.1
 player asks actor/source for what the record doesn't settle §13.1 open questions
 time advanced materially  §13.2
-player's exposure changed  §13.3
+player's exposure changed; travel or time spent where danger ≠ none  §13.3
 entered a place with no committed band  §13.4
 pressure clock due a check  §13.5
 hidden cause must exist before its evidence  §13.6 + §8.1
@@ -198,7 +198,8 @@ I5  KNOWLEDGE  an actor acts only on what it knows (provenance for material
 I6  NO PREFERENCE  pacing, drama, preference never override state, possibility, or
   agency, either direction; no bias toward survival, death, mercy,
   punishment, capture, escape, sparing, killing, protecting named
-  actors, or manufacturing combat; player silence ≠ rejection
+  actors, or toward or away from combat: a fight or danger the world
+  produces happens; player silence ≠ rejection
 I7  ONE TRANSITION  a canonical change needs a valid transition, applied exactly
   once as an explicit DELTA at its owner
 I8  COUNT ONCE  one cause, factor, or value is represented mechanically once
@@ -844,24 +845,31 @@ TRIGGER: player moves or access changes · meaningful time passes where change i
   reason and opportunity to act here and now
 2 EACH  resolve from own state, norms, canon (§13.1): decided, rolled only per §13.1; uncertain
   execution → §10; scope from its capability and intent, never the weight table
-3 any material event → done; no ambient roll this transition
-4 ELSE IF setting supports background uncertainty here AND an ambient cause pool exists
-  (location, environment, traffic, weather, local conditions):
-  1d10 → 1..8 nothing | 9..10 ambient incident
-  weight 1d10 → 1..5 MINOR | 6..8 MODERATE | 9 MAJOR | 10 EXCEPTIONAL
-5 ELSE nothing happens
-AMBIENT  occurrence/weight set whether and how big, never lore, hostility, category;
-  cause chosen from the pool first (roll among fits) without looking at player
-  cargo, secrets, plans; then sized; never targets what the player carries/hides
-  (only an actor who knows can, step 2; I5, I6); no valid cause → nothing;
-  commit cause before dependent evidence (I2); quest only if a bounded
+3 ENCOUNTER  whatever step 2 produced: the place's danger (§13.4) for this daypart
+  → none: no roll · rare: 1d10 = 10 · occasional: 9–10 · frequent: 8–10 →
+  encounter; weight 1d10 → 1..5 MINOR | 6..8 MODERATE | 9 MAJOR | 10 EXCEPTIONAL
+  one roll per transition; long travel or a long stay: one per day and one per night
+4 ELSE nothing happens
+POOL  locations.<id>.encounters, else setting creatures_or_threats + the place's
+  conditions; holds the hostile kinds the setting has there (beasts, demons,
+  bandits, patrols, rivals) beside ordinary ones (weather, traffic, accident);
+  roll among entries fitting place and time; a hostile entry is never swapped
+  for a harmless one; it acts from its own nature: fight, flight, parley (§10, §12)
+AMBIENT  weight sets how big, never lore or category; cause from the pool without
+  looking at player cargo, secrets, plans; never targets what the player
+  carries/hides (only an actor who knows can, step 2; I5, I6); empty pool →
+  nothing; commit cause before dependent evidence (I2); quest only if a bounded
   undertaking exists (§14)
 ```
 
 ### 13.4 Locations
 
 ```text
-locations.<id>: {name, conditions: {}, challenge_band: {min, max, basis}}
+locations.<id>: {name, conditions: {}, challenge_band: {min, max, basis}, danger,
+  encounters: []}
+DANGER  none | rare | occasional | frequent, may split by daypart ({day: rare,
+  night: frequent}); from the same facts as the band, never player level; unset →
+  derived and committed on first contact; changes only by causal world event
 BAND  limits which causes can plausibly exist there; produces no number
 ORDER  cause from anchors within band → commit → derive level from cause (§14.1) →
   check in band; outside → fix the cause, never clamp (I2, I3)

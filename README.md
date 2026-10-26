@@ -18,7 +18,7 @@ Python helper.
 
    > Load the engine files, start <background name>.
 
-Only attach one background. The engine is about 80 KB and each background is
+Only attach one background. The engine is about 85 KB and each background is
 60–95 KB, so this already takes a big bite out of the context window. Bigger
 context models handle it better.
 
@@ -31,13 +31,14 @@ context models handle it better.
 - Last Scion: Boundary
 - Last Train to Somewhere
 - SCP: Omega-99
+- SCP: Lambda-12
 - Tarnstead (low fantasy)
 - Skyrim: Dragonborn
 
 ### Making your own world
 
 Play one of the written backgrounds first so you know what a finished one looks
-like. Then attach `BACKGROUND_TEMPLATE_v5_4.md` with the engine files, tell the
+like. Then attach `BACKGROUND_TEMPLATE_v6_0.md` with the engine files, tell the
 AI the basics (genre, tone, who you play, what the story is about), and ask it
 to check its own design at least twice before you start.
 
@@ -55,6 +56,10 @@ Send:
 
 The background is required. A save only holds what has changed since Round 0.
 
+If the save or background is from an older version, also attach
+`CHANGELOG_NEW_ENGINE.md`. The GM uses it to bring the old file up to date
+before play starts.
+
 ---
 
 ## During play
@@ -64,10 +69,17 @@ The background is required. A save only holds what has changed since Round 0.
   `continue unsaved`. Unsaved gives you one more round, then it tries again.
 - **Chapters.** If the background has chapter breaks, you'll get a choice:
   **continue as is** or **extend** into a new chapter. If you extend, the GM
-  shows you what's being dropped before it writes anything.
+  shows you what's being retired before it writes anything.
 - **Full or lite.** At Round 0 the GM asks whether you want full or lite
   output. Lite is shorter prose, nothing else changes: same state, same rolls,
   same saves. You can switch later.
+- **Item points.** If the GM skipped ahead and you didn't get the chance to
+  buy rope or tip the doorman, spend item points: the rope was in your pack all
+  along, or you tipped him last night. Your pool depends on who your character
+  is (an ordinary working adult has 60) and refills a bit after each good
+  night's rest somewhere safe. Nothing above Tier 2.
+- **Out of character.** Start a message with `ps` to talk to the GM instead of
+  acting in the game.
 
 ---
 
@@ -91,12 +103,13 @@ All files share one version number. Don't mix versions.
 
 | File | Purpose |
 |---|---|
-| `NEW_ENGINE_v5_4.md` | The rules. Part 0 runs every turn, Part 1 sections open when something triggers them, Part 2 modules are optional. |
-| `BACKGROUND_TEMPLATE_v5_4.md` | Template for a world: setting, character, and everything that exists before Round 1. |
-| `SAVE_TEMPLATE_v5_4.md` | Save format: a readable save plus a hidden capsule. |
-| `AI_RULES_v5_4.md` | How the AI should run the engine in a chat. No game rules here, just discipline. |
-| `engine_math_v5_4.py` | Dice, arithmetic, record merge and checks. It calculates; it never decides. |
-| `written_background/` | Ready-to-play worlds (list below). |
+| `NEW_ENGINE_v6_0.md` | The rules. Part 0 runs every turn, Part 1 sections open when something triggers them, Part 2 modules are optional. |
+| `BACKGROUND_TEMPLATE_v6_0.md` | Template for a world: setting, character, and everything that exists before Round 1. |
+| `SAVE_TEMPLATE_v6_0.md` | Save format: a readable save plus a hidden capsule. |
+| `AI_RULES_v6_0.md` | How the AI should run the engine in a chat. No game rules here, just discipline. |
+| `engine_math_v6_0.py` | Dice, arithmetic, record merge and checks. It calculates; it never decides. |
+| `CHANGELOG_NEW_ENGINE.md` | What changed over time, and how old saves and backgrounds are brought forward. Only needed for older files. |
+| `written_background/` | Ready-to-play worlds (list above). |
 
 ---
 

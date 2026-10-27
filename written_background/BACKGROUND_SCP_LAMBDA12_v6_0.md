@@ -146,7 +146,7 @@ West's probation review falls on Day 90 (`probation_review` quest). The review s
 - `pink_flock`: local; retires when the flock is captured, relocated with Wilson's Wildlife Solutions, or scattered past the county line (Gamma-119 takes over).
 - `rosa_transfer`: ordinary life; retires when the request is approved, withdrawn or refused.
 - `elias_reassignment`: ordinary life; retires when Elias accepts, declines or is talked out of the Alaska post.
-- Only `orientation_week` and `site_life` are quests at Round 0. Other quests open when Rosa assigns them (work source pace) or a site alert drags West in.
+- Only `orientation_week` is a quest at Round 0; Site-19 life between jobs is ordinary play, not a quest. Other quests open when Rosa assigns them (work source pace) or a site alert drags West in.
 
 ```yaml
 background_id: scp_class_of_99_v5_6
@@ -214,6 +214,7 @@ setting_anchors:
     - Foundation staff are salaried; on-site dorms and cafeteria are free; field per diem for travel.
     - Anomalous items have a black market and a quieter grey market of rich people who "rent" wonders.
   tool_prices: cheap          # field kits, forms and issued tools are the job (engine §D)
+  economy_model: "present-day United States; USD"   # real economy that off-list prices follow (engine §15 PRICES)
   law_and_social_structure:
     - Civilians never learn about anomalies; witnesses get amnestics and cover stories.
     - Foundation rules are bureaucratic — forms, test logs, clearance requests, incident reports.
@@ -438,7 +439,7 @@ storylines:
   site_life:
     kind: ordinary_life
     line: Site-19 daily life — dorm, cafeteria, perks, Josie, Gus, site alerts; the HQ opens up as West is read in.
-    refs: [quests.site_life, npcs.gus_pembroke, locations.site19]
+    refs: [npcs.gus_pembroke, locations.site19]
   romance:
     kind: ordinary_life
     line: Four people West might fall for — the unit's engineer, the site doctor, an Iota-9 agent, a falconer
@@ -488,13 +489,6 @@ quests:
     status: active
     participants: [pc, rosa_delgado, leo_brandt]
     notes: ends at the end of Day 5 with Rosa's first real assignment; no fail state, only first impressions.
-  site_life:
-    role: SIDE
-    type: ONGOING
-    source_ref: pc
-    objective: Live at Site-19 between jobs — perks, lore, friendships, dates, alerts.
-    status: active
-    participants: [pc]
   half_a_cat:
     role: SIDE
     type: SHORT
@@ -521,7 +515,7 @@ quests:
     support_refs: [tomato_case]
   too_spooky:
     role: SIDE
-    type: MEDIUM
+    type: SHORT
     source_ref: rosa_delgado
     objective: SCP-2006's long-time "terrified audience" retired; West is assigned as the new scream-actor.
       Then someone leaves a phone in its cell with a modern horror film on it, and SCP-2006 gets a new idea of
@@ -557,7 +551,7 @@ quests:
     support_refs: [frost_case]
   murder_monster:
     role: SIDE
-    type: MEDIUM
+    type: SHORT
     source_ref: rosa_delgado
     objective: Sit in as SCP-5031's weekly conversation partner at Site-17. A new security guard keeps
       provoking it; work out what actually keeps it calm before something breaks.
@@ -568,7 +562,7 @@ quests:
     support_refs: [monster_case]
   pink_flock:
     role: SIDE
-    type: MEDIUM
+    type: SHORT
     source_ref: rosa_delgado
     objective: Help Gamma-119 falconer Elias Grant deal with SCP-1507 flamingos taking over the lawn ornaments
       of a Florida subdivision, before the homeowners' association's garden party.
@@ -871,6 +865,7 @@ npcs:
     belongs: [foundation, mtf_lambda_12]
     gender: woman
     character: 36, warm, tired, sharp; says "you're welcome" whenever anything works; teaches by letting you try
+    in_disorder: suffers
     state:
       position: Site-19 Lambda-12 office
       status: Level 3; mother of Mateo (8); quietly filed for a desk post
@@ -905,6 +900,7 @@ npcs:
     belongs: [foundation]
     gender: man
     character: 27, funny in person, catastrophically unfunny on stage; kind; fixes anything with zip ties
+    in_disorder: suffers
     state:
       position: dorm C, room 14
       status: signed up as opening act for the Day 14 staff comedy night; rehearses puns at 1 a.m.
@@ -937,6 +933,7 @@ npcs:
     gender: man
     character: 71, slow-talking, knows every door that sticks; tells the best old-timer stories; never says
       everything he knows
+    in_disorder: suffers
     state:
       position: Site-19, anywhere a mop or a stuck door is
       status: stayed on past retirement in a quiet job
@@ -968,6 +965,7 @@ npcs:
     gender: woman
     character: 41, born 1985, sick of the 1999 joke; dry, fair, fiercely loyal to her people; signs Form R-7s
       without comment and a visible sigh
+    in_disorder: suffers
     state:
       position: Site-19 Lambda-12 office
       status: Level 4; running a small unit on a small budget
@@ -988,6 +986,7 @@ npcs:
     belongs: [foundation, mtf_lambda_12]
     gender: man
     character: 35, huge, gentle, collects Safe-class trivia, gives great hugs, hits very hard
+    in_disorder: suffers
     state:
       position: Site-19 gym or Lambda-12 office
       status: Level 3
@@ -1014,6 +1013,7 @@ npcs:
     character: brilliant, quick, competitive; flirts by teasing and betting; fearless in the field, impatient
       with paperwork and with anyone who calls her "the mechanic"; secretly sketches designs at 2 a.m. and
       hums fado while she welds; softer than she lets on, and loyal to the bone
+    in_disorder: suffers
     state:
       position: Lambda-12 van bay
       status: Level 3; runs the unit's betting pool on how each op goes wrong
@@ -1050,6 +1050,7 @@ npcs:
     belongs: [foundation, mtf_lambda_12]
     gender: man
     character: 38, enthusiastic, reads every addendum, cannot lie with a straight face
+    in_disorder: suffers
     state:
       position: Site-19 labs
       status: Level 3
@@ -1073,6 +1074,7 @@ npcs:
     character: calm under pressure, dry and quick with a joke; scolds patients gently and remembers every
       injury they've had; keeps a jar of SCP-261 candies on her desk for brave patients; dances badly and
       enthusiastically at site parties
+    in_disorder: suffers
     state:
       position: Site-19 medical wing
       status: Level 2 (medical); on the night rota every third week; first-aid duty at comedy night
@@ -1114,6 +1116,7 @@ npcs:
       dissertation tried to leave its frame
     character: charming, witty, a little vain about his clothes; knows the story behind every object in a room
       and tells it beautifully; competitive about trivia; deeply embarrassed by mistakes
+    in_disorder: suffers
     state:
       position: Iota-9 office, Manhattan; visits Site-19 archives
       status: Level 3
@@ -1159,6 +1162,7 @@ npcs:
       wings; recruited by Gamma-119
     character: quiet, patient, steady; says little and means all of it; gentle with birds and people; a slow
       dry sense of humour; cooks a mean chilli; uncomfortable indoors for too long
+    in_disorder: suffers
     state:
       position: Gamma-119 field station; at Site-19 for a joint avian-anomaly briefing
       status: Level 3; handles the unit's hawks, including a Harris's hawk named Juniper
@@ -1192,6 +1196,7 @@ npcs:
     gender: man
     character: 46, everyone's favourite uncle — bad sweaters, birthday cards for every staffer, remembers your
       coffee order; underneath, broke, frightened and very good at lying with a smile
+    in_disorder: thrives
     state:
       position: Site-19 morale office (next to the cafeteria)
       status: renting SCP-458 and SCP-662 to Thayne Events most weekends; replicas in the locker
@@ -1221,6 +1226,7 @@ npcs:
     gender: woman
     character: 52, glamorous, ruthless about guest lists, believes Vale's items are "experimental tech" from a
       government lab and does not want to know more
+    in_disorder: neither
     state:
       position: Manhattan office and a Hamptons event estate
       status: two private security guards; a gala of 300 guests planned
@@ -1236,7 +1242,8 @@ npcs:
     gender: none stated (uses "it")
     character: huge, clawed, terrifying to look at; dramatic about its "murder destiny"; actually polite,
       anxious, eager for company; would like to try knitting
-    state: {position: Site-17 humanoid wing, plan: be a proper monster; secretly hope someone stays to talk}
+    in_disorder: neither
+    state: {position: Site-17 humanoid wing, plan: be a proper monster; secretly hope someone stays to talk, due: panics on Brent's next provocation (monster_case)}
     capability: {overall_level: 5}
     discovered_information: {}
   gunnar_holm:
@@ -1246,7 +1253,8 @@ npcs:
     gender: man
     character: 63, a retired schoolteacher from Ohio lost in the store eleven years ago; kind, stubborn, runs the
       enclave like a classroom with a bell
-    state: {position: the wardrobe fort, plan: keep his people safe; keep Team Birch's skills if he can}
+    in_disorder: suffers
+    state: {position: the wardrobe fort, plan: keep his people safe; keep Team Birch's skills if he can, due: when a rescue team reaches the fort (aisle_infinity)}
     capability: {overall_level: 3}
     discovered_information: {}
 
@@ -1254,6 +1262,7 @@ factions:
   foundation:
     name: SCP Foundation (on paper — WHO Special Containment Programme)
     role: secret global containment organisation
+    in_disorder: suffers
     state: {cover: WHO programme, command: O5 Council}
     drives: {wants: [normalcy, containment, secrecy], fears: [exposure, uncontained Keters]}
     capability: {institutional_reach: global sites, MTFs, amnestics, cover operations}
@@ -1264,6 +1273,7 @@ factions:
       value: 0
       basis: witnessed acts that help or hurt the unit; affects who backs West, never a free favour
     role: small odd-jobs MTF that ties up low-priority anomalies worldwide; borrows muscle from bigger MTFs
+    in_disorder: suffers
     state:
       members: [commander_lindqvist, rosa_delgado, dmitri_volkov, priya_rolynn, tomas_reyes_hart, pc]
       budget: tight
@@ -1274,6 +1284,7 @@ factions:
   mtf_iota_9:
     name: MTF Iota-9 "Collected Curios"
     role: canon MTF for anomalous objects in collections and the antiques trade
+    in_disorder: suffers
     state: {quietly investigating "wonders" at society parties}
     drives: {wants: [find the source], fears: [a public incident]}
     capability: {reach: museums, auction houses, collectors}
@@ -1281,6 +1292,7 @@ factions:
   mtf_gamma_119:
     name: MTF Gamma-119 "Air Superiority"
     role: canon MTF for airborne and avian anomalies
+    in_disorder: suffers
     state: {stretched thin; lending Elias to the flamingo job}
     drives: {wants: [every bird accounted for], fears: [a public flock video]}
     capability: {reach: falconers, nets, marksmen, aircraft on request}
@@ -1288,6 +1300,7 @@ factions:
   wilson_wildlife:
     name: Wilson's Wildlife Solutions
     role: friendly Group of Interest that rescues and rehomes anomalous animals
+    in_disorder: neither
     state: {one volunteer, Dana Reyes, already in Palm Grove Estates}
     drives: {wants: [the flamingos rehomed, not culled], fears: [Foundation heavy-handedness]}
     capability: {reach: a sanctuary in Wisconsin, vans, kind volunteers}
@@ -1295,6 +1308,7 @@ factions:
   thayne_events:
     name: Thayne Events
     role: Hamptons party-planning firm; renting Foundation items without knowing what they are
+    in_disorder: neither
     state: {gala planned}
     drives: {wants: [spectacle], fears: [scandal]}
     capability: {reach: money, lawyers, two guards}
@@ -1302,6 +1316,7 @@ factions:
   showroom_enclave:
     name: The Showroom Republic
     role: survivor enclave of about 40 people inside SCP-3008
+    in_disorder: suffers
     state: {fort: wardrobes and bookcases, trade: meatballs and flat-pack timber}
     drives: {wants: [batteries, seeds, safety], fears: [the dark, losing people]}
     capability: {reach: a few aisles; lamps; spears from curtain rods}

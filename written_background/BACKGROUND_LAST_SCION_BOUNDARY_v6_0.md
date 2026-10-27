@@ -52,6 +52,8 @@ setting_anchors:
     - Coin, grain, livestock, carts, seasonal roads and iron stocks are finite. Supply needs someone willing to release it and a road to carry it.
     - Seals and sealed letters travel by rider; nobody needs to sign in person. Paperwork stays off-screen.
     - One silver mark (sm) equals 20 copper pennies (cp); an unpaid pledge is never spendable coin.
+  economy_model: "late-medieval English border county c. 1400; 1 cp ≈ 1 penny"   # real economy that off-list prices follow (engine §15 PRICES)
+  tool_prices: standard
   law_and_social_structure:
     - Julian inherits limited authority within Ardent holdings. He cannot order Merewyn soldiers, grain or messengers without that house's permission.
     - Betrothal creates a politically meaningful promise but neither automatic ownership nor a guaranteed marriage or unconditional alliance.
@@ -291,6 +293,7 @@ npcs:
     belongs: [house_ardent]
     gender: man
     character: Elderly, exacting and tired; speaks with the care of a man who has calculated the cost of every lost cart.
+    in_disorder: suffers
     state:
       position: greywatch_hold
       status: Manages ration books and sends for wagon news; injured knee makes sustained travel difficult.
@@ -311,6 +314,7 @@ npcs:
     belongs: [house_ardent]
     gender: man
     character: Frank, steady and practical; refuses to treat noble pride as a defensive wall.
+    in_disorder: suffers
     state:
       position: outer_gate
       status: Commands the available garrison formations and watches Sola's advance.
@@ -331,6 +335,7 @@ npcs:
     belongs: [house_merewyn]
     gender: woman
     character: Clear-eyed and proud in her own right; caring without being submissive; angry at being treated like a delivery order.
+    in_disorder: suffers
     state:
       position: merewyn_hall
       status: Age 18; mourning Aldren, holding letters from his last days; not yet sole charter signatory.
@@ -339,7 +344,7 @@ npcs:
     drives: {wants: [identify Aldren's killer, protect Merewyn's independence, preserve worthwhile alliances, to run Merewyn herself rather than see it folded into a joint house], fears: [council factionalism, being used as leverage, needless deaths], values: [dignity, sound agreements, honest affection]}
     relationships:
       julian_ardent: {tie: betrothed since childhood, attitude: familiar, concerned and irritated by his defensive pride, credit: [Edric's family honoured supply agreements until decline], grievance: [Julian has recently avoided asking for help directly], believes_identity: a frightened heir pretending otherwise}
-                                   # betrothal meaning to her: her father's last wish and an old friendship she values; a promise she means to honour, but on terms that keep Merewyn hers. Julian reads the same betrothal as a threat of absorption (open_suspicions.elowen_uncertain); neither knows how the other sees it. Relationship meaning only; no romantic content.
+                                   # betrothal meaning to her: her father's last wish and an old friendship she values; a promise she means to honour, but on terms that keep Merewyn hers. Julian reads the same betrothal as a threat of absorption (player.knowledge.suspicions.elowen_uncertain); neither knows how the other sees it. Relationship meaning only; no romantic content.
       regent_hadrien: {tie: uncle and interim signatory, attitude: trusts his ability but resists his caution, credit: [], grievance: [], believes_identity: trying to protect her inheritance}
     knowledge:
       facts: {father: Aldren was murdered; she has no proven culprit, supplies: Stores exist but charter signing and carriage are disrupted, betrothal: The agreement does not make her father's lands Julian's}
@@ -352,6 +357,7 @@ npcs:
     belongs: [house_merewyn]
     gender: man
     character: Nervous, conscientious and wary of letting someone use the murder as an excuse to seize the granaries.
+    in_disorder: suffers
     state:
       position: merewyn_hall
       status: Holds interim convoy seals while succession and murder inquiry continue. The day before the murder he quarrelled loudly with Aldren over writing off part of the Ardent debt; he has told no one, out of shame, and his caution with the seals now looks like obstruction.
@@ -372,6 +378,7 @@ npcs:
     belongs: [house_vane]
     gender: man
     character: Cold, polished and commercially minded; views conquest as a way to turn disputed records into income.
+    in_disorder: thrives
     state:
       position: vane_forward_camp
       status: Coalition assembled to claim the Greyfen boundary; has privately ordered Aldren's assassination via an intermediary.
@@ -392,6 +399,7 @@ npcs:
     belongs: [vane_coalition]
     gender: woman
     character: Observant, rigorous and unsentimental; defected to secure wages and retainers, not for sport.
+    in_disorder: neither
     state:
       position: outer_gate approach
       status: Leads 110 forward troops. She knows the gate construction from earlier Ardent service but has not breached it.
@@ -412,6 +420,7 @@ npcs:
     belongs: []
     gender: woman
     character: Meticulous, prefers written numbers to secrets; values being paid more than any banner.
+    in_disorder: thrives
     state:
       position: town of Westmere, on the outer road
       status: Holding encoded payment tallies after Aldren's murder; trying to disappear from active coalition politics.
@@ -430,6 +439,7 @@ npcs:
     belongs: []
     gender: man
     character: Cautious, pragmatic, loyal to money but conscious that employers can dispose of witnesses.
+    in_disorder: thrives
     state:
       position: moving between the woods and Westmere
       status: Left traces at the murder scene; believes Lorne still owes him money.
@@ -446,6 +456,7 @@ factions:
   house_ardent:
     name: House Ardent
     role: hereditary frontier household, defending Greyfen
+    in_disorder: suffers
     state: {leadership: Julian is legal heir; relies on Orlo and Joram, forces: The 120-defender roster belongs to rights_obligations.garrison_roster}
     drives: {wants: [hold or safely settle charter, protect dependents], fears: [extinction of title, hunger], values: [oaths, local belonging]}
     relationships:
@@ -456,6 +467,7 @@ factions:
   house_merewyn:
     name: House Merewyn
     role: independent grain and iron estate, long-standing Ardent ally
+    in_disorder: suffers
     state: {leadership: Elowen is heir; Hadrien holds interim supply seals, condition: Aldren murdered and convoys paused}
     drives: {wants: [solve killing, sustain households, control own charter], fears: [ambushes, coercion, insolvency], values: [Aldren's friendship with Edric, lawful reciprocity]}
     relationships:
@@ -466,6 +478,7 @@ factions:
   house_vane:
     name: House Vane
     role: powerful rival claimant to border tolls and charter
+    in_disorder: thrives
     state: {leadership: Cassian, plan: isolate fortress, force capitulation, seek legal control after military leverage}
     drives: {wants: [territory and toll income], fears: [costly campaign, murder inquiry], values: [strong title claim, compliant clients]}
     relationships:
@@ -476,7 +489,11 @@ factions:
   vane_coalition:
     name: Vane frontier coalition
     role: military alliance funded by House Vane with distinct member interests
-    state: {plan: Confront Greywatch and secure a profitable settlement, cohesion: depends on wages, supply and results}
+    in_disorder: thrives
+    state:
+      plan: Confront Greywatch and secure a profitable settlement
+      cohesion: depends on wages, supply and results
+      contract_dispute: a few contingents question whether their contracts justify a prolonged siege — an ordinary dispute over pay, risk and service, not a secret alliance or knowledge of the assassination; they may demand terms, resist a costly order, or serve on; Cassian or Sola may negotiate, threaten, redeploy or accept the limit; no set outcome
     drives: {wants: [contract money, property or political concessions], fears: [attrition, no pay, royal reprisal], values: [practical gains over endless war]}
     relationships: {}
     knowledge: {facts: {muster: 360 combatants assembled, scope: No universally shared knowledge of assassination}, channels: [camp captains, runners, Cassian's herald]}
@@ -499,44 +516,7 @@ quests:
     status: available
     participants: []
     support_refs: [outer_gate, garrison_roster, vane_campaign_force]
-development_threads:
-  coalition_contract_pressure:
-    kind: independent_development
-    status_at_round_zero: A few coalition contingents are questioning whether their contracted obligations justify the cost of a prolonged siege. This is an ordinary dispute over pay, risk and service, not evidence of a secret alliance or a coordinated plot.
-    established_facts:
-      - The Vane coalition is assembled under competing contractual and noble commitments.
-      - Cassian wants to keep the coalition profitable and fears defections and a costly prolonged siege.
-    actors: [lord_cassian, commander_sola, vane_coalition]
-    motivations:
-      coalition_contingents: Preserve their own people and secure the terms they were promised.
-      lord_cassian: Keep enough of the coalition committed to achieve his campaign aims without conceding excessive terms.
-      commander_sola: Maintain a usable force and report practical limits honestly.
-    knowledge_boundaries:
-      coalition_contingents: Know their own terms, losses and immediate concerns; do not automatically know Cassian's assassination order.
-      commander_sola: Knows the vanguard's condition and the orders she has received; does not automatically know every contingent's private discussions.
-      lord_cassian: Knows his contracts and campaign priorities; cannot guarantee that every contingent will obey indefinitely.
-    possible_consequences:
-      - A contingent may demand payment or revised terms, resist a costly order, or continue serving if its contract and circumstances support that choice.
-      - Cassian or Sola may negotiate, threaten penalties, alter deployment or accept a practical limit.
-    connections: May affect campaign choices if the dispute becomes relevant, but has no inherent connection to Aldren's murder, the ring or the charter evidence.
-    resolution: No predetermined outcome; resolve only when events, decisions and established capabilities make it relevant.
-    evidence_limits: A pay or contract dispute establishes a dispute over service terms, not treachery, secret sympathy for Ardent or knowledge of Cassian's other operations.
-  independent_record_problem:
-    kind: independent_development
-    status_at_round_zero: A routine Crown registry copy request concerning an older road-maintenance entry remains unanswered. It is an administrative delay, not proof that the Crown is secretly coordinating with either house.
-    established_facts:
-      - Crown clerks retain a dated survey copy relevant to the disputed boundary.
-      - Merchants have receipts showing which authority maintained the road and ferries in practice.
-    motivations:
-      crown_registry: Process requests according to available staff, records and competing duties.
-    knowledge_boundaries:
-      crown_registry: Knows the request is pending and what records it concerns; does not know the full military or assassination situation unless separately informed.
-    possible_consequences:
-      - A request may be delayed, answered, misfiled or prioritised if a character follows up through a credible channel.
-      - The record, if obtained, may clarify what a document says without automatically deciding which legal interpretation should prevail.
-    connections: Can intersect with the boundary claim through ordinary paperwork, but need not be caused by Cassian, the assassination or any hidden actor.
-    resolution: No predetermined outcome; do not create a new pressure clock for this administrative issue.
-    evidence_limits: Delay alone proves neither deliberate obstruction nor conspiracy. Any claim about motive requires additional evidence.
+development_threads: {}
 active_world_pressures:
   boundary_encirclement:
     name: Coalition isolation of Greywatch
@@ -621,7 +601,11 @@ locked_case_truths:
     discovered_information: {}
   boundary_claim:
     cause: The disputed toll line between the Old Creek and Greyfen causeway has an obsolete Crown survey which Vane interprets in its favor; Ardent holds a later locally witnessed grant with different markers. Cassian wants military leverage first and ratification second, not abstract destruction for its own sake.
-    state: {record: Two conflicting charter interpretations, legal_status: unresolved dispute, actual_control: Ardent guards present crossings}
+    state:
+      record: Two conflicting charter interpretations
+      legal_status: unresolved dispute
+      actual_control: Ardent guards present crossings
+      crown_request: a routine Crown registry copy request for the older road-maintenance entry is still unanswered — an administrative delay that proves no obstruction or conspiracy; it may be delayed, answered, misfiled or prioritised if someone follows up through a credible channel; no pressure clock
     evidence:
       arden_register: Orlo holds the witnessed later charter and toll ledger.
       crown_duplicate: Crown clerks retain a dated but disputed survey copy.

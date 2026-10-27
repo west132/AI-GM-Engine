@@ -110,6 +110,8 @@ setting_anchors:
     legality, and interested actors.
   - Odd jobs with demons in them circulate through a few brokers (bars, pawnshops, word of mouth); a small job pays
     a few hundred dollars, a dangerous one a few thousand.
+  economy_model: "present-day US city (2026); USD"   # real economy that off-list prices follow (engine §15 PRICES)
+  tool_prices: standard
   law_and_social_structure:
   - Modern property, assault, homicide, trespass, evidence, contracts, traffic, and weapons law apply to humans and
     human-passing actors when authorities can identify and reach them.
@@ -787,6 +789,7 @@ npcs:
     belongs: []
     gender: woman
     character: blunt, funny when exhausted, keeps lists, hates being handled; pays her debts to the cent
+    in_disorder: suffers
     state:
       position: hale_workshop
       status: asking Rin to find her brother
@@ -839,6 +842,7 @@ npcs:
     - ashfall_transit_authority
     gender: man
     character: earnest train nerd, brave in a badly planned way, talks fast when scared, can't lie to his sister
+    in_disorder: suffers
     state:
       position: hiding in relay hut 3 on the disused Canal Street embankment, Lowfield edge
       status: alive; sprained ankle, deep cut on the forearm under his own bandage; phone off since 06:40 Oct 5
@@ -902,6 +906,7 @@ npcs:
     - ashfall_transit_authority
     gender: man
     character: loyal, jumpy, overshares when nervous, terrible at keeping a straight face
+    in_disorder: suffers
     state:
       position: his Lowfield flat; day shifts
       status: does not know where Eli is
@@ -941,6 +946,7 @@ npcs:
     - merrow_utility_solutions
     gender: man
     character: neat, tired, polite on the phone and sweating off it; tells himself it's only paperwork
+    in_disorder: thrives
     state:
       position: Merrow Canal Street field office, nights
       status: runs the extended windows for Orin's cash; in over his head
@@ -999,6 +1005,7 @@ npcs:
     - merrow_utility_solutions
     gender: man
     character: loud, sure of himself, likes the cash and the swagger
+    in_disorder: thrives
     state:
       position: Ferris Yard on window nights; Lowfield some evenings
       status: carries crates; now also watching Eli's flat some evenings with Vic
@@ -1041,6 +1048,7 @@ npcs:
     - merrow_utility_solutions
     gender: man
     character: quiet, nervous, wants out
+    in_disorder: neither
     state:
       position: Ferris Yard on window nights; Lowfield some evenings
       status: carries crates; now also watching Eli's flat some evenings with Dale; sleeping badly
@@ -1088,6 +1096,7 @@ npcs:
     gender: man
     character: courteous, amused, generous with small things; collects people the way he collects objects; never 
       raises his voice
+    in_disorder: thrives
     state:
       position: private dealer's flat in the Old Exchange district; known by phone and by reputation
       status: buying cinder glass through Rusk, selling it as luck charms through a pawnshop and to Ash Choir cells
@@ -1156,6 +1165,7 @@ npcs:
     - cinder_court
     gender: unknown
     character: precise, patient, speaks like a contract; enjoys a good bargain more than a kill
+    in_disorder: thrives
     state:
       position: lower_works; sends a voice up through the spur
       status: concealed, patient
@@ -1216,6 +1226,7 @@ npcs:
     - cinder_court
     gender: none
     character: a heavy armoured thing of slag and rail iron; territorial, not clever; hates light
+    in_disorder: thrives
     state:
       position: sealed_red_spur, far platform
       status: guarding the residue face; lets Orin's crews take crates from the near end only
@@ -1247,6 +1258,7 @@ npcs:
     gender: woman
     character: dry, procedural, overworked; trusts paper, then people who bring paper; occasionally very funny by 
       accident
+    in_disorder: suffers
     state:
       position: city risk management office
       status: has compared three unexplained outages and requested one normal Ferris explanation; no evidence yet 
@@ -1302,6 +1314,7 @@ npcs:
     gender: man
     character: unhurried, nosy, generous with coffee and stingy with credit; knows everybody's business and calls 
       it customer service
+    in_disorder: neither
     state:
       position: the_last_stop
       status: holds one open odd job (the Kettering laundromat)
@@ -1351,6 +1364,7 @@ npcs:
     gender: woman
     character: precise, sardonic, prepared for everything; carries too many tools and is right to; competitive 
       about money, not about people
+    in_disorder: neither
     state:
       position: Kettering, between jobs
       status: working the same odd-job market as Rin
@@ -1404,6 +1418,7 @@ npcs:
     belongs: []
     gender: woman
     character: warm, sharp, nags as a love language; changes the subject when Rin asks about the parent
+    in_disorder: suffers
     state:
       position: her flat in Wexley
       status: calls Rin Sundays; lends money and then pretends she didn't
@@ -1442,6 +1457,7 @@ npcs:
     belongs: []
     gender: woman
     character: cheerful, nosy, brings food whether asked or not
+    in_disorder: suffers
     state:
       position: upstairs flat on the Hale Workshop block
       status: rent is paid; she likes having Rin on the block
@@ -1477,6 +1493,7 @@ npcs:
     - ash_choir
     gender: man
     character: chatty, smells money, scared of Orin, kinder to regulars than he admits
+    in_disorder: neither
     state:
       position: gallo_pawn
       status: sells Orin's charms as luck stones for $60–$400 under the counter; Jo has been asking about odd stock
@@ -1519,6 +1536,7 @@ npcs:
     belongs: []
     gender: man
     character: sociable, stubbornly optimistic, works late to meet his car payments
+    in_disorder: suffers
     state:
       position: lowfield_cab_rank
       status: has worn a Gallo luck stone daily for five weeks; odd exhaustion, memory gaps and sensitivity to 
@@ -1555,6 +1573,7 @@ npcs:
     belongs: []
     gender: woman
     character: observant, practical, unwilling to accept dismissive answers
+    in_disorder: suffers
     state:
       position: lowfield_cab_rank vicinity
       status: alarmed by Imran's lapses and unexplained changes
@@ -1596,6 +1615,7 @@ npcs:
     belongs: []
     gender: woman
     character: wary, opportunistic and unusually attentive to noises beneath the machines
+    in_disorder: neither
     state:
       position: kettering_laundromat
       status: has worn a small cinder-glass charm for nine days and hidden a cache belonging to a cell; has seen 
@@ -1638,6 +1658,7 @@ npcs:
     - cinder_court
     gender: none
     character: quick, cautious, curious about heated glass, will retreat from superior force
+    in_disorder: thrives
     state:
       position: lower_works, near the damaged bleed-drain
       status: has a narrow traverse through the existing fracture only at safe low water; no knowledge of Rin
@@ -1680,6 +1701,7 @@ npcs:
     - cinder_court
     gender: none
     character: slow, formal, petty about precedence; thinks in debts owed and slights remembered
+    in_disorder: thrives
     state:
       position: deep routes below the lower_works
       status: aware the Surveyor is working on the Red Spur seal; does not know about Orin, the charms or Rin
@@ -1723,6 +1745,7 @@ factions:
   merrow_utility_solutions:
     name: Merrow Utility Solutions
     role: major infrastructure contractor; one night supervisor's crew is compromised
+    in_disorder: suffers
     state:
       public_status: legitimate contractor
       compromise: Rusk and two crew men only; the rest of the company knows nothing
@@ -1750,6 +1773,7 @@ factions:
   ashfall_transit_authority:
     name: Ashfall Transit Authority
     role: city transit operator; runs the subway, service tunnels, pump stations and maintenance network
+    in_disorder: suffers
     state:
       public_status: ordinary municipal agency
       records: keeps original gate video (30-day retention), shift sign-outs and work orders outside Merrow's edit 
@@ -1774,6 +1798,7 @@ factions:
   lantern_office:
     name: The Lantern Office
     role: small secret municipal occult-containment cell
+    in_disorder: suffers
     state:
       staffing: small and underfunded; Mara and one part-time field assistant can perform a limited field inspection, not a raid
       public_status: unacknowledged
@@ -1801,6 +1826,7 @@ factions:
   ash_choir:
     name: The Ash Choir
     role: loose human occult network trading with demonic powers
+    in_disorder: thrives
     state:
       structure: cellular; members know different amounts
     drives:
@@ -1825,6 +1851,7 @@ factions:
   cinder_court:
     name: The Cinder Court
     role: loose demonic compact holding deep routes beneath Ashfall
+    in_disorder: thrives
     state:
       surface_presence: minimal
       unity: transactional; rivals within. The Surveyor's goal (open the Red Spur) is not the Court's goal; the

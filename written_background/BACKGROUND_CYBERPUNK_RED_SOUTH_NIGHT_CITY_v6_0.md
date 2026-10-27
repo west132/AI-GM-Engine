@@ -80,6 +80,7 @@ setting_anchors:
     - Scarcity matters: back-alley barter, seized goods and credit terms exist, but every lender has conditions.
     - Job pay is negotiated against risk, proof and intermediaries; finding merchandise is not the same as selling it.
   tool_prices: cheap          # the street runs on tools, agents and kits (engine §D)
+  economy_model: "present-day US port city; 1 eb ≈ 1 USD"   # real economy that off-list prices follow (engine §15 PRICES)
   law_and_social_structure:
     - Police and corporate security respond according to contracts, evidence, capability, and jurisdiction.
     - A badge is not absolute immunity, nor is crime automatically detected or perfectly concealed.
@@ -419,6 +420,7 @@ npcs:
     belongs: []
     gender: man
     character: one-eyed, sharp with accounts, sarcastic, dislikes apologies and knows every power meter by sound
+    in_disorder: suffers
     state:
       position: yul_gatehouse
       status: demanding the 1000eb already owed; his own power contractor has given him until April 15 to pay
@@ -450,6 +452,7 @@ npcs:
     belongs: []
     gender: '[UNASSIGNED]'
     character: precise with percentages, warm only after a debt is honored; hates jobs that draw police to the bar
+    in_disorder: neither
     state:
       position: gull_chain
       status: open to hearing credible new information, not automatically working for the PC
@@ -481,6 +484,7 @@ npcs:
     belongs: [south_dock_harbor_cops]
     gender: man
     character: smug in public, anxious about receipts, unnervingly polite to powerful corporate visitors
+    in_disorder: neither
     state:
       position: harbor_precinct
       status: unaware of the PC's name or current intentions at 08:00
@@ -515,6 +519,7 @@ npcs:
     belongs: [south_dock_harbor_cops]
     gender: woman
     character: disciplined, dry, meticulous with custody tags; dislikes Vance's improvisations
+    in_disorder: suffers
     state:
       position: south_docks_lockup
       status: responsible for inventory before the laundering transfer
@@ -545,6 +550,7 @@ npcs:
     belongs: [south_dock_harbor_cops]
     gender: man
     character: bored, superstitious about getting caught, saves receipts in his own pockets
+    in_disorder: neither
     state:
       position: south_docks_lockup
       status: rotating between outside patrol and coffee break
@@ -571,6 +577,7 @@ npcs:
     belongs: []
     gender: woman
     character: soft-spoken, exact, can spot a forged invoice at twenty paces; charges for her time, not her silence
+    in_disorder: suffers
     state:
       position: dock_registry
       status: processing disputed shipments and morning claims
@@ -595,6 +602,7 @@ npcs:
     belongs: []
     gender: man
     character: friendly to other shift workers, complains loudly but notices the details others skip
+    in_disorder: suffers
     state:
       position: cargo_container_home
       status: ending a long shift, about to eat and sleep
@@ -624,6 +632,7 @@ npcs:
     belongs: [iron_sights]
     gender: woman
     character: practical, mercurial, never wastes a good engine; wants bargaining chips more than corpses
+    in_disorder: thrives
     state:
       position: iron_sights_turf
       status: sending a small team to assess the downed Trauma Team craft
@@ -647,6 +656,7 @@ npcs:
     belongs: [iron_sights]
     gender: nonbinary
     character: chatty, fast to brag, much quicker to flee a bad fight than Latch admits
+    in_disorder: thrives
     state:
       position: approach to combat_zone_crash_site
       status: observing from cover, not yet in the AV
@@ -677,6 +687,7 @@ npcs:
     belongs: [trauma_team]
     gender: woman
     character: direct, exhausted, holds rescuers to their promises; patients come before company speeches
+    in_disorder: suffers
     state:
       position: combat_zone_crash_site
       status: alive with a manageable shoulder injury, sheltering near the AV
@@ -701,6 +712,7 @@ npcs:
     belongs: [trauma_team]
     gender: man
     character: calm until deadlines collide; talks in indemnity clauses and only then in threats
+    in_disorder: suffers
     state:
       position: Trauma Team dispatch perimeter, en route when adequate assets are freed
       status: knows an AV is down and cargo needs recovery; arrival not guaranteed against interference
@@ -724,6 +736,7 @@ npcs:
     belongs: []
     gender: woman
     character: flinty, kind without sentimentality, allergic to heroic promises on credit
+    in_disorder: neither
     state:
       position: stitch_clinic
       status: stocked for basic cases, short on clotting products
@@ -747,6 +760,7 @@ npcs:
     belongs: []
     gender: woman
     character: suspicious of convenient confessions, patient with paperwork, slow to promise immunity
+    in_disorder: suffers
     state:
       position: outside Harbor precinct jurisdiction
       status: checking unusual police subcontract reimbursement totals; no PC-specific suspicion
@@ -769,6 +783,7 @@ npcs:
     belongs: [cobalt_reclamation]
     gender: man
     character: gracious at auctions, vicious about lost margin, smiles when presenting a bad deal
+    in_disorder: suffers
     state:
       position: pier_nine
       status: operates a legitimate salvage contract and an off-book stream of recovered implants
@@ -799,6 +814,7 @@ npcs:
     belongs: [cobalt_reclamation]
     gender: woman
     character: sarcastic about management, obsessive about serial numbers, protective of coworkers
+    in_disorder: suffers
     state:
       position: pier_nine
       status: aware that salvaged devices do not match consent forms; has not reported it
@@ -823,6 +839,7 @@ npcs:
     belongs: []
     gender: nonbinary
     character: dry, patient, hates violence that destroys value, deals fairly when watched
+    in_disorder: neither
     state:
       position: gull_chain district
       status: interested in the crash salvage, not hired yet
@@ -852,6 +869,7 @@ npcs:
     belongs: []
     gender: man
     character: likeable, quick with excuses, generous when flush, hates being looked at when he's lying
+    in_disorder: neither
     state:
       position: his sister's flat on the Heywood edge, out of sight
       status: alive and unhurt; has not contacted anyone since the ambush; the PC does not know he survived
@@ -895,6 +913,7 @@ factions:
         increment: plus 1 per genuine service of meaningful value, not mere obedience or imagined goodwill
         consequence: can be traded for specific favors only when the involved actor knows and agrees; not global loyalty
     role: corrupt NCPD subcontractor operating the local waterfront patrol and evidence compound
+    in_disorder: neither
     state:
       public_status: legitimate badge holders locally
       compromise: Vance's leadership directs graft; individual officers know different parts of it
@@ -924,6 +943,7 @@ factions:
         value: 0
         basis: attributable paid deals, rescues or benefits, not mere non-aggression
     role: gang and salvage merchants holding patches of the Combat Zone
+    in_disorder: thrives
     state:
       public_status: notorious for taking unguarded parts and medical supplies
       unity: members dispute risk, leadership and shares
@@ -946,6 +966,7 @@ factions:
   trauma_team:
     name: Trauma Team
     role: corporate emergency medicine and contractual extraction provider
+    in_disorder: suffers
     state:
       public_status: legitimate private response and medical cargo owner
       immediate_problem: downed AV, personnel at risk, temperature-sensitive medicine unaccounted for
@@ -968,6 +989,7 @@ factions:
   cobalt_reclamation:
     name: Cobalt Reclamation
     role: corporate salvage and cyberware refurbishment contractor
+    in_disorder: suffers
     state:
       public_status: legal recovery and refurbishment at Pier Nine
       compromise: a small management chain covertly acquires improperly seized or removed implants

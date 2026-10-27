@@ -163,7 +163,7 @@ On arrival at Halvane Midline (Day 8) the crews change and the train stands 24 h
 
 - `kroll_collection`: retires when Kroll's dream breaks at Halvane, or he is exposed and stripped of what he took, or he is put off the train. Exposure always leaves stolen tickets recoverable.
 - `relief_conductor`: never retires.
-- Only `boarding` and `life_aboard` are quests at Round 0; the rest open by trigger or station arrival.
+- Only `boarding` is a quest at Round 0; life aboard is ordinary play, not a quest; the rest open by trigger or station arrival.
 
 ```yaml
 background_id: last_train_to_somewhere_v5_2
@@ -216,6 +216,8 @@ setting_anchors:
       "return half" dream.
   economics_or_trade:
     - No money aboard (see Money). Each station has its own economy (locations economy).
+  economy_model: "outside goods: present-day northern Europe (euros); aboard and at stations the Money rule decides"   # real economy that off-list prices follow (engine §15 PRICES)
+  tool_prices: standard
   law_and_social_structure:
     - Aboard, the head conductor's word is law in practice; the worst punishment is being put off at a station.
   creatures_or_threats:
@@ -333,7 +335,7 @@ storylines:
   life_aboard:
     kind: ordinary_life
     line: Meals, cards, work shifts, berths, gossip — the stable life strange things disrupt.
-    refs: [quests.life_aboard, npcs.agathe_ronning, npcs.mira_solberg]
+    refs: [npcs.agathe_ronning, npcs.mira_solberg, locations.the_train]
 
 quests:
   journey:
@@ -355,13 +357,6 @@ quests:
     end: the train has departed and the PC is aboard (or deliberately not), with a seat or berth settled or a
       seating/ticket issue left open; never a forced confrontation, revelation or "chosen" moment
     notes: the seed contradiction (R1 vs R2) is placed where the PC can find it; no requirement to act on it
-  life_aboard:
-    role: SIDE
-    type: ONGOING
-    source_ref: pc
-    objective: Live aboard between stops — shifts for meals, barter, cards, sleep, friendships.
-    status: active
-    participants: [pc]
   ticket_question:
     role: MAIN
     type: LONG
@@ -390,11 +385,13 @@ quests:
     support_refs: [rule_four]
   noors_recordings:
     role: SIDE
-    type: ONGOING
+    type: SHORT
     source_ref: noor_aziz
     objective: Help Noor get the recordings she came for — or talk her out of the trades she makes for them.
+    quest_level: 2
     status: locked_until_triggered
     trigger: Noor asks the PC to help her record something (first ask Day 2)
+    end: Noor has the recordings she came for, gives up on them, or leaves the train
   kessel_halt:
     role: SIDE
     type: SHORT
@@ -408,7 +405,7 @@ quests:
       (Dana's chosen room is in it), ask Albin Strand about the train, stay aboard]
   ferrow_weir:
     role: SIDE
-    type: MEDIUM
+    type: SHORT
     source_ref: station_arrival
     objective: The overnight stop at Ferrow Weir, where an event three people vouch for is true and one fewer than three
       witnessed fades from memory by next dawn.
@@ -419,7 +416,7 @@ quests:
     support_refs: [ferrow_case]
   stillwater:
     role: SIDE
-    type: MEDIUM
+    type: SHORT
     source_ref: station_arrival
     objective: The eight-hour stop at Stillwater Junction, where anything moving faster than walking pace grows heavy
       and slow; a stalled freight blocks the junction.
@@ -632,6 +629,7 @@ npcs:
     belongs: [passengers]
     gender: woman
     character: 30, bright, restless, funny, talks to strangers in a minute; trades things impulsively; loyal in a crisis
+    in_disorder: neither
     state:
       position: with the PC, carriage 3
       status: outside-born, six anchors
@@ -663,6 +661,7 @@ npcs:
     belongs: [vsr_crew]
     gender: woman
     character: 54, broad, loud, kind, runs the dining car like a ship; feeds anyone who works
+    in_disorder: suffers
     state:
       position: dining car
       status: Vesmark-born; crew for 15 years
@@ -686,6 +685,7 @@ npcs:
     belongs: [vsr_crew]
     gender: man
     character: 58, upright, tired, dry humour; follows the handbook because it has kept people alive
+    in_disorder: suffers
     state:
       position: walks the train; staff car
       status: Vesmark-born; 22 years on the line
@@ -709,6 +709,7 @@ npcs:
     belongs: [vsr_crew]
     gender: woman
     character: 22, quick, nosy, a little reckless; collects passengers' stories in a notebook
+    in_disorder: suffers
     state:
       position: sleeper car
       status: Vesmark-born (Ferrow Weir); reads the dialect small print, has never thought to
@@ -724,6 +725,7 @@ npcs:
     belongs: [vsr_crew]
     gender: man
     character: 63, never leaves the cab, speaks only on the intercom in short sentences; sings to himself between stations
+    in_disorder: suffers
     state: {position: cab (locked), plan: drive the line, due: none — reached only through the intercom or the cab door}
     knowledge: {facts: {laps: has driven so many laps he has seen stations come back three times}}
     capability: {overall_level: 3, skills: {rail_operations: T4}}
@@ -734,6 +736,7 @@ npcs:
     belongs: [passengers]
     gender: woman
     character: claims 74; elegant, sharp at cards, kind in small ways, contrary in big ones; misremembers years
+    in_disorder: neither
     state:
       position: dining car corner table; sleeper compartment 1
       status: boarded the Night Mail in 1961; no anchors left; does not fade (the line counts her as its own)
@@ -756,6 +759,7 @@ npcs:
     belongs: [passengers]
     gender: man
     character: 61, polite, nervous, patient; homesick for Harrogate; lies smoothly, folds under pressure
+    in_disorder: thrives
     state:
       position: carriage 2, compartment 5
       plan: post R7 after departure; walk carriage 3 in burgundy at 01:30 Day 2; trade with Noor (offers a wax cylinder of
@@ -775,6 +779,7 @@ npcs:
     belongs: [vsr_crew]
     gender: man
     character: 34, big, slow to anger, ashamed of what he owes
+    in_disorder: thrives
     state:
       position: baggage car
       status: Vesmark-born; owes Kroll a winter of favours from cards
@@ -790,6 +795,7 @@ npcs:
     belongs: [passengers]
     gender: man
     character: 36, earnest, explains things nobody asked about, loves his wife and doesn't notice her
+    in_disorder: suffers
     state:
       position: carriage 3, compartment 2
       status: outside-born; carries his father's ashes to scatter at Stillwater, his father's birthplace
@@ -811,6 +817,7 @@ npcs:
     belongs: [passengers]
     gender: woman
     character: 33, quiet, wry, kind to strangers, decided
+    in_disorder: neither
     state:
       position: carriage 3, compartment 2
       status: outside-born; separate small bag packed; a letter written
@@ -832,6 +839,7 @@ npcs:
     belongs: [passengers]
     gender: man
     character: 61, gentle, wry, has lost his faith and hasn't told anyone; hears confessions anyway because people ask
+    in_disorder: neither
     state:
       position: carriage 4
       status: outside-born, three anchors; boarded at Grenze Halt last lap
@@ -848,6 +856,7 @@ npcs:
     belongs: [passengers]
     gender: man
     character: 29, tense, polite, protective; runs toward trouble; ashamed of running from his unit
+    in_disorder: neither
     state:
       position: carriage 4, sleeps sitting up
       status: outside-born, three anchors; boarded three stops before Grenze on the last lap
@@ -863,6 +872,7 @@ npcs:
     belongs: [passengers]
     gender: man
     character: 52, cheerful, relentless, sells anything to anyone; the train's best barterer; lonelier than he shows
+    in_disorder: suffers
     state:
       position: carriage 2, surrounded by sample volumes
       status: outside-born, three anchors left after 38 years (he talks about them constantly — shared memory has saved him)
@@ -881,6 +891,7 @@ npcs:
     belongs: [passengers]
     gender: woman
     character: 19, prickly, brilliant, ran away from a family that wanted her to keep playing; boards with the PC at Grenze
+    in_disorder: neither
     state:
       position: carriage 3, opposite the PC
       status: outside-born, three anchors
@@ -899,6 +910,7 @@ npcs:
     belongs: [passengers]
     gender: woman
     character: 76, sweet, knits scarves for everyone, keeps asking the name of the town she came from
+    in_disorder: neither
     state:
       position: sleeper compartment 3
       status: outside-born, one anchor left (Aarhus station) — and she can't always find it
@@ -915,6 +927,7 @@ npcs:
     belongs: [passengers]
     gender: man
     character: 50s, formal, carries a briefcase of empty forms; believes it is still 1974 and he boarded last week
+    in_disorder: suffers
     state:
       position: carriage 2
       status: outside-born (Copenhagen) on a past lap; one anchor left (a ministry desk); knew the 1974 crew
@@ -931,6 +944,7 @@ npcs:
     belongs: [vsr_crew]
     gender: man
     character: silent, patient, never quite seen; counts
+    in_disorder: neither
     state: {position: anywhere aboard on Relief nights, plan: count every passenger, due: relief_conductor clock}
     capability: {overall_level: 5}
     discovered_information: {}
@@ -940,6 +954,7 @@ npcs:
     belongs: [vsr_crew]
     gender: woman
     character: 49, brisk, by-the-book, colder than Halvard, honest; doesn't believe in the Relief
+    in_disorder: suffers
     state:
       position: Halvane Midline
       plan: take over the train Day 9; refuse every return half (she has never honoured one)
@@ -953,6 +968,7 @@ npcs:
     belongs: [kessel_halt]
     gender: man
     character: 70, courteous, careful with words (in Kessel words own things); dreams of a train he has never ridden
+    in_disorder: suffers
     state:
       position: clerk's office, Kessel platform
       status: a passenger who faded in 1979; believes he was born in Kessel
@@ -968,6 +984,7 @@ npcs:
     belongs: [kessel_halt]
     gender: woman
     character: 68, warm, stubborn; has not spoken to her sister in 30 years
+    in_disorder: suffers
     state:
       position: the Østergaard house, Kessel
       status: she and Liv both claimed the house at the same instant 30 years ago — it belongs to both
@@ -981,6 +998,7 @@ npcs:
     belongs: [kessel_halt]
     gender: woman
     character: 66, sharp, lonely; wants her sister back more than the house
+    in_disorder: suffers
     state:
       position: the Østergaard house, other half
       plan: claim Dana's room back by naming it first ("this room is mine") if Dana hasn't claimed it aloud
@@ -993,6 +1011,7 @@ npcs:
     belongs: [ferrow_weir]
     gender: man
     character: 44, quiet, proud; would rather lose his quota than beg
+    in_disorder: suffers
     state: {position: harbour, plan: wait out the dawn, due: Day 4 09:00 on the quay when the train arrives}
     capability: {overall_level: 2}
     discovered_information: {}
@@ -1002,6 +1021,7 @@ npcs:
     belongs: [ferrow_weir]
     gender: woman
     character: 30, fierce, wants out of Ferrow and its witnesses
+    in_disorder: neither
     state:
       position: harbour
       plan: board the train if Aldo loses his quota
@@ -1015,6 +1035,7 @@ npcs:
     belongs: [ferrow_weir]
     gender: woman
     character: 58, shrewd, patient, not cruel — just sure the quota should be hers
+    in_disorder: suffers
     state: {position: harbour office, plan: find a third witness for the theft, due: Day 4 noon approaches the PC}
     capability: {overall_level: 2, skills: {persuasion: T2}}
     discovered_information: {}
@@ -1024,6 +1045,7 @@ npcs:
     belongs: [ferrow_weir]
     gender: woman
     character: 50, fair, tired, hears vouchings at the weir stone
+    in_disorder: suffers
     state: {position: the weir stone, plan: hear the Brenn case at dusk Day 4, due: Day 4 18:00}
     capability: {overall_level: 2}
     discovered_information: {}
@@ -1033,6 +1055,7 @@ npcs:
     belongs: [stillwater_junction]
     gender: woman
     character: 47, slow-spoken, immovable, pays in work traded
+    in_disorder: suffers
     state: {position: the yard, plan: clear the freight, due: Day 6 11:00 asks the train for hands}
     capability: {overall_level: 3, skills: {rail_operations: T3}}
     discovered_information: {}
@@ -1042,6 +1065,7 @@ npcs:
     belongs: [dahl_brothers]
     gender: man
     character: 40, eldest, greedy, patient in a slow fight
+    in_disorder: thrives
     state: {position: the stalled freight, plan: strip the cargo before it's cleared, due: Day 6}
     capability: {overall_level: 3, skills: {brawling: T2}}
     discovered_information: {}
@@ -1051,6 +1075,7 @@ npcs:
     belongs: [dahl_brothers]
     gender: man
     character: 36, loud, follows Ole
+    in_disorder: thrives
     state: {position: the stalled freight, plan: as Ole, due: Day 6}
     capability: {overall_level: 2, skills: {brawling: T2}}
     discovered_information: {}
@@ -1060,6 +1085,7 @@ npcs:
     belongs: [dahl_brothers]
     gender: man
     character: 23, youngest, decent, sick of his brothers
+    in_disorder: neither
     state:
       position: the stalled freight
       plan: get on the train and away
@@ -1072,6 +1098,7 @@ factions:
   vsr_crew:
     name: VSR crews (night — Halvard, Mira, Agathe, Bram, Bertil; day — Ruth Engel's crew from Halvane)
     role: the train's staff; the only remains of Vesmark State Railways
+    in_disorder: suffers
     state: {handover: night crew hands to day crew at Halvane}
     drives: {wants: [timetable, nobody lost], fears: [the Relief, each other's ways]}
     knowledge: {facts: {handbook: staff-only exceptions and the withdrawn page 4}}
@@ -1083,6 +1110,7 @@ factions:
       value: 0
       basis: how long-term passengers and crew regard the PC from witnessed acts; never a free favour
     role: everyone aboard; long-termers keep customs and the return-half dream, newcomers do not
+    in_disorder: neither
     drives: {wants: [their own business]}
     discovered_information: {}
 

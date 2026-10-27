@@ -75,6 +75,8 @@ setting_anchors:
     - The Blades (all but destroyed by the Thalmor)
   religions_or_beliefs: [The Eight Divines (Talos worship banned but widespread among Nords), Daedric cults, Nordic ancestor tradition, Dragon Cult (ancient, extinct)]
   economics_or_trade: [Septims, hold-based trade, mining (Reach silver, Eastmarch ebony), Black-Briar mead in the Rift, East Empire Company in Solitude, Khajiit caravans barred from cities]
+  economy_model: "the game's own prices (septims); off-list goods priced like the game's merchants"   # real economy that off-list prices follow (engine §15 PRICES)
+  tool_prices: standard
   law_and_social_structure: [Each hold's guards enforce the Jarl's law, bounties per hold, jails and fines, thanes hold land and standing under a Jarl, Nord hostility toward elves and outsiders varies by hold, Dunmer ghettoised in Windhelm]
   norms:
     law_and_outlaws:
@@ -250,6 +252,7 @@ npcs:
     belongs: house_iron_ring
     gender: male
     character: Stern, proud, shrewd in trade, loyal to the Empire as the path that keeps his house strong
+    in_disorder: suffers
     state:
       status: in Solitude; expects his son to be in Windhelm within days
       plan: run the house's trade; on Bjorn's report, send men and letters through Castle Dour to find and free Torvald
@@ -270,6 +273,7 @@ npcs:
     belongs: house_iron_ring
     gender: male
     character: 26, careful, dutiful, dry-humoured, more cautious than his father and quietly tired of being the sensible one
+    in_disorder: suffers
     state:
       status: in Solitude, at the warehouse by the East Empire docks
       plan: keep the house's books straight while his father courts the Jarl; go east himself if his father won't
@@ -290,6 +294,7 @@ npcs:
     belongs: house_iron_ring
     gender: male
     character: Middle-aged, blunt, loyal, ashamed he ran
+    in_disorder: suffers
     state:
       status: escaped the ambush on foot in the dark; making his way back toward Solitude to report
       plan: reach Solitude and tell the Thane; then go back for the boy with whatever men he is given
@@ -310,6 +315,7 @@ npcs:
     belongs: whiterun_court
     gender: male
     character: fussy, cautious, careful with the Jarl's coin, fair to anyone who gets the job done
+    in_disorder: suffers
     state:
       position: Dragonsreach
       plan: keep Whiterun neutral and solvent; pay capable hands to clear bandit camps and beasts from the hold's roads
@@ -327,6 +333,7 @@ npcs:
     belongs: stormcloaks
     gender: male
     character: Warm, loyal, proud of his cause, bitter about the Empire. Born in Riverwood.
+    in_disorder: thrives
     state:
       status: prisoner in the same cart, bound
       plan: die well beside Ulfric if he must; if a chance comes, get out and reach his sister in Riverwood, then rejoin the Stormcloaks
@@ -346,6 +353,7 @@ npcs:
     belongs: none
     gender: male
     character: Frightened, cornered, loud about his innocence
+    in_disorder: thrives
     state:
       status: prisoner in the same cart, bound
       plan: run the moment his name is called
@@ -362,6 +370,7 @@ npcs:
     belongs: stormcloaks
     gender: male
     character: Commanding, ruthless, genuinely devoted to Talos and Nord independence
+    in_disorder: thrives
     state:
       status: prisoner in the same cart, gagged
       plan: meet the block without begging; if freed, get back to Windhelm and press the war
@@ -378,6 +387,7 @@ npcs:
     belongs: imperial_legion
     gender: male
     character: Decent, dutiful, uncomfortable with injustice. Born in Riverwood.
+    in_disorder: suffers
     state:
       status: reading the prisoner list at Helgen
       plan: carry out the execution by the list; if Helgen falls, get survivors to his uncle Alvor in Riverwood and report to Solitude
@@ -395,6 +405,7 @@ npcs:
     belongs: imperial_legion
     gender: female
     character: Hard, impatient, contemptuous of rebels and of excuses
+    in_disorder: suffers
     state:
       status: overseeing the execution
       plan: send every prisoner in the cart to the block, listed or not
@@ -412,6 +423,7 @@ npcs:
     belongs: imperial_legion
     gender: male
     character: Professional, pragmatic, tired of Skyrim
+    in_disorder: suffers
     state:
       status: present at Helgen for the execution
       plan: see Ulfric dead; if Helgen falls, return to Castle Dour and take up the war again
@@ -428,6 +440,7 @@ npcs:
     belongs: none
     gender: male
     character: Ancient, contemptuous of mortals, patient in purpose
+    in_disorder: thrives
     state:
       status: returned from beyond time; flying toward Helgen
       plan: burn Helgen in passing, then raise the dead dragons one at a time (canon_course)
@@ -442,6 +455,7 @@ factions:
   imperial_legion:
     name: Imperial Legion
     role: Occupying and allied army; enforces Imperial rule and the Concordat
+    in_disorder: suffers
     state: {status: at war with the Stormcloaks; holds Helgen}
     drives: {wants: to end the rebellion}
     relationships: {stormcloaks: {tie: enemy, attitude: hostile}}
@@ -451,6 +465,7 @@ factions:
   stormcloaks:
     name: Stormcloaks
     role: Nord rebellion for independence and Talos worship
+    in_disorder: thrives
     state: {status: leader captured}
     drives: {wants: Ulfric freed, the Empire out of Skyrim}
     relationships: {imperial_legion: {tie: enemy, attitude: hostile}}
@@ -460,6 +475,7 @@ factions:
   house_iron_ring:
     name: House Iron-Ring
     role: Old Nord thane house of Solitude; trade and land in Haafingar
+    in_disorder: suffers
     state: {status: prosperous, Empire-loyal}
     drives: {wants: standing at court and profit}
     relationships: {imperial_legion: {tie: ally, attitude: loyal}, stormcloaks: {tie: enemy, attitude: hostile}}
@@ -469,6 +485,7 @@ factions:
   greybeards:
     name: The Greybeards
     role: Monks of the Way of the Voice at High Hrothgar
+    in_disorder: neither
     state: {status: in seclusion}
     drives: {wants: to follow the Way of the Voice, to guide a Dragonborn if one appears}
     relationships: {}
@@ -478,6 +495,7 @@ factions:
   whiterun_court:
     name: Jarl Balgruuf's court, Dragonsreach
     role: rulers of Whiterun Hold; neutral in the war so far
+    in_disorder: suffers
     state: {status: neutral, watched by both sides}
     drives: {wants: Whiterun safe and neutral, fears: dragons, the war at its walls}
     relationships: {}

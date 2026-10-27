@@ -87,6 +87,8 @@ setting_anchors:
     - Silver Stags (ss) and Copper Pennies (cp), with 1 ss = 20 cp. Taxes and wages often also use grain or timber.
     - Winter stores, passable roads, dry fuel and access to a healer may be more valuable than loose coin.
     - Bounties are paid only by whoever actually controls the treasury; possessing a writ does not guarantee honest payment.
+  economy_model: "medieval English village (c. 1300 prices); 1 cp ≈ 1 penny"   # real economy that off-list prices follow (engine §15 PRICES)
+  tool_prices: standard
   law_and_social_structure:
     - The Baron claims summary authority over stolen noble property. Theft may be punished by execution or maiming.
     - A bailiff's command is not supernatural compulsion; local captains, witnesses and powerful patrons can resist
@@ -464,6 +466,7 @@ npcs:
     belongs: [barons_men]
     gender: man
     character: Immaculate armour, thin patience, enjoys compliance more than fighting; keeps a polite voice when furious.
+    in_disorder: suffers
     state:
       position: rusty_boar
       status: Questioning Gerda about sheltering fugitives; two guards wait outside.
@@ -500,6 +503,7 @@ npcs:
     belongs: []
     gender: man
     character: Young, quick to blame himself, protective of his sister, proud enough to reject pity until it costs him.
+    in_disorder: thrives
     state:
       position: ruined_mill
       status: Exhausted, keeping Elara hidden behind the upper store partition; box is open, ward broken.
@@ -532,6 +536,7 @@ npcs:
     belongs: []
     gender: woman
     character: Gentle but stubborn; dislikes being spoken about as if absent; remembers practical details when lucid.
+    in_disorder: neither
     state:
       position: ruined_mill
       status: Fever and weakness from an older ordinary infection, with a new gray discoloration after touching the stone.
@@ -557,6 +562,7 @@ npcs:
     belongs: [barons_men]
     gender: man
     character: Reserved, watchful and superstitious in private; treats broken promises as a personal insult.
+    in_disorder: suffers
     state:
       position: harrow_manor
       status: Awaiting recovery of a stolen ancestral object, unaware it has been fractured.
@@ -585,6 +591,7 @@ npcs:
     belongs: [barons_men]
     gender: woman
     character: Exacting, perceptive, always prepared with ledgers; dislikes waste and Thorne's bullying.
+    in_disorder: suffers
     state:
       position: harrow_manor
       status: Accounting for missing property and settling the next tithe inventory.
@@ -611,6 +618,7 @@ npcs:
     belongs: [tarnstead_households]
     gender: woman
     character: Sharp-eyed and dryly humorous; measures people by what they do when a neighbour needs a meal.
+    in_disorder: suffers
     state:
       position: rusty_boar
       status: Being pressed by Thorne, angry but concealing her fear for her kitchen boy.
@@ -635,6 +643,7 @@ npcs:
     belongs: [mill_outlaws]
     gender: man
     character: Practical and guarded; has no patience for grand speeches when there is no flour left.
+    in_disorder: thrives
     state:
       position: ruined_mill
       status: Keeping tally of dwindling food among twelve sheltering people.
@@ -661,6 +670,7 @@ npcs:
     belongs: [mill_outlaws]
     gender: woman
     character: Quiet, sceptical, observant; protects children but will not protect cruelty in her own camp.
+    in_disorder: thrives
     state:
       position: ash_cutter_road
       status: Checking whether bailiff scouts have crossed Crooked Alder Ford.
@@ -686,6 +696,7 @@ npcs:
     belongs: [mill_outlaws]
     gender: man
     character: Friendly, quick to agree, always calculating what a thing is worth; not cruel, just never on anyone's side but his own.
+    in_disorder: thrives
     state:
       position: ruined_mill
       status: Overheard Kaelen and Elara arguing about the box; worked at the manor long enough to know Ysabet guards the family's secrets.
@@ -712,6 +723,7 @@ npcs:
     belongs: [barons_men]
     gender: man
     character: Terse, exhausted, responsible for names on his duty list; dislikes raids on families.
+    in_disorder: suffers
     state:
       position: harrow_manor
       status: Five men fit for patrol; two on village duty; awaiting Thorne's actual orders.
@@ -738,6 +750,7 @@ npcs:
     belongs: [tarnstead_households]
     gender: woman
     character: Patient with the sick and severe with people who promise cures they cannot provide.
+    in_disorder: suffers
     state:
       position: chantry_chapel
       status: Treating ordinary fevers; short of clean cloth and dried willow bark.
@@ -760,6 +773,7 @@ npcs:
     belongs: [chantry_ford]
     gender: man
     character: Mild, stubborn about preserving text, fearful of the bog but ashamed of that fear.
+    in_disorder: suffers
     state:
       position: chantry_chapel
       status: Copying a damp register, unaware the manor relic has been opened.
@@ -782,6 +796,7 @@ npcs:
     belongs: [tarnstead_households]
     gender: man
     character: Practical, talkative when nervous; knows the marsh better than the stories about it.
+    in_disorder: suffers
     state:
       position: peat_huts
       status: Has stopped work near an old mound since seeing water rise in a place usually dry.
@@ -806,6 +821,7 @@ npcs:
     belongs: []
     gender: none
     character: Silent, deliberate and bound to a narrow charge, not evil for its own sake.
+    in_disorder: neither
     state:
       position: drowned_tomb
       status: Dormant in the lower arch, stirring only where broken ward-lines can be sensed.
@@ -827,6 +843,7 @@ factions:
   barons_men:
     name: The Baron's Men
     role: Feudal household, bailiff staff and armed retainers; not all of one opinion.
+    in_disorder: suffers
     state:
       public_status: legitimate local authority
       tension: Treasury short of ready silver; Thorne and Darrik disagree on costly patrols.
@@ -844,6 +861,7 @@ factions:
   mill_outlaws:
     name: The Mill Outlaws
     role: Around twelve fugitives, evicted households, deserters and opportunists sharing mill shelter.
+    in_disorder: thrives
     state:
       public_status: wanted under the baron's law
       provisions: Approx. four days of food; one unreliable skiff and two working bows.
@@ -862,6 +880,7 @@ factions:
   tarnstead_households:
     name: Tarnstead Households
     role: Cutters, traders, families and river workers; not a unified revolutionary faction.
+    in_disorder: suffers
     state:
       public_status: Under feudal taxes and wet-season work shortages.
       division: Some fear the thieves, others fear Thorne's raids more.
@@ -877,6 +896,7 @@ factions:
   chantry_ford:
     name: Chantry of the Ford
     role: Small local clergy and record keepers, spiritually influential but thinly staffed.
+    in_disorder: suffers
     state: {public_status: ordinary parish, staffing: one reader and visiting priest on seasonal circuit}
     drives:
       wants: [burials observed, parish protected, archive preserved]

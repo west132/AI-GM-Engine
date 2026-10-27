@@ -115,6 +115,8 @@ setting_anchors:
   economics_or_trade:
     - Currency — silver dollars (yuan, 元), dimes (jiao, 角, 10 to a yuan), copper coins (roughly 250 to
       a yuan, the rate drifts); foreigners quote in "Mex dollars".
+  economy_model: "Shanghai, 1926 (real); yuan, jiao and coppers as listed"   # real economy that off-list prices follow (engine §15 PRICES)
+  tool_prices: standard
   law_and_social_structure:
     - Three jurisdictions; crossing a boundary changes which police can touch you. Foreigners have
       extraterritoriality. Money and gang ties bend most enforcement; a photograph in a newspaper
@@ -557,6 +559,7 @@ npcs:
     belongs: [independent]
     gender: woman
     character: 64, Ningbo-born, sharp-tongued, feeds everyone, knows every rumour in the lane, plays mahjong
+    in_disorder: suffers
     state:
       position: the shikumen house
       plan: keep her tenants paying and fed; find the PC someone to marry
@@ -578,6 +581,7 @@ npcs:
     belongs: [independent]
     gender: man
     character: 63, slow-speaking, shrewd, honest by the standards of his trade, coughs in the cold
+    in_disorder: suffers
     state:
       position: Huxinting teahouse in the old city most mornings
       plan: keep his hand in by passing work to the PC; stay out of gang business
@@ -601,6 +605,7 @@ npcs:
     belongs: [little_daily]
     gender: man
     character: 30, charming, broke, a liar about small things and honest about big ones; loves a scoop more than safety
+    in_disorder: neither
     state:
       position: Fuzhou Road teahouses and the Little Daily office
       plan: get a big story to get hired by a real newspaper
@@ -624,6 +629,7 @@ npcs:
     belongs: [sheng_family]
     gender: woman
     character: 28, clever, warm, stubborn, reads English novels, hates her father's house and loves her father
+    in_disorder: suffers
     state:
       position: the school by day; the Sheng house on Avenue Joffre at night
       status: suspects her father's "Society nights" are something worse; has told no one
@@ -650,6 +656,7 @@ npcs:
     belongs: [independent]
     gender: woman
     character: 49, small, worn, polite, proud; hides her son's gambling out of shame
+    in_disorder: suffers
     state:
       position: her stall and her one room behind it
       plan: find her son; pay whatever it takes
@@ -664,6 +671,7 @@ npcs:
     belongs: [independent]
     gender: man
     character: 23, likeable, weak, a gambler, terrified; tells the truth when sober and nobody believes him
+    in_disorder: neither
     state:
       position: Natalia Orlova's room, Hongkew
       plan: hide until the gang forgets and the grey man stops looking; maybe go to Ningbo
@@ -679,6 +687,7 @@ npcs:
     belongs: [independent]
     gender: woman
     character: 25, White Russian from Harbin, tough, funny, tired; saving every coin to get to San Francisco
+    in_disorder: neither
     state:
       position: Venus Café nights; her room above a noodle shop on Haining Road by day
       plan: hide Lin a few more days, then make him choose
@@ -694,6 +703,7 @@ npcs:
     belongs: [independent]
     gender: woman
     character: 22, Subei migrant, fierce, untrusting of police, ashamed to ask for help
+    in_disorder: suffers
     state:
       position: a mill dormitory in Yangshupu
       plan: find her sister
@@ -707,6 +717,7 @@ npcs:
     belongs: [independent]
     gender: woman
     character: 26, quiet, kind, sends money home to Subei
+    in_disorder: suffers
     state:
       position: boathouse cellar, Pudong — drugged
       status: held for the Day 4 tide
@@ -723,6 +734,7 @@ npcs:
     character: >-
       52, soft-spoken, generous to charity, respected on the waterfront; believes the offerings keep
       the river from taking hundreds; hates what he does and does it every tide
+    in_disorder: thrives
     state:
       position: the chandlery by day; the Sheng house on Avenue Joffre at night; the boathouse on tide nights
       plan: feed every spring tide; find and silence the ferry clerk; keep Yuhua out of it
@@ -744,6 +756,7 @@ npcs:
     character: >-
       57, huge, silent, grey-skinned, eyes too wide, gill-slits under his collar; thirty years of tide
       nights have nearly made him one of the Drowned Kin; loyal to the river first, Sheng second
+    in_disorder: thrives
     state:
       position: the boathouse and the river
       plan: find the ferry clerk and give him to the river; guard the bell; do the rite even if Sheng falters
@@ -759,6 +772,7 @@ npcs:
     belongs: [brotherhood, water_rescue_society]
     gender: man
     character: 34, greedy, cowardly, cheerful; joined for the luck-money, never went on a sampan at a tide
+    in_disorder: thrives
     state:
       position: the Pudong waterfront and Fan's back door
       plan: one more bronze sale, then Ningbo with the money
@@ -774,6 +788,7 @@ npcs:
     belongs: [fortune_hall]
     gender: man
     character: 38, neat, polite, counts everything, breaks fingers without anger; wants the money, not blood
+    in_disorder: thrives
     state:
       position: the Fortune Hall, French Concession; the streets
       plan: get 180 yuan from Lin or his mother; then from anyone who helps him hide
@@ -790,6 +805,7 @@ npcs:
     belongs: [smp]
     gender: man
     character: 41, Welsh, dogged, honest about money, blind about people; thinks every river body is a gang killing
+    in_disorder: suffers
     state:
       position: Louza station; the Settlement
       plan: raid the Fortune Hall's counting room Day 10 and charge someone for the river bodies
@@ -806,6 +822,7 @@ npcs:
     belongs: [smp]
     gender: man
     character: 35, quick, tired, sells police news to the Fortune Hall to pay for his mother's hospital
+    in_disorder: neither
     state:
       position: with Pryce
       plan: warn the gang about the raid without being caught
@@ -821,6 +838,7 @@ npcs:
     belongs: [independent]
     gender: man
     character: 45, oily, cheerful, knows antiques well enough to lie about them
+    in_disorder: neither
     state:
       position: his shop
       plan: sell the last "Zhou bronze" to the professor for 200 yuan
@@ -834,6 +852,7 @@ npcs:
     belongs: [independent]
     gender: man
     character: 58, kind, brilliant, careless of danger, sleeps less every week since he bought the bronzes
+    in_disorder: neither
     state:
       position: Astor House hotel
       plan: find the source of the bronzes; finish reading the second script
@@ -849,6 +868,7 @@ npcs:
     belongs: [independent]
     gender: man
     character: 71, gentle, a little vain, believes half of what he sells and all of what he fears
+    in_disorder: suffers
     state:
       position: his stall, the old city
       plan: tell fortunes; keep the old river talisman in its box
@@ -869,6 +889,7 @@ factions:
   brotherhood:
     name: Brotherhood of the Ninth Tide (九潮会)
     role: Sheng's waterfront cult; about 25 boatmen and porters
+    in_disorder: thrives
     state: {condition: loyal on the surface, frightened underneath}
     drives: {wants: [luck on the water, Sheng's loans forgiven], fears: [Jiang, the river]}
     knowledge: {facts: {most_members: think it is He Bo worship and a mutual-aid society; only six know of the offerings}}
@@ -877,27 +898,32 @@ factions:
   water_rescue_society:
     name: Water Rescue Society, Pudong branch
     role: recovers and buries the drowned; mostly honest workers
+    in_disorder: suffers
     drives: {wants: [donations, decent burials]}
     discovered_information: {}
   fortune_hall:
     name: The Fortune Hall
     role: Green Gang gambling house, French Concession, with a counting room on the Settlement side
+    in_disorder: thrives
     drives: {wants: [money, no informers], fears: [SMP raids]}
     capability: {reach: the French Concession streets; paid constables in both police forces}
     discovered_information: {}
   smp:
     name: Shanghai Municipal Police (Louza station)
     role: Settlement police
+    in_disorder: suffers
     drives: {wants: [order, closed cases], fears: [scandal in the foreign papers]}
     discovered_information: {}
   little_daily:
     name: The Little Daily
     role: a mosquito paper of rumours and scandal
+    in_disorder: neither
     drives: {wants: [stories that sell]}
     discovered_information: {}
   sheng_family:
     name: The Sheng family
     role: rich Pudong chandlers
+    in_disorder: suffers
     discovered_information: {}
 
 locations:

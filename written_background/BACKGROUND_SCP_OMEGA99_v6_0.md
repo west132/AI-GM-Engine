@@ -124,7 +124,7 @@ West's probation review falls on Day 90 (`probation_review` quest). The review s
 - `stag_network`: retires when the network's coordinator is captured or dead, or the herd network disperses; scattered cells stay as local trouble, not a new pressure.
 - `pigeon_breakout`: local; retires when every escaped instance is killed, netted or recombined-then-killed, or crosses into a mating that MTF Gamma-119 takes over.
 - `rosa_transfer`: ordinary life; retires when the request is approved, withdrawn or refused.
-- Only `orientation_week` and `site_life` are quests at Round 0. Other quests open when Rosa assigns them (work source pace) or a site alert drags West in.
+- Only `orientation_week` is a quest at Round 0; Site-19 life between jobs is ordinary play, not a quest. Other quests open when Rosa assigns them (work source pace) or a site alert drags West in.
 
 ```yaml
 background_id: scp_class_of_99_v5_2
@@ -188,6 +188,7 @@ setting_anchors:
     - Foundation staff are salaried; on-site dorms and cafeteria are free; field per diem for travel.
     - Anomalous items have a black market (MC&D at the top, small brokers below).
   tool_prices: cheap          # field kits, forms and issued tools are the job (engine §D)
+  economy_model: "present-day United States; USD"   # real economy that off-list prices follow (engine §15 PRICES)
   law_and_social_structure:
     - Civilians never learn about anomalies; witnesses get amnestics and cover stories.
     - Foundation rules are bureaucratic — forms, test logs, clearance requests, incident reports.
@@ -407,7 +408,7 @@ storylines:
   site_life:
     kind: ordinary_life
     line: Site-19 daily life — dorm, cafeteria, perks, Gus, site alerts; the HQ opens up as West is read in.
-    refs: [quests.site_life, npcs.gus_pembroke, locations.site19]
+    refs: [npcs.gus_pembroke, locations.site19]
   darrow_scheme:
     kind: wrongdoer
     line: An MC&D junior broker squeezes West's roommate to leak a list of Safe items marked for disposal.
@@ -444,13 +445,6 @@ quests:
     status: active
     participants: [pc, rosa_delgado, leo_brandt]
     notes: ends at the end of Day 5 with Rosa's first real assignment; no fail state, only first impressions.
-  site_life:
-    role: SIDE
-    type: ONGOING
-    source_ref: pc
-    objective: Live at Site-19 between jobs — perks, lore, friendships, alerts.
-    status: active
-    participants: [pc]
   loewes_file:
     role: SIDE
     type: SHORT
@@ -474,7 +468,7 @@ quests:
     end: shift handed over with no exposure, or an incident report explaining why not
   forklift_certified:
     role: SIDE
-    type: MEDIUM
+    type: SHORT
     source_ref: rosa_delgado
     objective: Go undercover as a forklift-certified warehouse worker in Chicago, get taken by SCP-4048 during
       sleep, sit its forklift interview, and come back with intel.
@@ -485,7 +479,7 @@ quests:
     support_refs: [forklift_case]
   thats_all_folks:
     role: SIDE
-    type: MEDIUM
+    type: SHORT
     source_ref: site_alert
     objective: On loan to Site-88, help Task Force Omega-16 recontain the five SCP-3947 rubber ducks during a
       breach, and get back whatever they stole.
@@ -506,7 +500,7 @@ quests:
     routes: [tranquilise, distract it with a "case", play along as its "Watson"]
   vermin_supreme:
     role: SIDE
-    type: MEDIUM
+    type: SHORT
     source_ref: rosa_delgado
     objective: Ride along with MTF Tau-63 out of Site-119 (Butler County, Kansas) collecting squirrel carvings
       before civilians see them; deal with a Neo squirrel cell field-testing weapons in the same woods.
@@ -517,7 +511,7 @@ quests:
       Patteeism contact, collect quietly and leave]
   pest_control:
     role: SIDE
-    type: MEDIUM
+    type: SHORT
     source_ref: rosa_delgado
     objective: Help MTF Gamma-119 kill or capture an escaped flock of SCP-3683 pigeons near Oneida Lake before
       they recombine or mate with the raptors at a local bird sanctuary.
@@ -537,7 +531,7 @@ quests:
     routes: [smooth talk, quiet fixes behind the counter, call in Outpost-618 "police", improvise a stand-in pie]
   ice_cream_rider:
     role: SIDE
-    type: MEDIUM
+    type: SHORT
     source_ref: rosa_delgado
     objective: Join the SCP-3870 surveillance team in Maryland; protect an ice-cream truck driver from the boy on
       the bike without breaking SCP-3870-1's contracts.
@@ -780,6 +774,7 @@ npcs:
     belongs: [foundation, mtf_omega_99]
     gender: woman
     character: 36, warm, tired, sharp; says "you're welcome" whenever anything works; teaches by letting you try
+    in_disorder: suffers
     state:
       position: Site-19 Omega-99 office
       status: Level 3; mother of Mateo (8); quietly filed for a desk post
@@ -813,6 +808,7 @@ npcs:
     belongs: [foundation]
     gender: man
     character: 27, funny, kind, terrible at cards and worse at betting; fixes anything with zip ties
+    in_disorder: suffers
     state:
       position: dorm C, room 14
       status: 14,000 USD in betting debt bought by Darrow's front; scared and hiding it
@@ -845,6 +841,7 @@ npcs:
     gender: man
     character: 71, slow-talking, knows every door that sticks; tells the best old-timer stories; never says
       everything he knows
+    in_disorder: suffers
     state:
       position: Site-19, anywhere a mop or a stuck door is
       status: stayed on past retirement in a quiet job
@@ -874,6 +871,7 @@ npcs:
     belongs: [foundation, mtf_omega_99]
     gender: woman
     character: 41, born 1985, sick of the 1999 joke; dry, fair, fiercely loyal to her people
+    in_disorder: suffers
     state:
       position: Site-19 Omega-99 office
       status: Level 4; running a small unit on a small budget
@@ -894,6 +892,7 @@ npcs:
     belongs: [foundation, mtf_omega_99]
     gender: man
     character: 35, huge, gentle, collects Safe-class trivia, gives great hugs, hits very hard
+    in_disorder: suffers
     state:
       position: Site-19 gym or Omega-99 office
       status: Level 3
@@ -908,6 +907,7 @@ npcs:
     belongs: [foundation, mtf_omega_99]
     gender: woman
     character: 33, fast-talking engineer, builds cages out of whatever is in the van, hates paperwork
+    in_disorder: suffers
     state:
       position: Omega-99 van bay
       status: Level 3
@@ -922,6 +922,7 @@ npcs:
     belongs: [foundation, mtf_omega_99]
     gender: man
     character: 38, enthusiastic, reads every addendum, cannot lie with a straight face
+    in_disorder: suffers
     state:
       position: Site-19 labs
       status: Level 3
@@ -936,6 +937,7 @@ npcs:
     belongs: [mcd]
     gender: man
     character: 31, sharp suit, bad nerves, overconfident about how much MC&D backs him
+    in_disorder: thrives
     state:
       position: New Jersey, a storage unit in Trenton and a hotel bar in Princeton
       status: running Pinnacle Recovery LLC as a front; two hired men on call
@@ -957,6 +959,7 @@ npcs:
     belongs: [foundation]
     gender: man
     character: careful, kind, takes contracts literally
+    in_disorder: suffers
     state:
       position: hospital in Kentlands, Maryland
       status: has the monthly interview contract with SCP-3870-1
@@ -971,6 +974,7 @@ npcs:
     belongs: [scp_4968_c]
     gender: female
     character: an ordinary-looking white-tailed doe, seven years old, wary and patient
+    in_disorder: thrives
     state:
       position: pine barrens near Cedar Run, New Jersey
       plan: visit each cell before an attack; pick targets near traffic and forest cover
@@ -983,6 +987,7 @@ npcs:
     belongs: [scp_4968_c]
     gender: male
     character: big buck, aggressive in front of his cell; the team's main suspect
+    in_disorder: thrives
     state: {position: woods east of Route 9, plan: run his cell's attacks, due: Day 12}
     capability: {overall_level: 4}
     discovered_information: {}
@@ -991,6 +996,7 @@ factions:
   foundation:
     name: SCP Foundation (on paper — WHO Special Containment Programme)
     role: secret global containment organisation
+    in_disorder: suffers
     state: {cover: WHO programme, command: O5 Council}
     drives: {wants: [normalcy, containment, secrecy], fears: [exposure, uncontained Keters]}
     capability: {institutional_reach: global sites, MTFs, amnestics, cover operations}
@@ -1001,6 +1007,7 @@ factions:
       value: 0
       basis: witnessed acts that help or hurt the unit; affects who backs West, never a free favour
     role: small odd-jobs MTF for low-priority anomalies worldwide; borrows muscle from other MTFs
+    in_disorder: suffers
     state: {members: [commander_lindqvist, rosa_delgado, dmitri_volkov, priya_raman, tomas_reyes_hart, pc], budget: tight}
     drives: {wants: [prove the unit worth keeping], fears: [being folded into a bigger MTF]}
     capability: {reach: one van, one plane seat budget per month, borrowed specialists}
@@ -1008,6 +1015,7 @@ factions:
   mcd:
     name: Marshall, Carter & Dark Ltd.
     role: luxury dealers in anomalous goods (Group of Interest)
+    in_disorder: thrives
     state: {darrow: a junior associate acting on his own}
     drives: {wants: [rare items, discretion], fears: [open conflict with the Foundation]}
     capability: {reach: global money; would disown a junior who causes a scene}
@@ -1015,6 +1023,7 @@ factions:
   scp_4968_c:
     name: SCP-4968-C (the deer network)
     role: deer hierarchy spreading SCP-4968-B
+    in_disorder: thrives
     state: {cells: about 300, scouts mostly does, attackers rarely survive}
     drives: {wants: [more attacks on roads], fears: [losing cells]}
     capability: {reach: one New Jersey county}
@@ -1022,6 +1031,7 @@ factions:
   awcy:
     name: Are We Cool Yet?
     role: anomalous art collective (Group of Interest)
+    in_disorder: thrives
     state: {ollie: a hanger-on, not a real member}
     drives: {wants: [art, attention]}
     capability: {reach: galleries, forums}

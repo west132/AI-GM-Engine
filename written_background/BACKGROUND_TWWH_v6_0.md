@@ -35,7 +35,8 @@ BRANCH    M8–M11 open only after all of M4–M7 are encountered; each opens wh
   its condition (good/bad × success/failure) is met in play; more than one may open
 FINAL     M12 "The Old Days" ALWAYS opens: when the first of M8–M11 closes, or
   Day 60, whichever comes first; the Mark's fate is settled there or after it
-SIDE      willa_scam, sivren_cookware, odd_jobs run any time; never gated
+SIDE      willa_scam, sivren_cookware run any time; never gated; Tin odd jobs come from
+  Hesta's work source (npcs.hesta_vane), not a quest
 NO GATE ON CONSEQUENCE  the gates order missions, never delay a real consequence
   (an injury, death, debt or arrest lands when it happens)
 ```
@@ -97,6 +98,8 @@ setting_anchors:
     - The Hearth, Road and River traditions; the Hearth keeps fire shrines where pact-rites are done.
   economics_or_trade:
     - Currency 10 copper bits = 1 silver mark; 10 silver marks = 1 gold crown.
+  economy_model: "English market town c. 1450; 1 copper bit ≈ 1 penny"   # real economy that off-list prices follow (engine §15 PRICES)
+  tool_prices: standard
   law_and_social_structure:
     - A licence permits hazardous contracts; it grants no immunity from ordinary law or authority over civilians.
     - Tin may take local, low-risk contracts alone, and Copper-and-up contracts only paired with a higher grade.
@@ -271,7 +274,7 @@ quests:
       trip the cinderbell_freeze (two dummies in danger at once, timed), and a public question from Sera about Cinderbell.
   m3_varnhollow_drake:
     role: MAIN
-    type: MEDIUM
+    type: SHORT
     source_ref: isolde_varn
     objective: Day 14 — House Varn posts a Copper-grade contract to kill or drive off a mire-drake in the Varnhollow mill
       pond; Tin may take it only paired with a higher grade. Jory is the only Copper free. 3s split as agreed.
@@ -317,7 +320,7 @@ quests:
     routes: [teach Nella, refuse her, tell Ressa the truth, avoid her]
   m7_villain_in_a_good_mood:
     role: SIDE
-    type: MEDIUM
+    type: SHORT
     source_ref: event
     objective: The Mudroad Merrymen hit a cart near Brindlewick, and Ewan Holt makes his first move.
     quest_level: 4
@@ -327,7 +330,7 @@ quests:
     routes: [track the ribbons, guard the next cart, bargain with Rollo, set a decoy cargo, turn Rollo's audience against him]
   m8_success_has_witnesses:
     role: SIDE
-    type: MEDIUM
+    type: SHORT
     source_ref: event
     objective: A real success, seen by the right person, brings a harder job and a recommendation.
     quest_level: 5
@@ -338,7 +341,7 @@ quests:
     notes: Sera offers a provisional Copper review path; Marrow Thane hears of it and sends word (Rebuild route opens)
   m9_failure_has_witnesses:
     role: SIDE
-    type: MEDIUM
+    type: SHORT
     source_ref: event
     objective: A significant failure — someone hurt, cargo lost, a job abandoned — and the people it hurt want answers.
     quest_level: 4
@@ -348,7 +351,7 @@ quests:
     notes: Willa's "mark restoration" pitch lands now if not already made; Old Lamp pushes Restore hard
   m10_better_heros_burden:
     role: SIDE
-    type: MEDIUM
+    type: SHORT
     source_ref: event
     objective: A costly decent choice is noticed, and people with nowhere else to go bring him a problem others ignored.
     quest_level: 5
@@ -359,7 +362,7 @@ quests:
     notes: Linnet's farm hearth-sprite is part of this problem (New Source route opens)
   m11_worst_heros_offer:
     role: SIDE
-    type: MEDIUM
+    type: SHORT
     source_ref: event
     objective: After a harmful or self-serving act, a disreputable client offers money for dirty work; a decent contact pulls away.
     quest_level: 5
@@ -385,7 +388,7 @@ quests:
     support_refs: [cinderbell_dispatch, ember_mark]
   willa_scam:
     role: SIDE
-    type: MEDIUM
+    type: SHORT
     source_ref: event
     objective: Expose, stop or profit from Brill & Courteous's fake protections and fake mark restoration.
     quest_level: 3
@@ -405,12 +408,6 @@ quests:
     trigger: Adel asks Rook, or Rook finds the copper shaving at the toll store
     end: cookware returned, gone out of town, or Rook bought off
     support_refs: [toll_store_goods]
-  odd_jobs:
-    role: SIDE
-    type: ONGOING
-    source_ref: hesta_vane
-    objective: Tin work from the Registry board — livestock, escorts, cellars, deliveries, a goat on a roof.
-    status: active
 
 development_threads:
   reputation:
@@ -562,7 +559,7 @@ locked_case_truths:
   varnhollow_drake:
     cause: A mire-drake was flooded out of its upstream nest by a new Varn millrace weir and moved into the mill pond with
       four eggs; it is guarding them, not hunting. The Varns built the weir.
-    state: {drake: in the pond, eggs: in the reeds by the sluice, danger: real to anyone near the eggs}
+    state: {drake: in the pond, eggs: in the reeds by the sluice, risk: real to anyone near the eggs}
     evidence: {weir: new stonework upstream, tracks: drake tracks lead from the old nest}
     trajectory: left alone, it attacks the mill crew when the eggs hatch (Day 20)
     discovered_information: {}
@@ -592,6 +589,7 @@ npcs:
     gender: male (by its own choice of voice)
     character: grumpy, vain, theatrical, funny; calls Rook "Matchstick"; complains about cold weather and bad food it
       can't eat; sincere only when frightened
+    in_disorder: neither
     state:
       status: dormant until m5
       plan: survive; steer Rook to the Restore route because only Restore makes it strong; avoid mentioning the lock
@@ -619,6 +617,7 @@ npcs:
     belongs: [low_march]
     gender: woman
     character: 34, older sister, blunt, tired, funny in a dry way; raising two kids alone since her husband died
+    in_disorder: suffers
     state:
       position: Callan farm
       status: the farm roof leaks and the hearth smokes "like something's living in it"
@@ -641,6 +640,7 @@ npcs:
     belongs: [hearth_temple]
     gender: man
     character: 70, slow, gruff, kind underneath, dislikes the Registry
+    in_disorder: neither
     state:
       position: Ashgrave
       status: made Rook's Mark; hasn't heard from him since Cinderbell
@@ -662,6 +662,7 @@ npcs:
     belongs: [brindlewick_registry]
     gender: woman
     character: 50, dry-humoured, practical, quietly on Rook's side; feeds work to people who need it
+    in_disorder: suffers
     state:
       position: Registry office
       plan: keep the branch running through Sera's visit; give Rook real work and a fair record
@@ -685,6 +686,7 @@ npcs:
     belongs: [brindlewick_registry]
     gender: woman
     character: direct, practical, impatient with excuses, fair with evidence
+    in_disorder: suffers
     state:
       position: south yard
       plan: get the cart back before dusk
@@ -700,6 +702,7 @@ npcs:
     belongs: [brindlewick_registry]
     gender: man
     character: cheerful when things are easy, defensive when embarrassed; helps his mother with every coin
+    in_disorder: suffers
     state:
       position: south yard
       plan: fix the brake quietly before anyone asks
@@ -714,6 +717,7 @@ npcs:
     belongs: [independent]
     gender: woman
     character: fast-talking, resourceful, honest when she can save face
+    in_disorder: suffers
     state:
       position: Market Lane stall
       plan: leave the parcel at the Registry door after the courier goes
@@ -728,6 +732,7 @@ npcs:
     belongs: [red_sash_company]
     gender: man
     character: 26, charismatic, competitive, funnier than he is brave and braver than he looks
+    in_disorder: neither
     state:
       position: the Lantern Cup
       plan: win Bronze before winter
@@ -747,6 +752,7 @@ npcs:
     belongs: [brindlewick_registry]
     gender: woman
     character: 20, earnest, studious, brave, overconfident when admiring
+    in_disorder: suffers
     state:
       position: Registry hall and yard
       status: carries a latent spark (unknown to her)
@@ -767,6 +773,7 @@ npcs:
     belongs: [independent]
     gender: woman
     character: 40, patient, plain-spoken; grateful without pretending the mission succeeded
+    in_disorder: suffers
     state:
       position: Market Lane; a rented room by the bridge
       plan: steady work; help her father, who has not been right since Cinderbell
@@ -787,6 +794,7 @@ npcs:
     belongs: [brindlewick_registry]
     gender: man
     character: 29, Rook's former bag-carrier on the Gold circuit; petty, funny in a nasty way, sharp with numbers
+    in_disorder: suffers
     state:
       position: Registry front desk
       plan: enjoy Rook's fall in public; get Sera's attention as "the man who knows what Rook was really like"
@@ -806,6 +814,7 @@ npcs:
     belongs: [house_varn]
     gender: woman
     character: 30, proud, clever, sharp-tongued, more trapped by her family than anyone knows
+    in_disorder: suffers
     state:
       position: Varnhollow manor (half a day east)
       status: broke her engagement to Rook in public at the Brindlewick spring fair, a week after the demotion
@@ -828,6 +837,7 @@ npcs:
     belongs: [independent]
     gender: man
     character: 22, Dain's younger brother; grief-sick, angry, ashamed, sometimes drunk, never cruel to bystanders
+    in_disorder: thrives
     state:
       position: arrives Brindlewick Day 3; lodges cheap by the river
       status: sold Dain's sword; hired two men (Corley and Nash, ex-soldiers)
@@ -849,6 +859,7 @@ npcs:
     belongs: [regional_registry]
     gender: woman
     character: 33, disciplined, exact, honest to a fault, carries more guilt than she lets show
+    in_disorder: suffers
     state:
       position: arrives Day 5 at the Lantern Cup's best room
       status: was Rook's second; her testimony demoted him
@@ -873,6 +884,7 @@ npcs:
     belongs: [regional_registry]
     gender: man
     character: 23, bright, kind in person, polished in public; uses Rook as a cautionary tale in speeches
+    in_disorder: suffers
     state:
       position: travels with Sera from Day 5
       plan: make Gold by next spring; be seen being gracious to the fallen hero
@@ -891,6 +903,7 @@ npcs:
     belongs: [mudroad_merrymen]
     gender: man
     character: cheerful, polite, quick-witted; robs with style; will hurt people if cornered; profit first
+    in_disorder: thrives
     state:
       position: Gallow Wood camp, south road
       plan: one stylish robbery a week; get the fallen Gold hero to chase him in front of witnesses
@@ -905,6 +918,7 @@ npcs:
     belongs: [brill_and_courteous]
     gender: woman
     character: bright, welcoming, relentlessly upbeat; makes questioners feel rude; knowingly sells false protection
+    in_disorder: thrives
     state:
       position: Market Lane front room from Day 2
       plan: sell seals and charms; pitch "mark restoration oil" to Rook once she hears who he is
@@ -918,6 +932,7 @@ npcs:
     belongs: [independent]
     gender: man
     character: patient, polite, calculating; wants a clean exit more than loyalty
+    in_disorder: thrives
     state: {position: East Lane shop; toll store after dark, plan: move the cookware Day 4, due: Day 1 21:00 checks the store}
     capability: {overall_level: 3, skills: {appraisal: T2, deception: T2}}
     discovered_information: {}
@@ -927,6 +942,7 @@ npcs:
     belongs: [marr_caravan]
     gender: woman
     character: blunt, capable, slow to trust officials, generous to people who return what's hers
+    in_disorder: suffers
     state: {position: caravan camp east of town, plan: recover the cookware or leave Day 3, due: Day 2 12:00 asks at the Registry}
     capability: {overall_level: 3}
     discovered_information: {}
@@ -936,6 +952,7 @@ npcs:
     belongs: [independent]
     gender: nonbinary
     character: warm, wry, shrewd about money, protective of regulars
+    in_disorder: suffers
     state: {position: Lantern Cup, plan: keep rooms full through market week, due: Day 0 evening offers Rook the attic at a
       Tin price (3s a month with 1s down)}
     capability: {overall_level: 2}
@@ -946,6 +963,7 @@ npcs:
     belongs: [independent]
     gender: woman
     character: curious, independent, quick to follow a lead
+    in_disorder: suffers
     state: {position: Lantern Cup or the yard, plan: finish a map and maybe take a long route, due: Day 2 14:00}
     knowledge: {facts: {tracks: saw fresh ruts near the old milestone today}}
     capability: {overall_level: 2, skills: {navigation: T2}}
@@ -956,6 +974,7 @@ npcs:
     belongs: [independent]
     gender: man
     character: 55, quiet drinker, kind; saw both paths from below and has never been asked
+    in_disorder: neither
     state: {position: the Lantern Cup most nights, plan: drink, forget, due: none — found by asking}
     knowledge: {facts: {cinderbell: saw Rook wait one breath and then go for the families; saw Sera reach the high path late}}
     capability: {overall_level: 1}
@@ -965,6 +984,7 @@ factions:
   brindlewick_registry:
     name: Brindlewick Registry branch
     role: local contracts and licence records
+    in_disorder: suffers
     state: {condition: open and short-staffed and nervous about Sera's visit}
     drives: {wants: [charter kept], fears: [scandal]}
     capability: {reach: the town and nearby roads}
@@ -972,28 +992,33 @@ factions:
   regional_registry:
     name: Low March regional Registry office (Sera, Aurel)
     role: reviews, grades, high-grade operations
+    in_disorder: suffers
     drives: {wants: [order, a clean record, Cinderbell closed], fears: [another public failure]}
     capability: {reach: the whole March}
     discovered_information: {}
   red_sash_company:
     name: Red Sash Company
     role: loose team of licensed adventurers (Jory and two others)
+    in_disorder: neither
     drives: {wants: [better contracts, promotion]}
     discovered_information: {}
   mudroad_merrymen:
     name: The Mudroad Merrymen
     role: Rollo's ribbon-and-apology road robbers
+    in_disorder: thrives
     drives: {wants: [profit, clean escapes, applause], fears: [a long fight]}
     capability: {reach: the March's south roads}
     discovered_information: {}
   brill_and_courteous:
     name: Brill & Courteous
     role: Willa's travelling fake-protection business
+    in_disorder: thrives
     drives: {wants: [sales, deniability], fears: [grouped complaints]}
     discovered_information: {}
   house_varn:
     name: House Varn
     role: petty lords of Varnhollow; proud, in debt
+    in_disorder: suffers
     drives: {wants: [standing, cheap solutions], fears: [their debts known]}
     discovered_information: {}
 

@@ -70,6 +70,11 @@ v6.0, Oct 23 → v6.0, Oct 26
 ## Changes
 
 ```text
+v6.0, Oct 27 update (same version)
+  engine  §15 PRICES: a price, wage, or payment the BACKGROUND list doesn't give
+          follows its economy_model (none → the real economy nearest the
+          setting), by value to the buyer; quest level never sets pay
+  templates  BACKGROUND_TEMPLATE setting_anchors.economy_model (optional)
 v6.0, Oct 26 update (v6 still in progress; same version)
   engine  romance rule removed (§13.1, §6): attitude, bond and drives carry it
           pressure clocks merged into stability: a zone-bound pressure is a

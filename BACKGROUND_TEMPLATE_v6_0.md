@@ -326,6 +326,7 @@ setting_anchors:
   institutions: []
   religions_or_beliefs: []
   economics_or_trade: []    # incl. a price list of everyday goods, services, and wages
+  economy_model:            # real economy that prices off the list follow, e.g. "English market town c. 1450, copper bit ≈ penny" (engine §15 PRICES)
   tool_prices: standard     # standard | cheap: cheap where the setting runs on tools and kits (engine §D)
   law_and_social_structure: []
   creatures_or_threats: []

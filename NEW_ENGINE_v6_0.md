@@ -1254,6 +1254,11 @@ ACQUISITION  items, services, crafting follow availability, ownership/authority,
   recorded capability; rarest → exceptional recorded source; a remote
   specialist may qualify; a metropolis guarantees nothing
   exception: an item point spend needs no merchant, channel, travel, time (§D)
+PRICES  a price, wage, fee, or payment the BACKGROUND price list doesn't give →
+  what it costs in BACKGROUND economy_model (none → the real economy nearest the
+  setting's era and place), in the setting's currency, by its value to the
+  buyer (quantity, quality, risk); quest level, pacing, player level → 0; a
+  setting's own money rule wins
 COSTS  track practical condition wherever it can affect play; never erase a real
   cost by omission
 ```

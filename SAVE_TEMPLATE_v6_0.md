@@ -220,6 +220,7 @@ npcs:
     belongs:
     gender:
     character:
+    in_disorder:                   # thrives | suffers | neither (engine §13.1 ZONE)
     state: {}                      # status, position, current HP/MP when below max, plan, due;
                                    # a companion's carried equipment and consumables (engine §13.1)
     drives: {}
@@ -235,6 +236,7 @@ factions:
   faction_id:
     name:
     role:
+    in_disorder:
     state: {}
     drives: {}
     relationships: {}

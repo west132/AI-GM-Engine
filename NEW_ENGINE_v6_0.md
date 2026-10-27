@@ -231,7 +231,8 @@ I12 DEGRADE HONESTLY missing continuity stays explicitly unknown until repaired 
 ## 6. Ownership
 
 ```text
-actor_core  identity, role/job, affiliation, gender, character/archetype
+actor_core  identity, role/job, affiliation, gender, character/archetype,
+  in_disorder (§13.1 ZONE)
 actor_state  status, condition (lasting conditions, nerve), current HP/MP, position,
   resources, carried
   equipment, current plan, routines, player's fighting_style and item_points
@@ -774,7 +775,8 @@ settled morale (§12); news by real channels and travel time (I5); §13.3 incide
   −1  poor attitude, mild cost, wrong affiliation · unusual here
   −2  grievance, real cost/risk to them, opposed loyalty · rare here
   +2  canon-mode: canon records this outcome, causes unchanged by play
-  "here" = settlement size and the zone's surface (§13.4), read together
+  "here" = settlement size and the zone's surface (§13.4), read together; an
+  actor's own plan or act reads ZONE (below) instead, never both
   attitude counts ±1 only where no credit/grievance entry counts (I8)
   ≥16  YES, AND  more than asked, within means and authority
   12–15  YES  as asked
@@ -787,6 +789,20 @@ settled morale (§12); news by real channels and travel time (I5); §13.3 incide
 3 APPLY  the answer stands; narration never moves it; YES within means/authority
   (§7); cost to them already in likelihood; sets this exchange, not the
   relationship
+```
+
+```text
+ZONE  an actor's uncertain plan or act (never the PC's own) reads the zone where it
+  happens: open act → surface · hidden act → undercurrent
+  in_disorder (actor_core, set once from role and drives; never a morality grade,
+  §13.8): thrives (gang, smuggler, predator, cult) · suffers (watch, court,
+  merchant, healer, guild office) · neither (mixed or indifferent)
+  surface −2 or undercurrent −2: thrives +1, suffers −1 · surface −3 or
+  undercurrent −3: thrives +2, suffers −2 · surface +2: thrives −1, suffers +1 ·
+  surface +3: thrives −2, suffers +2 · else 0
+  counts once: one likelihood point in `ask`, or one environment/access condition
+  in §10 (favourable −1 at most); never both, never beside "here" (I8)
+  surface −3: an institution's response cannot reach the zone (§13.7)
 ```
 
 ```text
@@ -870,7 +886,10 @@ lost  precision null + degraded, reason in continuity_status, until an
   unambiguous in-world anchor (I12)
 ADVANCE  believable duration → resolve material duration uncertainty → update time,
   day rollover (nerve day marks, §13.10) → every due ≤ new time fires, earliest
-  first (plans §13.1, pressures §13.5, payoffs §15) → exposure qualifies → §13.3 once
+  first (plans §13.1, pressures §13.5, payoffs §15; list: helper `dues`) →
+  exposure qualifies → §13.3 once
+FIRE  a due is a check, never a delivery: its cause still holds → resolve from
+  state, uncertain → §13.1 ZONE; cause gone → STOPPED or REPLAN (§13.1, §13.5)
 EVERYWHERE  a due fires wherever its actor or pressure is, reaching the PC only by
   real channels (I5); a skipped stretch (continuation, travel, downtime,
   fast-forward) runs ADVANCE like any other; skipping never jumps a due
@@ -886,7 +905,7 @@ TRIGGER: player moves or access changes · material time passes where change is 
 
 ```text
 1 SELECT recorded actors, pressures, pending consequences with BOTH reason and
-  opportunity to act now, wherever they are
+  opportunity to act now, wherever they are; dues by §13.2 FIRE
 2 EACH  resolve from own state, norms, canon (§13.1): decided, rolled only per §13.1;
   uncertain execution → §10; size from its capability and intent, never the
   weight table; reaches the PC only by real channels (I5)
@@ -980,9 +999,9 @@ CLOCK  a pressure bound to no zone (faction plan, construction, research, recove
 PACE  every <interval> while <condition>: how often it can really advance + what
   must hold; world-scale moves in weeks/months, never nightly; none → every
   rest/downtime period
-CHECK  at due (then due += interval) and when a resolved event touched it: ADVANCE
-  ONCE if it actually operated (not if actors stopped, absent, out of resources,
-  no opportunity); a plainly accelerating event may advance one extra; player
+CHECK  at due (§13.2 FIRE; then due += interval) and when a resolved event touched
+  it: ADVANCE ONCE if it actually operated (not if actors stopped, absent, out of
+  resources, no opportunity); a plainly accelerating event may advance one extra; player
   may advance, reverse, stall, destroy; never round count, pacing, quiet
 ADVANCE  track: one mark at its zone and layer, signed by direction (helper
   `stability`; zone weekly limit §13.4) · clock: fill one segment
@@ -1044,7 +1063,7 @@ VALID  silencing a witness (with consequences); witness lies, misremembers, name
   the wrong person
 PARTIAL  recognition attaches to a description in the holder's knowledge (suspicions),
   may settle on the wrong person
-RESPONSE within actual reach (thin at surface −2, none at −3, §13.4); costs people,
+RESPONSE within actual reach (§13.1 ZONE); costs people,
   money, attention; follows own priorities, not
   severity; officials may be corrupt, indifferent, overworked, invested; pursuit
   may stop when costly or run long when personal

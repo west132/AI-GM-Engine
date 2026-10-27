@@ -487,6 +487,7 @@ npcs:
     belongs:
     gender:
     character:
+    in_disorder:                   # thrives | suffers | neither (engine §13.1 ZONE)
     state: {}                      # status, position, current HP/MP when below max, nerve when it matters, plan, due (a time or registered trigger), what they do if blocked
                                    # work source: routines: {work_source: {pace: , kinds: []}} (engine §13.1)
     drives: {}                     # wants, fears, loyalties, values
@@ -502,6 +503,7 @@ factions:
   faction_id:
     name:
     role:
+    in_disorder:
     state: {}
     drives: {}
     relationships: {}
@@ -509,6 +511,8 @@ factions:
     capability: {}
     discovered_information: {}
 ```
+
+`in_disorder` says how a zone's disorder bears on this actor's plans (engine §13.1 ZONE): `thrives` for those who work against order (gangs, smugglers, predators, cults), `suffers` for those who rely on it (watch, courts, merchants, healers, guild offices), `neither` for the mixed or indifferent. It is the actor's relation to order, never a judgement of good or bad. Write `position` as a recorded location's name where the actor is at one, so the helper's `dues` can find the zone.
 
 Populate only material fields. `attitude` is a few plain words; a first meeting starts neutral unless state says otherwise, never friendly by default. `credit` is what the other party did for this actor; `grievance` is what this actor holds against them. `believes_identity` holds a false or partial belief about who someone is. A canon actor's canon plan goes in `canon_course`, not here.
 

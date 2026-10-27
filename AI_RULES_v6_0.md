@@ -58,6 +58,7 @@ A guard is removed when tests show models no longer need it; it is never moved i
 - When the player rejects a result, fix only the named error; never swing the rest to the opposite extreme.
 - Never roll a question the record settles, to avoid deciding it (engine §13.1 SETTLE). For an open question, never search for one more fact on either side.
 - A skipped stretch still runs every due in it (engine §13.2 EVERYWHERE); fast-forwarding is never a way to leave the world still.
+- A due on the list is a check, not a scene to stage: never move it, or its actor, to where the PC is so the player sees it (engine §13.2 FIRE, I5).
 
 **Language**
 
@@ -123,6 +124,8 @@ keep a quiet actor: RETIRE is never for quietness (§8.1)
 ## 3. Tool procedures
 
 **Dice.** Use the helper. Without a code tool, another genuine RNG; without one, the player rolls.
+
+**Dues** (engine §13.2). Append each ROUND's GM-Δ block to the chain file as the ROUND closes. When time advances materially (travel, rest, a skipped stretch, a new day), run `dues --background <BACKGROUND> --save <newest save> --deltas <chain file> --day <day_index> --clock <clock_minutes> --brief` (no `--save` before the first save) and settle each DUE line in that APPLY. A `?` zone or an unset `in_disorder`: decide it once and record it (`~ npcs.<id>.state.position`, `+ npcs.<id>.in_disorder`). Without a code tool, check the dues by reading the record.
 
 **Saving an EXPORTED save with the helper** (engine §16.1)
 

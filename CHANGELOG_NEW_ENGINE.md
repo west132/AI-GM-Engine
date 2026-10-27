@@ -65,6 +65,12 @@ v6.0, Oct 23 → v6.0, Oct 26
     capsule `encoding:` line dropped
   each moved record: `− <old id> :: moved (v6.0, Oct 26)` and `+ <new id> :: …` in
     the first chain after load
+v6.0, Oct 26 → v6.0, Oct 27
+  how to tell  npcs or factions without in_disorder
+  in_disorder  set when the actor's plan first meets §13.1 ZONE, from role and drives
+    (works against order → thrives · relies on it → suffers · mixed or
+    indifferent → neither); recorded once: `+ <owner>.<id>.in_disorder :: <value>`
+  economy_model  none → the real economy nearest the setting (engine §15 PRICES)
 ```
 
 ## Changes
@@ -74,7 +80,21 @@ v6.0, Oct 27 update (same version)
   engine  §15 PRICES: a price, wage, or payment the BACKGROUND list doesn't give
           follows its economy_model (none → the real economy nearest the
           setting), by value to the buyer; quest level never sets pay
-  templates  BACKGROUND_TEMPLATE setting_anchors.economy_model (optional)
+          §13.1 ZONE: an actor's uncertain plan reads the zone it happens in
+          (open act → surface, hidden act → undercurrent) by its in_disorder
+          (thrives | suffers | neither, §6 actor_core); merged with "here" so the
+          zone counts once; §13.7 RESPONSE reach now reads ZONE (surface −3 still
+          stops an institution's response)
+          §13.2 FIRE: a due is a check, never a delivery; the list comes from the
+          helper; §13.3 step 1 and §13.5 CHECK point to it
+  AI_RULES  guard: a due is never staged where the PC is; Dues procedure (chain
+          file kept current, `dues` on each material time advance)
+  helper  dues command: what is due now, next, and on a trigger, with each
+          actor's zone, in_disorder and ZONE point; validate's dues list now
+          reads `Day N` dues and ISO dates on one day scale (before, relative-day
+          dues were never reported overdue)
+  templates  BACKGROUND_TEMPLATE setting_anchors.economy_model (optional);
+          in_disorder on npcs and factions (BACKGROUND_TEMPLATE, SAVE_TEMPLATE)
 v6.0, Oct 26 update (v6 still in progress; same version)
   engine  romance rule removed (§13.1, §6): attitude, bond and drives carry it
           pressure clocks merged into stability: a zone-bound pressure is a

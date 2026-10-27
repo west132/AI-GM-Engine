@@ -1112,14 +1112,45 @@ def _calendar(bg):
             "day_index": int(t.get("day_index") or 0)}
 
 
-def _points(text, cal=None, unread=None):
+_DAYN = re.compile(r"\bDay\s+([−-]?\d+)\b(?:[^\d\n;]{0,12}?(\d{1,2}):(\d{2}))?", re.I)
+
+
+def _anchor(bg, path=None):
+    """(ISO start date, its day_index): BACKGROUND's start, else the readable save's
+    date. Lets ISO dates and relative `Day N` dues be compared on one scale."""
+    import datetime as _dt
+    t = (((bg or {}).get("world_state") or {}).get("time") or {})
+    pairs = [(str(t.get("date") or ""), t.get("day_index"))]
+    if path:
+        date = dix = None
+        for _, line in _capsule_split(path):
+            m = re.search(r"(?:^|[\s{,])date:\s*['\"]?([^'\",}#\n]+)", line)
+            if m and date is None: date = m.group(1)
+            m = re.search(r"\bday_index:\s*(\d+)", line)
+            if m and dix is None: dix = int(m.group(1))
+        pairs.append((date or "", dix))
+    for d, dix in pairs:
+        m = _DATE.search(d)
+        if m and dix is not None:
+            y, mo, dd = (int(x) for x in m.group(1).split("-"))
+            return _dt.date(y, mo, dd), int(dix)
+    return None
+
+
+def _points(text, cal=None, unread=None, anchor=None):
     """Every dated point in a text as (key, minutes); date-only = end of day.
-    ISO dates key by calendar date; an invented date keys by day_index when it falls in
-    the starting month and year, else it is listed in `unread`."""
+    `Day N` keys by day_index; ISO dates key by day_index when an anchor is known, else by
+    calendar date; an invented date keys by day_index when it falls in the starting month
+    and year, else it is listed in `unread`. Compare only keys of the same kind."""
+    import datetime as _dt
     pts = []
     for d, h, mi in _DATE.findall(text or ""):
         y, m, dd = (int(x) for x in d.split("-"))
-        pts.append((("i", y, m, dd), int(h) * 60 + int(mi) if h else 1439))
+        key = (("d", anchor[1] + (_dt.date(y, m, dd) - anchor[0]).days) if anchor
+               else ("i", y, m, dd))
+        pts.append((key, int(h) * 60 + int(mi) if h else 1439))
+    for n, h, mi in _DAYN.findall(text or ""):
+        pts.append((("d", int(n.replace("−", "-"))), int(h) * 60 + int(mi) if h else 1439))
     for y, mon, dd, h, mi in _FDATE.findall(text or ""):
         if cal and int(y) == cal["year"] and mon == cal["month"]:
             pts.append((("d", cal["day_index"] + int(dd) - cal["day"]),
@@ -1130,16 +1161,19 @@ def _points(text, cal=None, unread=None):
 
 
 def _now(path, cal=None):
-    """Current game time from the readable part: (label, (key, minutes)) or None."""
+    """Current game time from the readable part: (label, (key, minutes)) or None.
+    Keyed by day_index whenever the save records one."""
     date = mins = dix = None
     for _, t in _capsule_split(path):
-        m = re.match(r"^\s*date:\s*['\"]?([^'\"#\n]+)", t)
+        m = re.search(r"(?:^|[\s{,])date:\s*['\"]?([^'\",}#\n]+)", t)
         if m and date is None: date = m.group(1).strip()
-        m = re.match(r"^\s*clock_minutes:\s*(\d+)", t)
+        m = re.search(r"\bclock_minutes:\s*(\d+)", t)
         if m and mins is None: mins = int(m.group(1))
-        m = re.match(r"^\s*day_index:\s*(\d+)", t)
+        m = re.search(r"\bday_index:\s*(\d+)", t)
         if m and dix is None: dix = int(m.group(1))
     mins = mins if mins is not None else 0
+    if dix is not None:
+        return f"{date or 'day ' + str(dix)}", (("d", dix), mins)
     if date and _DATE.search(date):
         return date, (_points(date)[0][0], mins)
     if cal and dix is not None:
@@ -1226,6 +1260,7 @@ def _last_round(caps, base):
 def _dues(path, caps, retired=(), bg=None, save_round=None):
     """Advisory lists for engine §16.3 DUES and AUDIT; never changes validity."""
     cal = _calendar(bg)
+    anc = _anchor(bg, path)
     cur = _world(caps, retired, bg)
     for i, t in list(cur.items()):   # a due written inside a whole actor record
         if re.fullmatch(r"(npcs|factions)\.[\w\-]+", i) and f"{i}.state.due" not in cur:
@@ -1234,19 +1269,22 @@ def _dues(path, caps, retired=(), bg=None, save_round=None):
                 cur[f"{i}.state.due"] = m.group(1).strip()
     now = _now(path, cal)
     nowk = now[1] if now else None
+    same = lambda pts: [p for p in pts if nowk and p[0][0] == nowk[0][0]]
     overdue, unregistered, unclosed, no_quest, pressure_no_due, no_plan = [], [], [], [], [], []
     unread, incidental = [], []
     for rid, txt in cur.items():
         body = re.sub(r"^R\d+:\s*", "", txt)
         if rid.endswith(".due"):
             miss = []
-            pts = _points(body, cal, miss)
+            pts = _points(body, cal, miss, anc)
             if miss and not pts:
                 unread.append(f"{rid} :: {body[:90]}")
             elif not pts:
                 if not _EVENT.search(body) and not re.search(r"\b(none|routine)\b", body, re.I):
                     unregistered.append(f"{rid} :: {body[:90]}")
-            elif nowk and min(pts) < nowk:
+            elif nowk and not same(pts):
+                unread.append(f"{rid} :: {body[:90]}")
+            elif nowk and min(same(pts)) < nowk:
                 overdue.append(f"{rid} :: {body[:90]}")
     pressures = {i.split(".")[1] for i in cur if i.startswith("active_world_pressures.")}
     for k in sorted(pressures):
@@ -1291,7 +1329,7 @@ def _dues(path, caps, retired=(), bg=None, save_round=None):
             continue
         name = b.split(".", 1)[1]
         txt = whole + " " + " ".join(t for i, t in cur.items() if i.startswith(b + "."))
-        pts = _points(txt, cal)
+        pts = same(_points(txt, cal, None, anc))
         dated = re.search(r"type:\s*[^,}]*(appointment|promise|hire|contract|commission|"
                           r"brokered|service|meeting|delivery)", whole, re.I)
         if dated and nowk and pts and max(pts) < nowk:
@@ -1338,7 +1376,7 @@ def _dues(path, caps, retired=(), bg=None, save_round=None):
         for owner in ("npcs", "factions"):
             for k in sorted({i.split(".")[1] for i in cur if i.startswith(owner + ".")}):
                 due = cur.get(f"{owner}.{k}.state.due", "")
-                fut = _points(due, cal)
+                fut = same(_points(due, cal, None, anc))
                 if fut and nowk and max(fut) >= nowk:
                     continue   # a dated future step is a live plan
                 if due and not re.search(r"\b(incidental|dead)\b", due) and \
@@ -1350,6 +1388,247 @@ def _dues(path, caps, retired=(), bg=None, save_round=None):
     elif save_round:
         out["audit"] = f"next at R{(save_round // 20 + 1) * 20}"
     return out
+
+
+def _live(save, deltas):
+    """Capsule records now: the save's capsule (none before the first save) with every
+    GM-Δ block after it applied (a replayed round voids the blocks it replaces)."""
+    caps, retired, folded = [], [], None
+    if save:
+        caps, retired = _capsule_records(save)
+        text = open(save, encoding="utf-8").read()
+        at = re.search(r"^\s*capsule:\s*$", text, re.M)
+        tail = text[at.start():] if at else text
+        m = (_CAP_INT["supersedes_deltas_through"].search(tail)
+             or _CAP_INT["save_round"].search(tail))
+        folded = int(m.group(1)) if m else None
+    recs = {r["id"]: _text_of(r) or "" for r in caps}
+    gone = [(r["id"], r["reason"]) for r in retired]
+    last = None
+    if deltas:
+        kept = []
+        for b in _chain(deltas):
+            if folded is not None and b["round"] <= folded:
+                continue
+            if kept and b["round"] <= kept[-1]["round"]:
+                kept = [k for k in kept if k["round"] < b["round"]]
+            kept.append(b)
+        for b in kept:
+            last = b["round"]
+            for op, rid, enc, entry, ln, _ in b["entries"]:
+                op = op.replace("−", "-")
+                if op == "?" or rid.startswith(READABLE_PREFIXES):
+                    continue
+                d = _decode_one(entry, ln, enc)
+                if not d["ok"]:
+                    continue
+                if op == "-":
+                    for k in [k for k in recs if k == rid or k.startswith(rid + ".")]:
+                        del recs[k]
+                    gone.append((rid, d["text"]))
+                else:
+                    recs[rid] = f"R{b['round']}: {d['text']}"
+    caps = [{"source": "capsule", "id": i, "entry": t or " ", "length": None,
+             "encoding": "plain"} for i, t in recs.items()]
+    return caps, [{"id": i, "reason": w} for i, w in gone], last
+
+
+def _num(text, key):
+    m = re.search(r"\b" + key + r":\s*([−-]?\d+)", text or "")
+    return int(m.group(1).replace("−", "-")) if m else None
+
+
+def _zones(bg, caps):
+    """locations → {name, zone, surface, undercurrent} as they stand now."""
+    out = {}
+    for k, v in ((bg or {}).get("locations") or {}).items():
+        v = v if isinstance(v, dict) else {}
+        out[k] = {"name": str(v.get("name") or k), "zone": v.get("zone"),
+                  "surface": (v.get("surface") or {}).get("current")
+                  if isinstance(v.get("surface"), dict) else None,
+                  "undercurrent": (v.get("undercurrent") or {}).get("current")
+                  if isinstance(v.get("undercurrent"), dict) else None}
+    for r in sorted(caps, key=lambda r: r["id"].count(".")):
+        parts = r["id"].split(".")
+        if parts[0] != "locations" or len(parts) < 2:
+            continue
+        loc = out.setdefault(parts[1], {"name": parts[1], "zone": None,
+                                        "surface": None, "undercurrent": None})
+        t = _text_of(r) or ""
+        rest = parts[2:]
+        if not rest:
+            m = re.search(r"\bname:\s*([^,}]+)", t)
+            if m: loc["name"] = m.group(1).strip()
+            m = re.search(r"\bzone:\s*([\w\-]+)", t)
+            if m: loc["zone"] = m.group(1)
+            for layer in ("surface", "undercurrent"):
+                m = re.search(layer + r":\s*\{([^}]*)\}", t)
+                if m and _num(m.group(1), "current") is not None:
+                    loc[layer] = _num(m.group(1), "current")
+        elif rest[0] in ("surface", "undercurrent"):
+            v = _num(t, "current") if len(rest) == 1 else (
+                _num("current: " + re.sub(r"^R\d+:\s*", "", t), "current")
+                if rest[1:] == ["current"] else None)
+            if v is not None:
+                loc[rest[0]] = v
+        elif rest == ["zone"]:
+            loc["zone"] = re.sub(r"^R\d+:\s*", "", t).strip()
+    return out
+
+
+_PLACE_WORDS = {"office", "house", "street", "rooms", "station", "north", "south", "east",
+                "west", "building", "store", "market", "village", "district", "quarter",
+                "night", "nights", "their", "there", "where", "under", "above", "behind"}
+
+
+def _where(text, zones):
+    """The location a position's free text names: a whole id or name beats a single
+    word of one (5+ letters); the longest match wins; none → None."""
+    norm = lambda s: re.sub(r"\s+", " ", re.sub(r"[_\-,]", " ", str(s).lower())).strip()
+    low = norm(text or "")
+    words = set(re.findall(r"[a-z][a-z']{4,}", low))
+    best, score = None, 0
+    for k, z in zones.items():
+        for whole in (norm(k), norm(re.sub(r"\s*\(.*?\)", "", str(z["name"])))):
+            if len(whole) > 3 and whole in low and 100 + len(whole) > score:
+                best, score = k, 100 + len(whole)
+        for w in set(re.findall(r"[a-z][a-z']{4,}", norm(k) + " " + norm(z["name"]))) - _PLACE_WORDS:
+            if w in words and len(w) > score:
+                best, score = k, len(w)
+    return best
+
+
+def _layers(loc, zones):
+    """A location's surface and undercurrent (a building reads its zone's); no
+    undercurrent recorded = none (0)."""
+    z = zones.get(loc) or {}
+    if z.get("zone") and z["zone"] in zones and z["zone"] != loc:
+        z = zones[z["zone"]]
+    if not z:
+        return None, None
+    return z.get("surface"), z.get("undercurrent") or 0
+
+
+def _zone_point(side, surface, under):
+    """Engine §13.1 ZONE: points for an actor's plan by its in_disorder."""
+    def pt(v, open_):
+        if v is None:
+            return None
+        k = 2 if v <= -3 else 1 if v <= -2 else 0
+        if open_:
+            k = -2 if v >= 3 else -1 if v >= 2 else k
+        return {"thrives": k, "suffers": -k, "neither": 0}.get(side)
+    return {"open": pt(surface, True), "hidden": pt(under, False)}
+
+
+def do_dues(a):
+    """Engine §13.2 ADVANCE: every due at or before now, the next ones, and those that
+    wait on a trigger, with the zone each plays out in. Reports only; the GM fires each
+    as a check (engine §13.2 FIRE) and decides everything else."""
+    if a.day < 0 or not 0 <= a.clock <= 1439:
+        raise InputError("need --day >= 0 and --clock 0..1439")
+    bg = _bg_tree(a.background)
+    caps, retired, last = _live(a.save, a.deltas)
+    cal, anc = _calendar(bg), _anchor(bg, a.save)
+    cur = _world(caps, retired, bg)
+    for i, t in list(cur.items()):
+        if re.fullmatch(r"(npcs|factions)\.[\w\-]+", i) and f"{i}.state.due" not in cur:
+            m = re.search(r"\bdue:\s*([^,}]+)", t)
+            if m:
+                cur[f"{i}.state.due"] = m.group(1).strip()
+        if re.fullmatch(r"rights_obligations\.[\w\-]+", i) and re.search(r"type:\s*owed", t) \
+                and not _CLOSED.search(re.sub(r"type:\s*owed", "", t)):
+            m = re.search(r"\bdue:\s*([^,}]+)", t)
+            if m:
+                cur[f"{i}.due"] = m.group(1).strip()
+    zones = _zones(bg, caps)
+    now = (("d", a.day), a.clock)
+    due_now, upcoming, trigger, unread = [], [], [], []
+    for rid, txt in sorted(cur.items()):
+        if not rid.endswith(".due"):
+            continue
+        body = re.sub(r"^R\d+:\s*", "", txt).strip()
+        if not body or re.fullmatch(r"(none|incidental|routine)\b.*", body, re.I):
+            continue
+        base = rid[:-len(".due")]
+        owner = base.split(".")[0]
+        actor = ".".join(base.split(".")[:2]) if owner in ("npcs", "factions") else None
+        item = {"id": rid, "due": body[:110]}
+        loc = None
+        if actor:
+            whole = cur.get(actor, "")
+            pos = cur.get(f"{actor}.state.position") or (
+                re.search(r"\bposition:\s*([^,}]+)", whole) or [None, ""])[1]
+            loc = _where(pos, zones)
+            side = re.sub(r"^R\d+:\s*", "", cur.get(f"{actor}.in_disorder", "")).strip() or (
+                re.search(r"\bin_disorder:\s*(thrives|suffers|neither)", whole) or [None, None])[1]
+            item["in_disorder"] = side or "unset — set once from role and drives (§13.1 ZONE)"
+        elif ".track." in rid:
+            loc = rid.split(".track.")[1].split(".")[0]
+        if loc or actor:
+            s, u = _layers(loc, zones) if loc else (None, None)
+            item["zone"] = (f"{zones[loc]['name']} ({loc})" if loc in zones else
+                            loc or "? — position names no recorded location")
+            item["surface"], item["undercurrent"] = s, u
+            if actor and item["in_disorder"] in ("thrives", "suffers", "neither"):
+                item["zone_point"] = _zone_point(item["in_disorder"], s, u)
+                if s is not None and s <= -3 and item["in_disorder"] == "suffers":
+                    item["note"] = "surface −3: an institution's response cannot reach the zone"
+        miss = []
+        pts = [p for p in _points(body, cal, miss, anc) if p[0][0] == "d"]
+        if pts:
+            # a date-only due (no time given) is due all through its day
+            past = [p for p in pts if p <= now or (p[0] == now[0] and p[1] == 1439)]
+            fut = sorted(p for p in pts if p not in past)
+            if past:
+                if fut:
+                    item["next"] = (f"day {fut[0][0][1]}" if fut[0][1] == 1439 else
+                                    f"day {fut[0][0][1]} {fut[0][1] // 60:02d}:{fut[0][1] % 60:02d}")
+                due_now.append((min(past), item))
+            else:
+                upcoming.append((fut[0], item))
+        elif _EVENT.search(body):
+            trigger.append(item)
+        else:
+            unread.append(item)
+    due_now.sort(key=lambda x: x[0])
+    upcoming.sort(key=lambda x: x[0])
+    stamp = lambda p: (f"day {p[0][1]}" if p[1] == 1439 and p is not now
+                       else f"day {p[0][1]} {p[1] // 60:02d}:{p[1] % 60:02d}")
+    out = {"engine_version": ENGINE_VERSION, "now": stamp(now),
+           "chain_through": last,
+           "due_now": [dict(at=stamp(p), **i) for p, i in due_now],
+           "next": [dict(at=stamp(p), **i) for p, i in upcoming[:a.ahead]],
+           "on_trigger": trigger, "unread": unread,
+           "note": "engine §13.2 FIRE: each due is a check, never a delivery — cause still "
+                   "holds → resolve from state (uncertain → §13.1 ZONE, the zone_point for an "
+                   "open or hidden act); cause gone → STOPPED or REPLAN; it reaches the PC only "
+                   "by real channels (I5). on_trigger: check whether the trigger has happened."}
+    if not a.brief:
+        return out
+    def line(i, tag):
+        z = ""
+        if "zone" in i:
+            sv = "?" if i["surface"] is None else f"{i['surface']:+d}" if i["surface"] else "0"
+            uv = "" if not i["undercurrent"] else f" under {i['undercurrent']}"
+            z = f" · {i['zone']} surface {sv}{uv}"
+        if "in_disorder" in i:
+            z += f" · {i['in_disorder']}"
+        if "zone_point" in i:
+            zp = i["zone_point"]
+            f = lambda v: "?" if v is None else f"{v:+d}" if v else "0"
+            z += f" → open {f(zp['open'])} / hidden {f(zp['hidden'])}"
+        if i.get("note"):
+            z += f" ({i['note']})"
+        nx = f" · next {i['next']}" if i.get("next") else ""
+        return f"{tag} {i.get('at', '')} {i['id']} :: {i['due']}{z}{nx}".replace("  ", " ")
+    rows = [f"Dues at {out['now']}" + (f" (chain through R{last})" if last else "")]
+    rows += [line(i, "DUE") for i in out["due_now"]] or ["DUE none"]
+    rows += [line(i, "NEXT") for i in out["next"]]
+    rows += [line(i, "TRIGGER") for i in trigger]
+    rows += [line(i, "UNREAD") for i in unread]
+    rows.append("Each due is a check, never a delivery (engine §13.2 FIRE).")
+    return "\n".join(rows)
 
 
 CHAPTER_OWNERS = ("npcs", "factions", "quests", "development_threads",
@@ -1924,6 +2203,23 @@ remain and the chapter field is present.""")
     p.add_argument("--summary", action="store_true",
                    help="counts and uncertain records instead of the full checklist")
 
+    p = sp.add_parser("dues", help="what is due now, next, and on a trigger (engine §13.2)",
+                      formatter_class=argparse.RawDescriptionHelpFormatter, epilog="""\
+Engine §13.2 ADVANCE. Reads the BACKGROUND, the newest save (omit before the first
+save) and the chain file of GM-Δ blocks since it, and lists every plan, pressure,
+pending consequence and owed entry due at or before --day/--clock, the next few,
+and those waiting on a trigger. Each actor's due shows its zone (from its position;
+? when the position names no recorded location), the zone's surface and
+undercurrent, its in_disorder and the §13.1 ZONE point for an open or a hidden act.
+Reports only: each due is a check, never a delivery (engine §13.2 FIRE).""")
+    p.add_argument("--background", required=True, help="the campaign's BACKGROUND")
+    p.add_argument("--save", help="the newest save; omit before the first save")
+    p.add_argument("--deltas", help="chain file: every GM-Δ block since that save")
+    p.add_argument("--day", type=int, required=True, help="world_state.time.day_index now")
+    p.add_argument("--clock", type=int, required=True, help="clock_minutes now, 0..1439")
+    p.add_argument("--ahead", type=int, default=5, help="how many upcoming dues to list")
+    p.add_argument("--brief", action="store_true", help="one line per due")
+
     p = sp.add_parser("time", help="clock and day rollover")
     p.add_argument("--day", type=int, required=True)
     p.add_argument("--clock", type=int, required=True)
@@ -2005,6 +2301,8 @@ A pressure track's advance is one mark, signed by its direction (engine §13.5).
             out = do_validate(a)
         elif a.cmd == "time":
             out = do_time(a)
+        elif a.cmd == "dues":
+            out = do_dues(a)
         elif a.cmd == "flatten":
             out = do_flatten(a)
         elif a.cmd == "vitals":

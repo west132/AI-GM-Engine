@@ -361,140 +361,58 @@ def _capsule_yaml(recs, retired, save_round, supersedes, delta_of=None):
     return text
 
 
-def _decode_one(entry: str, length, encoding="plain"):
-    """Read one entry. Plain is the only form written; b64 and rot13 are read so
-    older saves still load."""
-    import base64, binascii, codecs
-    if encoding == "plain":
-        if not entry.strip():
-            return {"ok": False, "error": "empty record — mark this id degraded"}
-        raw = entry.encode("utf-8")
-    elif encoding == "rot13":
-        raw = codecs.decode(entry, "rot_13").encode("utf-8")
-    else:
-        try:
-            raw = base64.b64decode(entry, validate=True)
-        except (binascii.Error, ValueError):
-            return {"ok": False, "error": "unreadable — mark this id degraded"}
-    if length is not None and len(raw) != length:
-        return {"ok": False, "length": len(raw), "expected_length": length,
-                "error": "length mismatch — mark this id degraded"}
-    return {"ok": True, "length": len(raw), "text": raw.decode("utf-8", errors="replace")}
+def _read_entry(entry):
+    """One record's or GM-Δ entry's text; an empty one is degraded."""
+    if entry is None or not str(entry).strip():
+        return {"ok": False, "error": "empty record — mark this id degraded"}
+    return {"ok": True, "text": entry}
 
 
 _OP = r"^\s*([+~\-−])\s+(\S+)\s+::\s+"
-_DELTA_ENC = re.compile(_OP + r"enc:(b64|rot13)\s+(.+?)(?:\s+·\s+(\d+))?\s*$")
-_DELTA_LEGACY = re.compile(_OP + r"([A-Za-z0-9+/]+={0,2})\s+·\s+(\d+)\s*$")
 _DELTA_PLAIN = re.compile(_OP + r"(.+?)\s*$")
-_ID = re.compile(r"^\s*-?\s*id:\s*[\"']?([^\"'#]+?)[\"']?\s*$")
-_ENTRY = re.compile(r"^\s*entry:\s*(.+?)\s*$")
-_TEXT = re.compile(r"^\s*text:\s*(.*?)\s*$")
-_LEN = re.compile(r"^\s*length:\s*(\d+)\s*$")
-_ENC = re.compile(r"^\s*encoding:\s*(plain|b64|rot13)\b")
 _ROUND = re.compile(r"^\s*GM-Δ\s+(\d+)")
 _SECTION = re.compile(r"^\s*(records|retired):\s*$")
 _CAPLINE = re.compile(r"^\s+([A-Za-z_][\w\-]*(?:\.[\w\-]+)*)\s+::\s?(.*?)\s*$")
-_CAPENC = re.compile(r"^enc:(b64|rot13)\s+(.+?)(?:\s+·\s+(\d+))?$")
-_REASON = re.compile(r"^\s*reason:\s*(.*?)\s*$")
-
-
-def _unquote(v: str) -> str:
-    if len(v) >= 2 and v[0] == '"' and v[-1] == '"':
-        try:
-            return json.loads(v)
-        except json.JSONDecodeError:
-            return v[1:-1]
-    return v
 
 
 def _scan(path: str, want_retired: bool = False):
-    """Capsule records and GM-Δ entries in a save or transcript (plain deltas only
-    inside a GM-Δ block); retired ids returned separately."""
+    """Capsule records and GM-Δ entries in a save or transcript (deltas only inside a
+    GM-Δ block); retired ids returned separately."""
     try:
         lines = open(path, encoding="utf-8").read().splitlines()
     except OSError as e:
         raise InputError(f"cannot read {path}: {e}")
-    found, cur, rnd, in_block, cap_enc = [], None, None, False, "b64"
-    retired, section, rcur = [], None, None
+    found, retired, rnd, in_block, section = [], [], None, False, None
     for line in lines:
         if line.strip() and not line[0].isspace():
-            section, rcur = None, None
+            section = None
         m = _SECTION.match(line)
         if m:
-            section, cur, rcur = m.group(1), None, None
+            section = m.group(1)
             continue
         if section == "retired":
             m = _CAPLINE.match(line)
             if m:
-                retired.append({"id": m.group(1), "reason": m.group(2) or None}); continue
-            m = _ID.match(line)
-            if m:
-                rcur = {"id": m.group(1).strip(), "reason": None}
-                retired.append(rcur); continue
-            m = _REASON.match(line)
-            if m and rcur is not None:
-                rcur["reason"] = _unquote(m.group(1)); continue
+                retired.append({"id": m.group(1), "reason": m.group(2) or None})
             continue
         if section == "records":
             m = _CAPLINE.match(line)
             if m:
-                rid, body = m.group(1), m.group(2)
-                e = _CAPENC.match(body)
-                if e:
-                    found.append({"source": "capsule", "id": rid, "entry": e.group(2),
-                                  "length": int(e.group(3)) if e.group(3) else None,
-                                  "encoding": e.group(1)})
-                else:
-                    found.append({"source": "capsule", "id": rid, "entry": body,
-                                  "length": None, "encoding": "plain"})
-                cur = None
+                found.append({"source": "capsule", "id": m.group(1), "entry": m.group(2)})
                 continue
         m = _ROUND.match(line)
         if m:
-            rnd, in_block, cur = int(m.group(1)), True, None
-            continue
-        src = f"delta {rnd}" if rnd is not None else "delta"
-        m = _DELTA_ENC.match(line)
-        if m:
-            op, rid, enc, entry, n = m.groups()
-            found.append({"source": src, "op": op, "id": rid, "entry": entry.strip(),
-                          "length": int(n) if n else None, "encoding": enc})
-            continue
-        m = _DELTA_LEGACY.match(line)
-        if m:
-            op, rid, entry, n = m.groups()
-            found.append({"source": src, "op": op, "id": rid, "entry": entry,
-                          "length": int(n), "encoding": "b64"})
+            rnd, in_block = int(m.group(1)), True
             continue
         if in_block:
             m = _DELTA_PLAIN.match(line)
             if m:
                 op, rid, text = m.groups()
-                found.append({"source": src, "op": op, "id": rid, "entry": text,
-                              "length": None, "encoding": "plain"})
+                found.append({"source": f"delta {rnd}", "op": op.replace("−", "-"),
+                              "id": rid, "entry": text})
                 continue
             if line.strip() and not line.strip().startswith("```"):
                 in_block = False
-        m = _ENC.match(line)
-        if m:
-            cap_enc = m.group(1); continue
-        m = _ID.match(line)
-        if m:
-            cur = {"source": "capsule", "id": m.group(1).strip(), "entry": None,
-                   "length": None, "encoding": cap_enc}
-            found.append(cur); continue
-        if cur is not None:
-            m = _TEXT.match(line)
-            if m:
-                cur["entry"], cur["encoding"] = _unquote(m.group(1)), "plain"; continue
-            m = _ENTRY.match(line)
-            if m:
-                cur["entry"] = _unquote(m.group(1)); continue
-            m = _LEN.match(line)
-            if m:
-                cur["length"] = int(m.group(1)); continue
-    for r in found:
-        r["op"] = r.get("op", "").replace("−", "-") or None
     return (found, retired) if want_retired else found
 
 
@@ -615,8 +533,8 @@ def _lint(lines):
                 v = v.strip()
                 if v not in ITEM_CONDITION:
                     problems["bad_values"].append({"line": n, "field": "condition", "value": v})
-        mi = re.match(r"^(\s*)(?:conditions|injuries):\s*(.*)$", t)
-        inline = [mm.end() - 1 for mm in re.finditer(r"(?:conditions|injuries):\s*\[", t)]
+        mi = re.match(r"^(\s*)conditions:\s*(.*)$", t)
+        inline = [mm.end() - 1 for mm in re.finditer(r"conditions:\s*\[", t)]
         for start in inline:
             depth, end = 0, None
             for k in range(start, len(t)):
@@ -686,22 +604,14 @@ def _chain(path):
         s = line.strip()
         if not s or s.startswith("```"):
             continue
-        m = _DELTA_ENC.match(line)
-        if m:
-            op, rid, enc, entry, ln = m.groups()
-            cur["entries"].append((op, rid, enc, entry.strip(), int(ln) if ln else None, n)); continue
-        m = _DELTA_LEGACY.match(line)
-        if m:
-            op, rid, entry, ln = m.groups()
-            cur["entries"].append((op, rid, "b64", entry, int(ln), n)); continue
         m = _DELTA_PLAIN.match(line)
         if m:
             op, rid, text = m.groups()
-            cur["entries"].append((op, rid, "plain", text, None, n)); continue
+            cur["entries"].append((op, rid, text, n)); continue
         if re.match(r"^\s*[+~\-−]\s+\S", line):
             # looks like an entry but its id is malformed (e.g. two ids): keep the block
             # going and report it, so later entries are not silently dropped
-            cur["entries"].append(("?", s[:60], "bad", s, None, n)); continue
+            cur["entries"].append(("?", s[:60], s, n)); continue
         cur = None
     return blocks
 
@@ -716,7 +626,8 @@ _BG_OWNERS = ("npcs", "factions", "locations", "rights_obligations", "active_com
 
 
 def _bg_tree(path):
-    """BACKGROUND's Round-0 records: the first ```yaml block of the file, as a tree."""
+    """BACKGROUND's Round-0 records: every ```yaml block of the file merged into one tree;
+    a block that starts indented continues the block before it (template layout)."""
     try:
         import yaml
     except ImportError:
@@ -725,12 +636,26 @@ def _bg_tree(path):
         text = open(path, encoding="utf-8").read()
     except OSError as e:
         raise InputError(f"cannot read {path}: {e}")
-    m = re.search(r"```yaml\n(.*?)```", text, re.S)
-    try:
-        tree = yaml.safe_load(m.group(1) if m else text)
-    except Exception as e:
-        raise InputError(f"background YAML will not parse: {e}")
-    if not isinstance(tree, dict) or "background_id" not in tree:
+    blocks = []
+    for b in re.findall(r"```ya?ml\n(.*?)```", text, re.S) or [text]:
+        if blocks and b[:1] in (" ", "\t"):
+            blocks[-1] += b
+        else:
+            blocks.append(b)
+    tree = {}
+    for b in blocks:
+        try:
+            part = yaml.safe_load(b)
+        except Exception as e:
+            raise InputError(f"background YAML will not parse: {e}")
+        if not isinstance(part, dict):
+            continue
+        for k, v in part.items():
+            if isinstance(tree.get(k), dict) and isinstance(v, dict):
+                tree[k].update(v)
+            else:
+                tree[k] = v
+    if "background_id" not in tree:
         raise InputError(f"{path} is not a BACKGROUND (no background_id)")
     return tree
 
@@ -834,7 +759,7 @@ def do_merge(a):
              "unknown_owner": [], "retire_nothing": [], "several_in_one": []}
     for b in kept:
         stamp = f"R{b['round']}"
-        for op, rid, e_enc, entry, ln, lineno in b["entries"]:
+        for op, rid, entry, lineno in b["entries"]:
             op = op.replace("−", "-")
             where = f"R{b['round']} line {lineno}"
             if op == "?":
@@ -843,7 +768,7 @@ def do_merge(a):
                                           "<op> <owner>.<id>.<field> :: <content>) — "
                                           "rewrite it in the chain file, else mark degraded"})
                 continue
-            d = _decode_one(entry, ln, e_enc)
+            d = _read_entry(entry)
             if not d["ok"]:
                 degraded.append({"at": where, "id": rid, "error": d["error"]}); continue
             text = d["text"]
@@ -968,8 +893,7 @@ def _capsule_records(path):
 
 
 def _text_of(r):
-    if r["entry"] is None: return None
-    d = _decode_one(r["entry"], r["length"], r["encoding"])
+    d = _read_entry(r["entry"])
     return d.get("text") if d["ok"] else None
 
 
@@ -993,7 +917,7 @@ def _lost(a, b, path, out):
             else:
                 _lost(v, b[k], f"{path}.{k}", out)
     elif isinstance(a, list):
-        key = lambda x: str(x.get("item_id") or x.get("name") or x.get("condition") or x.get("injury")) \
+        key = lambda x: str(x.get("item_id") or x.get("name") or x.get("condition")) \
             if isinstance(x, dict) else str(x)
         bk = {key(x): x for x in (b if isinstance(b, list) else [])}
         for x in a:
@@ -1028,8 +952,7 @@ def do_validate(a):
         raise InputError("no capsule records or GM-Δ entries found in the file")
     degraded = []
     for r in found:
-        res = ({"ok": False} if r["entry"] is None
-               else _decode_one(r["entry"], r["length"], r["encoding"]))
+        res = _read_entry(r["entry"])
         if not res["ok"]:
             degraded.append(r["id"])
     caps = [r for r in found if r["source"] == "capsule"]
@@ -1098,20 +1021,6 @@ _WORK = re.compile(r"\b(contract|hire|job|commission|brokered|retainer|paid serv
                    r"fee|service)\b", re.I)
 
 
-_FDATE = re.compile(r"Year\s+(\d+),\s*([A-Za-z][\w\-]*)\s+(\d+)(?:,?\s+(\d{1,2}):(\d{2}))?")
-
-
-def _calendar(bg):
-    """An invented calendar's anchor: BACKGROUND's start date + day_index. Dates are read
-    relative to it (engine §13.2: a date only when recorded, never invented)."""
-    t = (((bg or {}).get("world_state") or {}).get("time") or {})
-    m = _FDATE.search(str(t.get("date") or ""))
-    if not m:
-        return None
-    return {"year": int(m.group(1)), "month": m.group(2), "day": int(m.group(3)),
-            "day_index": int(t.get("day_index") or 0)}
-
-
 _DAYN = re.compile(r"\bDay\s+([−-]?\d+)\b(?:[^\d\n;]{0,12}?(\d{1,2}):(\d{2}))?", re.I)
 
 
@@ -1137,11 +1046,10 @@ def _anchor(bg, path=None):
     return None
 
 
-def _points(text, cal=None, unread=None, anchor=None):
+def _points(text, anchor=None):
     """Every dated point in a text as (key, minutes); date-only = end of day.
     `Day N` keys by day_index; ISO dates key by day_index when an anchor is known, else by
-    calendar date; an invented date keys by day_index when it falls in the starting month
-    and year, else it is listed in `unread`. Compare only keys of the same kind."""
+    calendar date. Compare only keys of the same kind."""
     import datetime as _dt
     pts = []
     for d, h, mi in _DATE.findall(text or ""):
@@ -1151,16 +1059,10 @@ def _points(text, cal=None, unread=None, anchor=None):
         pts.append((key, int(h) * 60 + int(mi) if h else 1439))
     for n, h, mi in _DAYN.findall(text or ""):
         pts.append((("d", int(n.replace("−", "-"))), int(h) * 60 + int(mi) if h else 1439))
-    for y, mon, dd, h, mi in _FDATE.findall(text or ""):
-        if cal and int(y) == cal["year"] and mon == cal["month"]:
-            pts.append((("d", cal["day_index"] + int(dd) - cal["day"]),
-                        int(h) * 60 + int(mi) if h else 1439))
-        elif unread is not None:
-            unread.append(f"Year {y}, {mon} {dd}")
     return pts
 
 
-def _now(path, cal=None):
+def _now(path):
     """Current game time from the readable part: (label, (key, minutes)) or None.
     Keyed by day_index whenever the save records one."""
     date = mins = dix = None
@@ -1176,12 +1078,6 @@ def _now(path, cal=None):
         return f"{date or 'day ' + str(dix)}", (("d", dix), mins)
     if date and _DATE.search(date):
         return date, (_points(date)[0][0], mins)
-    if cal and dix is not None:
-        return f"{date or 'day ' + str(dix)}", (("d", dix), mins)
-    if cal and date:
-        p = _points(date, cal)
-        if p:
-            return date, (p[0][0], mins)
     return None
 
 
@@ -1259,7 +1155,6 @@ def _last_round(caps, base):
 
 def _dues(path, caps, retired=(), bg=None, save_round=None):
     """Advisory lists for engine §16.3 DUES and AUDIT; never changes validity."""
-    cal = _calendar(bg)
     anc = _anchor(bg, path)
     cur = _world(caps, retired, bg)
     for i, t in list(cur.items()):   # a due written inside a whole actor record
@@ -1267,7 +1162,7 @@ def _dues(path, caps, retired=(), bg=None, save_round=None):
             m = re.search(r"\bdue:\s*([^,}]+)", t)
             if m:
                 cur[f"{i}.state.due"] = m.group(1).strip()
-    now = _now(path, cal)
+    now = _now(path)
     nowk = now[1] if now else None
     same = lambda pts: [p for p in pts if nowk and p[0][0] == nowk[0][0]]
     overdue, unregistered, unclosed, no_quest, pressure_no_due, no_plan = [], [], [], [], [], []
@@ -1275,11 +1170,8 @@ def _dues(path, caps, retired=(), bg=None, save_round=None):
     for rid, txt in cur.items():
         body = re.sub(r"^R\d+:\s*", "", txt)
         if rid.endswith(".due"):
-            miss = []
-            pts = _points(body, cal, miss, anc)
-            if miss and not pts:
-                unread.append(f"{rid} :: {body[:90]}")
-            elif not pts:
+            pts = _points(body, anc)
+            if not pts:
                 if not _EVENT.search(body) and not re.search(r"\b(none|routine)\b", body, re.I):
                     unregistered.append(f"{rid} :: {body[:90]}")
             elif nowk and not same(pts):
@@ -1329,7 +1221,7 @@ def _dues(path, caps, retired=(), bg=None, save_round=None):
             continue
         name = b.split(".", 1)[1]
         txt = whole + " " + " ".join(t for i, t in cur.items() if i.startswith(b + "."))
-        pts = same(_points(txt, cal, None, anc))
+        pts = same(_points(txt, anc))
         dated = re.search(r"type:\s*[^,}]*(appointment|promise|hire|contract|commission|"
                           r"brokered|service|meeting|delivery)", whole, re.I)
         if dated and nowk and pts and max(pts) < nowk:
@@ -1337,14 +1229,14 @@ def _dues(path, caps, retired=(), bg=None, save_round=None):
         if _WORK.search(whole[:160]) and name not in quest_text:
             no_quest.append(b)
     out = {"now": (f"{now[0]} {now[1][1] // 60:02d}:{now[1][1] % 60:02d}" if now else
-                   "unread: date is neither ISO nor the BACKGROUND's starting calendar"),
+                   "unread: the save records no day_index or ISO date"),
            "overdue": overdue, "unregistered_trigger": unregistered,
            "unread_date": unread, "pressure_without_due": pressure_no_due,
            "actors_without_plan": no_plan, "incidental_but_referenced": incidental,
            "open_past_all_dates": unclosed, "work_without_quest": no_quest,
            "note": "advisory (engine §16.3 DUES): fire, replan, or close each in the next "
                    "APPLY; incidental_but_referenced: give a real plan or confirm; unread_date: "
-                   "a month the world has not recorded; work_without_quest lists work-type "
+                   "a date on another scale (ISO vs Day N with no anchor); work_without_quest lists work-type "
                    "deals no quest names — only work the player does needs one"}
     if bg is None:
         out["coverage"] = "capsule only: pass --background to check unchanged BACKGROUND dues"
@@ -1376,7 +1268,7 @@ def _dues(path, caps, retired=(), bg=None, save_round=None):
         for owner in ("npcs", "factions"):
             for k in sorted({i.split(".")[1] for i in cur if i.startswith(owner + ".")}):
                 due = cur.get(f"{owner}.{k}.state.due", "")
-                fut = same(_points(due, cal, None, anc))
+                fut = same(_points(due, anc))
                 if fut and nowk and max(fut) >= nowk:
                     continue   # a dated future step is a live plan
                 if due and not re.search(r"\b(incidental|dead)\b", due) and \
@@ -1415,11 +1307,11 @@ def _live(save, deltas):
             kept.append(b)
         for b in kept:
             last = b["round"]
-            for op, rid, enc, entry, ln, _ in b["entries"]:
+            for op, rid, entry, _ in b["entries"]:
                 op = op.replace("−", "-")
                 if op == "?" or rid.startswith(READABLE_PREFIXES):
                     continue
-                d = _decode_one(entry, ln, enc)
+                d = _read_entry(entry)
                 if not d["ok"]:
                     continue
                 if op == "-":
@@ -1428,8 +1320,7 @@ def _live(save, deltas):
                     gone.append((rid, d["text"]))
                 else:
                     recs[rid] = f"R{b['round']}: {d['text']}"
-    caps = [{"source": "capsule", "id": i, "entry": t or " ", "length": None,
-             "encoding": "plain"} for i, t in recs.items()]
+    caps = [{"source": "capsule", "id": i, "entry": t or " "} for i, t in recs.items()]
     return caps, [{"id": i, "reason": w} for i, w in gone], last
 
 
@@ -1443,17 +1334,19 @@ def _zones(bg, caps):
     out = {}
     for k, v in ((bg or {}).get("locations") or {}).items():
         v = v if isinstance(v, dict) else {}
+        su = v.get("surface") if isinstance(v.get("surface"), dict) else {}
+        un = v.get("undercurrent") if isinstance(v.get("undercurrent"), dict) else {}
         out[k] = {"name": str(v.get("name") or k), "zone": v.get("zone"),
-                  "surface": (v.get("surface") or {}).get("current")
-                  if isinstance(v.get("surface"), dict) else None,
-                  "undercurrent": (v.get("undercurrent") or {}).get("current")
-                  if isinstance(v.get("undercurrent"), dict) else None}
+                  "surface": su.get("current"), "surface_baseline": su.get("baseline"),
+                  "undercurrent": un.get("current"), "cover": v.get("cover"),
+                  "hours": un.get("hours"), "sites": un.get("sites")}
     for r in sorted(caps, key=lambda r: r["id"].count(".")):
         parts = r["id"].split(".")
         if parts[0] != "locations" or len(parts) < 2:
             continue
-        loc = out.setdefault(parts[1], {"name": parts[1], "zone": None,
-                                        "surface": None, "undercurrent": None})
+        loc = out.setdefault(parts[1], {"name": parts[1], "zone": None, "surface": None,
+                                        "surface_baseline": None, "undercurrent": None,
+                                        "cover": None, "hours": None, "sites": None})
         t = _text_of(r) or ""
         rest = parts[2:]
         if not rest:
@@ -1465,12 +1358,21 @@ def _zones(bg, caps):
                 m = re.search(layer + r":\s*\{([^}]*)\}", t)
                 if m and _num(m.group(1), "current") is not None:
                     loc[layer] = _num(m.group(1), "current")
+                if layer == "surface" and m and _num(m.group(1), "baseline") is not None:
+                    loc["surface_baseline"] = _num(m.group(1), "baseline")
         elif rest[0] in ("surface", "undercurrent"):
             v = _num(t, "current") if len(rest) == 1 else (
                 _num("current: " + re.sub(r"^R\d+:\s*", "", t), "current")
                 if rest[1:] == ["current"] else None)
             if v is not None:
                 loc[rest[0]] = v
+            if rest == ["surface", "baseline"] or (rest == ["surface"] and _num(t, "baseline") is not None):
+                b = _num(t, "baseline") if len(rest) == 1 else \
+                    _num("baseline: " + re.sub(r"^R\d+:\s*", "", t), "baseline")
+                if b is not None:
+                    loc["surface_baseline"] = b
+        elif rest == ["cover"]:
+            loc["cover"] = re.sub(r"^R\d+:\s*", "", t).strip() or None
         elif rest == ["zone"]:
             loc["zone"] = re.sub(r"^R\d+:\s*", "", t).strip()
     return out
@@ -1529,7 +1431,7 @@ def do_dues(a):
         raise InputError("need --day >= 0 and --clock 0..1439")
     bg = _bg_tree(a.background)
     caps, retired, last = _live(a.save, a.deltas)
-    cal, anc = _calendar(bg), _anchor(bg, a.save)
+    anc = _anchor(bg, a.save)
     cur = _world(caps, retired, bg)
     for i, t in list(cur.items()):
         if re.fullmatch(r"(npcs|factions)\.[\w\-]+", i) and f"{i}.state.due" not in cur:
@@ -1574,8 +1476,7 @@ def do_dues(a):
                 item["zone_point"] = _zone_point(item["in_disorder"], s, u)
                 if s is not None and s <= -3 and item["in_disorder"] == "suffers":
                     item["note"] = "surface −3: an institution's response cannot reach the zone"
-        miss = []
-        pts = [p for p in _points(body, cal, miss, anc) if p[0][0] == "d"]
+        pts = [p for p in _points(body, anc) if p[0][0] == "d"]
         if pts:
             # a date-only due (no time given) is due all through its day
             past = [p for p in pts if p <= now or (p[0] == now[0] and p[1] == 1439)]
@@ -1595,6 +1496,7 @@ def do_dues(a):
     upcoming.sort(key=lambda x: x[0])
     stamp = lambda p: (f"day {p[0][1]}" if p[1] == 1439 and p is not now
                        else f"day {p[0][1]} {p[1] // 60:02d}:{p[1] % 60:02d}")
+    extra = _since(a, zones) if a.since_day is not None else None
     out = {"engine_version": ENGINE_VERSION, "now": stamp(now),
            "chain_through": last,
            "due_now": [dict(at=stamp(p), **i) for p, i in due_now],
@@ -1604,6 +1506,8 @@ def do_dues(a):
                    "holds → resolve from state (uncertain → §13.1 ZONE, the zone_point for an "
                    "open or hidden act); cause gone → STOPPED or REPLAN; it reaches the PC only "
                    "by real channels (I5). on_trigger: check whether the trigger has happened."}
+    if extra:
+        out.update(extra)
     if not a.brief:
         return out
     def line(i, tag):
@@ -1627,6 +1531,10 @@ def do_dues(a):
     rows += [line(i, "NEXT") for i in out["next"]]
     rows += [line(i, "TRIGGER") for i in trigger]
     rows += [line(i, "UNREAD") for i in unread]
+    if extra:
+        rows += [f"MONTH {m['day']} :: {m['check']}" for m in extra.get("months", [])]
+        rows += [f"ENCOUNTER {e['at']} :: {e['line']}" for e in extra.get("encounters", [])]
+        rows += [f"UNDERCURRENT :: {u}" for u in extra.get("undercurrent", [])]
     rows.append("Each due is a check, never a delivery (engine §13.2 FIRE).")
     return "\n".join(rows)
 
@@ -1826,7 +1734,7 @@ SURFACE_NAMES = {3: "Sanctuary", 2: "Secure", 1: "Calm", 0: "Ordinary", -1: "Une
                  -2: "Unstable", -3: "Collapsed"}
 NERVE_NAMES = {3: "unshakeable", 2: "hardened", 1: "steady", 0: "ordinary", -1: "shaken",
                -2: "fraying", -3: "broken"}
-# surface: occurs on 1d10 >= x, hostile on 1d10 <= y, size-die modifier (engine §13.3 step 3)
+# surface: occurs on 1d10 >= x, hostile on 1d10 <= y, size-die modifier (engine §13.3 SURFACE)
 SURFACE_ROLL = {2: (10, 0, 0), 1: (10, 1, 0), 0: (9, 2, 0), -1: (8, 4, 0), -2: (7, 6, 1),
                 -3: (6, 10, 2)}
 DEPTH_OCCURS = {-1: 9, -2: 8, -3: 7}
@@ -1836,59 +1744,129 @@ def _size_place(n):
     return "low" if n <= 5 else "middle" if n <= 8 else "top" if n == 9 else "top + rare"
 
 
+def _roll_surface(v):
+    """Engine §13.3 SURFACE: one daypart's roll for a zone at surface v."""
+    if not -3 <= v <= 3:
+        raise InputError("surface must be -3..+3")
+    name = SURFACE_NAMES[v]
+    if v == 3:
+        return ({"layer": "surface", "surface": v, "state": name, "occurs": False,
+                 "note": "Sanctuary: no roll"}, f"Surface +3 ({name}) — no roll")
+    occ_at, hostile_at, size_mod = SURFACE_ROLL[v]
+    o = roll_spec("1d10")["dice"][0]
+    out = {"layer": "surface", "surface": v, "state": name, "occurs_die": o,
+           "occurs": o >= occ_at}
+    line = f"Surface {v:+d} ({name}) — 1d10 {o}" if v else f"Surface 0 ({name}) — 1d10 {o}"
+    if o >= occ_at:
+        k = roll_spec("1d10")["dice"][0]
+        kind = "hostile" if k <= hostile_at else "ordinary"
+        sz = roll_spec("1d10")["dice"][0]
+        place = "low" if v == 2 else _size_place(min(10, sz + size_mod))
+        out.update({"kind_die": k, "kind": kind, "size_die": sz,
+                    "size_modifier": size_mod, "band_place": place})
+        line += (f" → encounter · kind 1d10 {k} → {kind} · size 1d10 {sz}"
+                 f"{f' {size_mod:+d}' if size_mod else ''} → {place} of band")
+    else:
+        line += " → nothing"
+    return out, line
+
+
+def _roll_depth(d):
+    """Engine §13.3 UNDERCURRENT: one contact roll at depth d."""
+    if d not in DEPTH_OCCURS:
+        raise InputError("depth must be -1, -2 or -3 (none never rolls)")
+    o = roll_spec("1d10")["dice"][0]
+    out = {"layer": "undercurrent", "depth": d, "occurs_die": o,
+           "occurs": o >= DEPTH_OCCURS[d]}
+    line = f"Undercurrent {d} — 1d10 {o}"
+    if o >= DEPTH_OCCURS[d]:
+        r = roll_spec("1d10")["dice"][0]
+        t = r + abs(d)
+        res = "sign" if t <= 6 else "brush" if t <= 9 else "incident" if t <= 11 else "hostile"
+        out.update({"result_die": r, "result_total": t, "result": res,
+                    "horror_check": res != "sign"})
+        line += f" → 1d10 {r} +{abs(d)} = {t} → {res}"
+        if res != "sign":
+            line += " (horror check, §13.10)"
+    else:
+        line += " → nothing"
+    return out, line
+
+
 def do_encounter(a):
-    """Engine §13.3 steps 3-4: one zone's roll for one daypart. The GM picks the pool
-    entry; this only rolls and reports."""
+    """Engine §13.3: one zone's roll for one daypart. The GM picks the pool entry;
+    this only rolls and reports."""
     if (a.surface is None) == (a.depth is None):
         raise InputError("pass exactly one of --surface (−3..+3) or --depth (−1..−3)")
-    if a.surface is not None:
-        v = a.surface
-        if not -3 <= v <= 3:
-            raise InputError("surface must be -3..+3")
-        name = SURFACE_NAMES[v]
-        if v == 3:
-            out = {"layer": "surface", "surface": v, "state": name, "occurs": False,
-                   "note": "Sanctuary: no roll"}
-            line = f"Surface +3 ({name}) — no roll"
-        else:
-            occ_at, hostile_at, size_mod = SURFACE_ROLL[v]
-            o = roll_spec("1d10")["dice"][0]
-            out = {"layer": "surface", "surface": v, "state": name, "occurs_die": o,
-                   "occurs": o >= occ_at}
-            line = f"Surface {v:+d} ({name}) — 1d10 {o}" if v else f"Surface 0 ({name}) — 1d10 {o}"
-            if o >= occ_at:
-                k = roll_spec("1d10")["dice"][0]
-                kind = "hostile" if k <= hostile_at else "ordinary"
-                sz = roll_spec("1d10")["dice"][0]
-                place = "low" if v == 2 else _size_place(min(10, sz + size_mod))
-                out.update({"kind_die": k, "kind": kind, "size_die": sz,
-                            "size_modifier": size_mod, "band_place": place})
-                line += (f" → encounter · kind 1d10 {k} → {kind} · size 1d10 {sz}"
-                         f"{f' {size_mod:+d}' if size_mod else ''} → {place} of band")
-            else:
-                line += " → nothing"
-    else:
-        d = a.depth
-        if d not in DEPTH_OCCURS:
-            raise InputError("depth must be -1, -2 or -3 (none never rolls)")
-        o = roll_spec("1d10")["dice"][0]
-        out = {"layer": "undercurrent", "depth": d, "occurs_die": o,
-               "occurs": o >= DEPTH_OCCURS[d]}
-        line = f"Undercurrent {d} — 1d10 {o}"
-        if o >= DEPTH_OCCURS[d]:
-            r = roll_spec("1d10")["dice"][0]
-            t = r + abs(d)
-            res = "sign" if t <= 6 else "brush" if t <= 9 else "incident" if t <= 11 else "hostile"
-            out.update({"result_die": r, "result_total": t, "result": res,
-                        "horror_check": res != "sign"})
-            line += f" → 1d10 {r} +{abs(d)} = {t} → {res}"
-            if res != "sign":
-                line += " (horror check, §13.10)"
-        else:
-            line += " → nothing"
+    out, line = _roll_surface(a.surface) if a.surface is not None else _roll_depth(a.depth)
     if a.brief or a.lite:
         return line
     return {"engine_version": ENGINE_VERSION, **out}
+
+
+DAYPARTS = ((0, "night"), (360, "morning"), (720, "afternoon"), (1080, "evening"))
+MONTH_DAYS = 30
+
+
+def _daypart_of(clock):
+    return [n for start, n in DAYPARTS if clock >= start][-1]
+
+
+def _since(a, zones):
+    """Engine §13.2 ADVANCE for the stretch since --since-day/--since-clock: month
+    rollovers (§13.4 monthly marks) and the PC zone's surface rolls, one per daypart
+    begun in the stretch (--arrived: also the daypart the PC arrived in)."""
+    sc = a.since_clock if a.since_clock is not None else 0
+    if not 0 <= sc <= 1439:
+        raise InputError("--since-clock must be 0..1439")
+    t0, t1 = a.since_day * 1440 + sc, a.day * 1440 + a.clock
+    if t0 > t1:
+        raise InputError("--since is after now")
+    res = {"since": f"day {a.since_day} {sc // 60:02d}:{sc % 60:02d}"}
+    months = []
+    for m in range(a.since_day // MONTH_DAYS + 1, a.day // MONTH_DAYS + 1):
+        drift = sorted(f"{z['name']} ({k}) {z['surface']:+d}→{z['surface_baseline']:+d}"
+                       for k, z in zones.items()
+                       if isinstance(z.get("surface"), int) and isinstance(z.get("surface_baseline"), int)
+                       and z["surface"] != z["surface_baseline"])
+        bleed = sorted(f"{z['name']} ({k})" for k, z in zones.items()
+                       if isinstance(z.get("undercurrent"), int) and z["undercurrent"] <= -2
+                       and not z.get("cover"))
+        months.append({"day": m * MONTH_DAYS,
+                       "check": ("§13.4 monthly marks — drift 1 toward baseline where no "
+                                 f"pressure touched the zone: {', '.join(drift) or 'none off baseline'}"
+                                 f" · no-cover bleed, surface −1: {', '.join(bleed) or 'none'}")})
+    res["months"] = months
+    if a.pc_zone:
+        if a.pc_zone not in zones:
+            raise InputError(f"--pc-zone {a.pc_zone} is not a recorded location")
+        z = a.pc_zone
+        if zones[z].get("zone") and zones[z]["zone"] in zones:
+            z = zones[z]["zone"]
+        s_val, u_val = zones[z].get("surface"), zones[z].get("undercurrent") or 0
+        parts = []
+        if a.arrived:
+            parts.append((a.since_day, _daypart_of(sc)))
+        for day in range(a.since_day, a.day + 1):
+            for start, name in DAYPARTS:
+                if t0 < day * 1440 + start <= t1:
+                    parts.append((day, name))
+        enc = []
+        for day, name in parts:
+            at = f"day {day} {name}"
+            if not isinstance(s_val, int):
+                enc.append({"at": at, "zone": z, "line": f"{zones[z]['name']}: no surface "
+                            "recorded — derive and commit it (§13.4), then roll"})
+                continue
+            o, ln = _roll_surface(s_val)
+            enc.append({"at": at, "zone": z, **o, "line": f"{zones[z]['name']} — {ln}"})
+        res["encounters"] = enc
+        if u_val:
+            res["undercurrent"] = [f"{zones[z]['name']} depth {u_val}, hours: "
+                                   f"{zones[z].get('hours') or '?'}, sites: "
+                                   f"{', '.join(zones[z].get('sites') or []) or '?'} — on contact "
+                                   f"roll `encounter --depth {u_val}` (§13.3)"]
+    return res
 
 
 STEP_MARKS = {1: 3, 2: 5, 3: 6}   # boundary by its outer value (engine §13.4 TENSION)
@@ -1897,36 +1875,49 @@ STEP_MARKS = {1: 3, 2: 5, 3: 6}   # boundary by its outer value (engine §13.4 T
 def do_stability(a):
     """Engine §13.4 STABILITY: apply marks to one surface, undercurrent or nerve.
     The GM decides which marks an event earns (a pressure track's advance is one,
-    engine §13.5); this does the arithmetic."""
+    engine §13.5); this does the arithmetic. Marks past a boundary stay in tension.
+    A zone layer steps at most once a week (--stepped, --day); nerve has no cap."""
     lo, hi = (-3, 0) if a.layer == "undercurrent" else (-3, 3)
     for name, v in (("current", a.current), ("baseline", a.baseline)):
         if not lo <= v <= hi:
             raise InputError(f"{name} must be {lo}..{hi} for {a.layer}")
+    zone = a.layer != "nerve"
+    if zone and a.stepped is not None and a.day is None:
+        raise InputError("--stepped needs --day (today's day_index)")
     t0 = a.tension
     t = t0 + a.marks
-    cur, step, note = a.current, 0, None
-    if t != 0:
+    cur, note, moved = a.current, None, []
+    week_held = zone and a.stepped is not None and a.day - a.stepped < 7
+    while t != 0:
         d = 1 if t > 0 else -1
         target = cur + d
-        need = STEP_MARKS[max(abs(cur), abs(target))] if lo <= target <= hi else None
-        if need is None:
+        if not lo <= target <= hi:
             note = "at the end of the scale; tension holds"
             t = d * min(abs(t), STEP_MARKS[3])
-        elif abs(t) >= need:
-            if d > 0 and target > a.baseline and not a.lasting:
-                note = ("would pass baseline: acts restore only to baseline; a lasting "
-                        "cause moves baseline instead (pass --lasting)")
-                t = need
-            elif a.layer != "nerve" and a.stepped_this_week:
-                note = "zone already moved this week; marks wait at the threshold"
-                t = d * need
-            else:
-                cur, step, t = target, d, 0
+            break
+        need = STEP_MARKS[max(abs(cur), abs(target))]
+        if abs(t) < need:
+            break
+        if d > 0 and target > a.baseline and not a.lasting:
+            note = ("an improving act stops at baseline; a lasting cause moves baseline "
+                    "instead (pass --lasting)")
+            t = need
+            break
+        if zone and (week_held or moved):
+            note = (f"zone layer already stepped this week (day {a.stepped}); marks wait in "
+                    "tension" if week_held else "one step per zone layer per week; the rest "
+                    "wait in tension")
+            break
+        cur, t = target, t - d * need
+        moved.append(d)
+    step = sum(moved)
     names = SURFACE_NAMES if a.layer == "surface" else NERVE_NAMES if a.layer == "nerve" else None
     label = (lambda v: names[v]) if names else (lambda v: "none" if v == 0 else f"depth {v}")
     sg = lambda v: f"{v:+d}" if v else "0"
     out = {"engine_version": ENGINE_VERSION, "layer": a.layer, "before": a.current,
-           "after": cur, "state": label(cur), "tension": t, "stepped": step != 0}
+           "after": cur, "state": label(cur), "tension": t, "stepped": bool(moved)}
+    if zone and moved:
+        out["record_stepped"] = a.day if a.day is not None else "today's day_index"
     if a.lasting and step > 0 and cur > a.baseline:
         out["baseline"] = cur
         out["baseline_note"] = "lasting cause: baseline moves with it"
@@ -1939,18 +1930,19 @@ def do_stability(a):
             out["condition_due"] = "breakdown: a severe mind condition (§13.10 STEPS)"
         elif step > 0 and a.current in (-1, -2, -3):
             out["condition_due"] = "the condition of the step left may go (§13.10 STEPS)"
-    if a.layer != "nerve" and step:
+    if zone and moved:
         out["on_step"] = "check every pressure track on this zone and layer for an on_step at this value (§13.5)"
     if a.brief:
-        mv = f"{sg(a.current)} → {sg(cur)} ({label(cur)})" if step else f"{sg(cur)} ({label(cur)})"
+        mv = f"{sg(a.current)} → {sg(cur)} ({label(cur)})" if moved else f"{sg(cur)} ({label(cur)})"
         line = f"{a.layer.capitalize()} {mv} · tension {sg(t0)} {a.marks:+d} → {sg(t)}"
+        if zone and moved:
+            line += f" · record stepped: {out['record_stepped']}"
         if note:
             line += f" · {note}"
         if "condition_due" in out:
             line += f" · {out['condition_due']}"
         return line
     return out
-
 
 
 SIZE_MULT = {"small": 0.5, "normal": 1, "large": 2, "huge": 4}
@@ -2013,7 +2005,7 @@ def do_harm(a):
             line += "\nLasting condition: add one to condition.conditions as {condition, source: body, home, effect} (§10.5)"
         return line
     return {"engine_version": ENGINE_VERSION, "hits": hits, "hp_before": a.hp,
-            "hp": hp, "max_hp": a.max, "state": state, "lasting_injury": lasting}
+            "hp": hp, "max_hp": a.max, "state": state, "lasting_condition": lasting}
 
 
 def do_heal(a):
@@ -2138,12 +2130,10 @@ disagree, the later round wins; an unstamped record is older than any stamped.
 A block whose round is <= an earlier block's is a replay: earlier blocks from
 that round on are void. A round with no block is reported as a gap; an entry
 that cannot be read is reported as degraded. Nothing is dropped silently.
-The capsule is always written as plain text; encoded entries in an older save
-are read and written back plain.
 --background: delta capsule. Records still equal to BACKGROUND's Round-0 value
 are left out (the BACKGROUND travels with the save and supplies them); a
 retired BACKGROUND path stays in capsule.retired so it never comes back.
-A full capsule from an older save converts on its next merge.""")
+A full capsule converts to a delta on its next merge.""")
     p.add_argument("--base", help="the previous save (its capsule is the base); omit only with "
                    "--background for a campaign's first save")
     p.add_argument("--background", help="the campaign's BACKGROUND file: the capsule keeps only "
@@ -2211,13 +2201,22 @@ pending consequence and owed entry due at or before --day/--clock, the next few,
 and those waiting on a trigger. Each actor's due shows its zone (from its position;
 ? when the position names no recorded location), the zone's surface and
 undercurrent, its in_disorder and the §13.1 ZONE point for an open or a hidden act.
-Reports only: each due is a check, never a delivery (engine §13.2 FIRE).""")
+--since-day/--since-clock: the stretch since the last call — month rollovers
+(every 30 days of day_index: §13.4 monthly marks) and, with --pc-zone, one surface
+roll per daypart begun in it (night 00–06, morning 06–12, afternoon 12–18, evening
+18–24; --arrived adds the daypart the PC arrived in). Rolls are GM-side: narrate only
+what the PC meets. Each due is a check, never a delivery (engine §13.2 FIRE).""")
     p.add_argument("--background", required=True, help="the campaign's BACKGROUND")
     p.add_argument("--save", help="the newest save; omit before the first save")
     p.add_argument("--deltas", help="chain file: every GM-Δ block since that save")
     p.add_argument("--day", type=int, required=True, help="world_state.time.day_index now")
     p.add_argument("--clock", type=int, required=True, help="clock_minutes now, 0..1439")
     p.add_argument("--ahead", type=int, default=5, help="how many upcoming dues to list")
+    p.add_argument("--since-day", type=int, help="day_index at the last dues call")
+    p.add_argument("--since-clock", type=int, help="clock_minutes at the last dues call")
+    p.add_argument("--pc-zone", help="location id the PC spent the stretch in")
+    p.add_argument("--arrived", action="store_true",
+                   help="the PC entered --pc-zone at --since: roll that daypart too")
     p.add_argument("--brief", action="store_true", help="one line per due")
 
     p = sp.add_parser("time", help="clock and day rollover")
@@ -2263,8 +2262,9 @@ pool entry.""")
                       formatter_class=argparse.RawDescriptionHelpFormatter, epilog="""\
 Engine §13.4 STABILITY. Tension + marks; reaching the boundary's marks (0↔±1 3 ·
 ±1↔±2 5 · ±2↔±3 6) moves current one step and resets tension. Upward past
-baseline needs --lasting (it then moves baseline too). Zones move one step a
-week: --stepped-this-week holds marks at the threshold. Nerve has no weekly cap.
+baseline needs --lasting (it then moves baseline too). Marks past a boundary stay
+in tension. A zone layer steps once a week: pass --stepped (the day it last
+stepped) and --day; record the day it reports. Nerve has no weekly cap.
 A pressure track's advance is one mark, signed by its direction (engine §13.5).""")
     p.add_argument("--layer", required=True, choices=("surface", "undercurrent", "nerve"))
     p.add_argument("--current", type=int, required=True)
@@ -2272,7 +2272,8 @@ A pressure track's advance is one mark, signed by its direction (engine §13.5).
     p.add_argument("--tension", type=int, default=0)
     p.add_argument("--marks", type=int, required=True, help="signed total of this event's marks")
     p.add_argument("--lasting", action="store_true", help="a lasting cause: may pass baseline")
-    p.add_argument("--stepped-this-week", action="store_true", help="zone already moved this week")
+    p.add_argument("--stepped", type=int, help="zone layer: day_index it last stepped")
+    p.add_argument("--day", type=int, help="zone layer: today's day_index")
     p.add_argument("--brief", action="store_true", help="one line to copy into the turn")
 
     p = sp.add_parser("cast", help="pay an MP-drawing power's cost")

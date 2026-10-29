@@ -119,15 +119,15 @@ player:
 
 ```yaml
 enabled_modules:
-  numeric_level_xp: false
-  flexible_item_entitlement: false
+  numeric_level_xp: true
+  flexible_item_entitlement: true
 
 narrative_theme:
   initial: {tone: , style: }
   current: {tone: , style: }
 ```
 
-A save preserves activation. It never enables a module that was not already recorded. Equipment tiers are core (engine §10.6), not a module.
+Modules are on unless the BACKGROUND sets one false (engine Part 2). A save preserves that setting and never changes it. Equipment tiers are core (engine §10.6), not a module.
 
 ## 4. Index
 
@@ -164,11 +164,9 @@ capsule:
     <id> :: <reason>
 ```
 
-Older saves holding `- id: / text:` entries, or encoded entries, still load; `merge` writes the plain line form.
-
 **Records are field paths.** An id may name a whole record (`npcs.hadvar`) or one field under it (`npcs.hadvar.state.position`). `merge` stamps what it writes with its round (`R112: …`); where records disagree about a detail, the later round wins, and an unstamped record is older than any stamped one. A whole record is never overwritten: a change aimed at it is appended as a dated note. A record reading `no longer holds — <reason>` cancels that detail.
 
-**Building it.** `merge --background` builds every capsule, the first included; the procedure is in AI_RULES §3.
+**Building it.** `merge --background` builds every capsule, the first included; the procedure is in AI_RULES (Saving).
 
 **Survival (engine §16.4).** Every record of the previous capsule appears here verbatim, changed only by the chain, appears under `retired` with its reason, or is left out because it equals the BACKGROUND. `merge` guarantees this; a missing id makes the save invalid. If a GM-Δ round between the previous save and this one is missing, `merge` reports it as a gap: list what that round committed under `continuity_status.degraded` rather than rebuilding it from narration.
 
@@ -187,8 +185,8 @@ locations:
     conditions: {}
     challenge_band: {min: , max: , basis: }
     zone:                          # a building or room: its zone; no stability of its own
-    surface: {baseline: , current: , tension: }        # engine §13.4
-    undercurrent: {baseline: , current: , tension: , sites: [], hours: , nature: }
+    surface: {baseline: , current: , tension: , stepped: }   # engine §13.4; stepped = day it last stepped
+    undercurrent: {baseline: , current: , tension: , stepped: , sites: [], hours: , nature: }
     cover:
     encounters: {hostile: [], ordinary: []}
 
@@ -281,7 +279,7 @@ A pressure has a `track` (bound to zones) or a `clock` (bound to none), never bo
 
 ## Contract
 
-- Both parts represent the same authoritative completed round, with the same stable IDs, and never hold the same field. A save made before v2.5 may; there the capsule wins on load.
+- Both parts represent the same authoritative completed round, with the same stable IDs, and never hold the same field.
 - The save does not carry the setting. BACKGROUND holds `setting`, `setting_anchors`, and `content_bounds`, and must travel with the save.
 - Part A exposes only established player-visible information.
 - Derived convenience fields never create, strengthen, or override state.

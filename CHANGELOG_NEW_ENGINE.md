@@ -7,16 +7,6 @@ Not read in play. Load it only to bring a save or BACKGROUND made before the new
 Apply before the first ROUND, oldest rule first. Rules, not guesses; nothing marked degraded.
 
 ```text
-< v2.0  no HP/MP → set to derived max; recorded injuries become lasting injuries
-< v2.4  injuries without home → home + effect from how play applied them, else their
-  nature; written into the player block at next save
-< v2.5  loads as is; owner-level capsule records stay; merge adds field-path GM-Δ
-  entries as stamped records beside them; capsule record holding player block,
-  time, or location retired in the first chain:
-  `− <id> :: moved to the readable save (v2.5)`
-< v5.0  plan without a registered due → REPLAN (§13.1); clock without due →
-  due = last fill (else load time) + interval; both before the first ROUND;
-  full capsule loads as is, next merge --background makes it a delta
 < v6.0  pending_payoffs.<id> → rights_obligations.<id> {type: owed, parties:
   [payer, payee], state: {benefit, condition, due}}
   unresolved_consequences[i] → world_state.pending.<id> {what, cause, due}
@@ -36,8 +26,8 @@ Apply before the first ROUND, oldest rule first. Rules, not guesses; nothing mar
   first chain after load
 v6.0, Oct 23 → v6.0, Oct 26
   how to tell  BACKGROUND starting_item_points or enabled_modules.equipment_power_tiers;
-    save item_points as a number, player_corrected, romantic_interest, a capsule
-    `encoding:` line, or a pressure with both zones and a clock
+    save item_points as a number, player_corrected, romantic_interest, or a pressure
+    with both zones and a clock
   item points  BACKGROUND starting_item_points {points, basis} → player.item_points
     {rank, basis}; rank from the PC's standing and income, never the old points:
     no home or income, shunned → outcast · scraping by, casual work → commoner ·
@@ -61,8 +51,6 @@ v6.0, Oct 23 → v6.0, Oct 26
   relationships  romantic_interest → dropped; its state, in plain words, joins
     that side's attitude (e.g. "warm, interested"); bond unchanged
   continuity  continuity_status.player_corrected → continuity_status.corrected
-  capsule  b64 or rot13 entries are read as before; the next merge writes them plain;
-    capsule `encoding:` line dropped
   each moved record: `− <old id> :: moved (v6.0, Oct 26)` and `+ <new id> :: …` in
     the first chain after load
 v6.0, Oct 26 → v6.0, Oct 27
@@ -71,11 +59,57 @@ v6.0, Oct 26 → v6.0, Oct 27
     (works against order → thrives · relies on it → suffers · mixed or
     indifferent → neither); recorded once: `+ <owner>.<id>.in_disorder :: <value>`
   economy_model  none → the real economy nearest the setting (engine §15 PRICES)
+v6.0, Oct 27 → v6.0, Oct 29
+  how to tell  a development thread with only `note:`; a `{value: , basis: }` score on a
+    faction or deal; a zone layer without `stepped`
+  modules  a missing enabled_modules entry is now on; an explicit false stays false
+  threads  a thread with only `note:` → {direction: <the note>, origin: background,
+    state: open, status: active}; entries holding lore, perks, seeds or rumours are
+    not threads: read them as setting notes, never as player development
+  scores  `trust {value, basis}`, `aboard_trust`, `file {value, basis}` and the like →
+    dropped; what they recorded lives in credit and grievance (engine §13.1
+    STANDING); a record of notable acts keeps its one-line entries, never a number
+  stepped  a zone layer without it → not stepped this week
 ```
 
 ## Changes
 
 ```text
+v6.0, Oct 29 update (same version; from a review and a legacy sweep)
+  engine  modules on by default; a BACKGROUND turns one off (Part 2); with XP off,
+          the engaged opponent's power is the base Difficulty and its attacks stay
+          stakes (§10.2, §10.3)
+          GM-Δ: the full block goes to the chain file; the turn shows only
+          player-visible entries; dues and encounter rolls stay out of the reply
+          (§2.2, §8.1, §16.1)
+          §13.3 is encounters only: actors, pressures and pending consequences
+          move by §13.1 and §13.2 FIRE (no second pass); REPLAN also on new means
+          or an opened channel (§13.1)
+          §13.2 ADVANCE: a surface roll per daypart the PC spends in a zone and a
+          month step every 30 days, both from one `dues --since` call; daypart
+          bounds defined
+          §13.4: marks past a boundary stay in tension; `stepped: <day>` records the
+          weekly step; BASELINE limits only improving acts
+          §13.6 SOLVABLE: routes are added only when a case is built, never in play
+          helper maths no longer written in the engine (CapabilityMod bands,
+          growth and class thresholds, XP formula and table, encounter table,
+          tension marks, HP/MP maximums, casting cost, item-point maximums and
+          refill)
+  AI_RULES  cut from 10.8 KB to 3.8 KB: every line the engine already says removed
+          (incl. the invariant list and chapter steps); helper runs in the
+          sandbox, never read in; one chain-file procedure; dues with --since and
+          --pc-zone; save procedure shortened
+  helper  BACKGROUND loader reads every yaml block (an indented block continues
+          the one before); stability keeps surplus marks, enforces the weekly
+          step from --stepped/--day, lets nerve step more than once; dues
+          --since-day/--since-clock/--pc-zone/--arrived roll the owed encounters
+          and list month steps and undercurrent contacts; legacy readers removed
+          (encoded entries, `- id:` capsules, invented calendars, `injuries`)
+  templates  modules default true; development_threads shape; `stepped` on zone
+          layers; legacy save lines removed
+  backgrounds  version ids, scores, misfiled threads, old wording, CoC ENEMIES COME
+          and Lin's due, Last Train anchors moved to each actor
+  migration  rules for files older than v6.0 dropped except "< v6.0"
 v6.0, Oct 27 update (same version)
   engine  §15 PRICES: a price, wage, or payment the BACKGROUND list doesn't give
           follows its economy_model (none → the real economy nearest the

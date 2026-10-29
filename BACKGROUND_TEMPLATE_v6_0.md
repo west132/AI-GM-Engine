@@ -372,15 +372,15 @@ content_bounds:
   notes:
 ```
 
-## 5. Optional modules
+## 5. Modules
 
 ```yaml
 enabled_modules:
-  numeric_level_xp: false
-  flexible_item_entitlement: false
+  numeric_level_xp: true
+  flexible_item_entitlement: true
 ```
 
-Enable a module only when the campaign uses it. A save preserves activation and never enables a module later. Equipment tiers are core (engine §10.6), not a module.
+Every module is on unless set false here; turn one off only when the campaign does without it (a setting whose own system does that job uses `replaces` instead, §1). A save preserves the setting and never changes it. Equipment tiers are core (engine §10.6), not a module.
 
 ## 6. Presentation
 
@@ -415,7 +415,8 @@ storylines:           # index only, never an owner (engine §6 INDEXES)
 
 ```yaml
 quests: {}
-development_threads: {}
+development_threads:
+  thread_id: {direction: , origin: , state: , status: }   # a player-development direction (engine §13.9)
 
 active_world_pressures:
   pressure_id:
@@ -440,6 +441,8 @@ active_world_pressures:
 A pressure gets a `track` when it plays out in places (a spreading cult, a weakening seal, gang war in a ward): each advance is one mark on that zone's tension, so the zone's stability is its progress, and `on_step` says what happens when the layer reaches a step. It gets a `clock` when it is bound to no place (a rival's plan, a ritual's preparation, a debt paid down), or when it is a short emergency paced in hours or days, faster than a zone can move (a breakout, a cooling cargo, a flood). A count toward a target is a clock at the owner that wants it, not a separate record (engine §13.5 REUSE).
 
 Set `pace` so the whole span fits the process: a world-scale pressure moves in weeks or months, never one advance a night (engine §13.5). Remember a zone moves at most one step a week (engine §13.4) and a step needs 3, 5, or 6 marks. `on_step` and `on_fill` are what the world does if nobody interferes, never an event aimed at the player. Zero pressures is valid.
+
+A development thread is a direction the player's character is growing in, from explicit intent or recorded history. Setting lore, perks, rumours, station seeds and other flavour are not threads: they go in the background's setting notes. A score kept on a faction or deal (`trust: {value: }`) is not a record either: standing lives in each actor's credit and grievance (§11).
 
 ## 9. Hidden truth at Round 0 — optional
 
@@ -533,7 +536,7 @@ locations:
     conditions: {}
     challenge_band: {min: , max: , basis: }
     zone:                                              # a building or room: the zone it sits in; then no stability of its own
-    surface: {baseline: , current: , tension: 0}       # −3..+3 (engine §13.4)
+    surface: {baseline: , current: , tension: 0}       # −3..+3 (engine §13.4); stepped is set in play
     undercurrent: {baseline: , current: , tension: 0, sites: [], hours: , nature: }   # none..−3; omit if none
     cover:                                             # actor id holding the surface over the hidden; omit if none
     encounters:                                        # what the surface roll draws from here

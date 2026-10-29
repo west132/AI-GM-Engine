@@ -5,7 +5,7 @@ Executable spec for an AI GM: persistent world simulator, referee, state manager
 ```text
 READ  Part 0 every turn · Part 1 section when §2.1 routes to it · Part 2 only if enabled
 FILES  BACKGROUND_TEMPLATE (Round-0 truth) · SAVE_TEMPLATE (persistence)
-  AI_RULES (how an LLM runs this: tools, examples, error guards; no game rules)
+  AI_RULES (model-habit guards and tool procedures; no game rules)
   engine_math (stateless helper, §2.3)
   filenames carry the version, e.g. engine_math_v6_0.py; use the matching set
 FORMAT STATE · STEPS · LIMITS; tags (§x, In) are references, never restated
@@ -62,7 +62,7 @@ LOOP  someone else affected · uncertain or risky outcome · lasting change
  8 HOOK  owners touched this round settled; never a sweep  §2.1
  9 RENDER  player-visible narration  §9
 10 CHECK  open a decision stop only if a real DECISION exists
-11 PERSIST  GM-Δ block or `GM-Δ N none` (§8.1); checkpoint (§8)  §16
+11 PERSIST  GM-Δ block or `GM-Δ N none` to the chain file (§8.1); checkpoint §16.3
 ```
 
 ```text
@@ -92,7 +92,7 @@ equipment tier applies to an action  §10.6
 actor, faction, or pressure could act  §13.1
 player asks actor/source for what the record doesn't settle §13.1 open questions
 time advanced materially  §13.2
-player's exposure changed; a daypart spent in a zone; undercurrent contact  §13.3
+a daypart spent in a zone; undercurrent contact  §13.3
 horror witnessed; undercurrent brush, incident, or hostile  §13.10
 stability mark earned (pressure advance, cause removed, cover failed, loss, good rest)  §13.4
 entered a location with no committed band or stability  §13.4
@@ -108,7 +108,7 @@ generated Round-0 fact needs to change  §16.6
 play applied the engine wrongly  §16.7
 ending condition met (chapter.end incl.), or player extends  §14.3, §16.8
 companion joins or leaves  §13.1
-module event, module enabled  §A, §D
+module event  §A, §D
 ```
 
 ### 2.2 What a turn emits
@@ -135,7 +135,10 @@ header  opens a ROUND; S, T per §16.3
 roll line  when a roll mattered (§10.3); damage line follows when a hit lands (§10.5)
 answer line  when an open question is rolled (§13.1)
 odds line  only when a roll stops for odds (§10.4)
-GM-Δ  closes every ROUND: changes or `GM-Δ N none`; plain text (§8.1)
+GM-Δ  closes every ROUND: the full block (changes or `GM-Δ N none`) goes to the
+  chain file (§8.1); the turn shows only its player-visible entries, never a
+  hidden one (I5, I9); helper output that names hidden state (dues, encounter
+  rolls, undercurrent) stays out of the turn; only what the PC meets is narrated
 FAST action / routine continuation → opens no ROUND, emits none of these
 PROFILE  save `profile`: full (default) | lite; player picks at Round 0, may switch
   any time; output only: state, rolls, GM-Δ, saves identical
@@ -416,7 +419,8 @@ DOMAIN GATE capability never replaces missing knowledge; interpretation depth �
 ```text
 overall level / skill / trait  → CapabilityMod
 task, opponent, or hazard power  → Challenge (§10.3)
-attacker or hazard that sets the cost  → stakes only (§10.4), never also Difficulty
+attacker or hazard that sets the cost  → its attacks are stakes (§10.4); its power is
+  Challenge (the base when not numeric, §10.3); never also a penalty
 skill class  → advancement ceiling only
 skill tier  → current mastery
 expertise  → domain access not already tracked as skill
@@ -446,8 +450,7 @@ BIND before dice: actor, action · Challenge + source when numeric · capability
 
 ```text
 CapabilityMod, numeric progression + valid Challenge:
-  Δ = actor capability − Challenge
-  Δ ≤ −5 → −4 | −4..−2 → −2 | −1..+1 → 0 | +2..+4 → +2 | Δ ≥ +5 → +4
+  the gap actor capability − Challenge, banded by helper `check --cmp --challenge`
 CapabilityMod, otherwise: actor's ABSOLUTE domain capability grade, never vs the task (I8)
   severely deficient but feasible −4 | limited/basic −2 | trained/competent 0
   | advanced/master +2 | exceptional/setting-top +4
@@ -462,6 +465,8 @@ base  10 with a valid numeric Challenge
   none → the task's own difficulty: 5 forgiving · 8 easy · 10 ordinary ·
   13 awkward · 15 demanding · 17 severe · 20 extreme (whole range; one adverse
   condition on ordinary work = 11)
+  a fight without numeric Challenge: the engaged opponent's power on this scale is
+  the base; its attacks stay stakes (§10.4), never also a penalty (I8)
 categories: environment/access · time/interruptions · sensory/evidence ·
   position/control · simultaneous constraints
 per category: +1 adverse · +2 severely adverse (rare, dominates) · −1 favourable ·
@@ -487,8 +492,7 @@ unusable item → feasibility fails, not −2 · bodily condition never ToolMod 
 DICE  genuine randomness only (I10): no fudging, hidden reroll, convenience success
 OUTPUT  roll line when it mattered (§2.2); Challenge value may stay hidden; no
   critical-success tier
-ODDS  exact chances from helper `check --odds`, never estimated; mid-range a point
-  of Difficulty ≈ 10 pp, at the ends 3–6
+ODDS  exact chances from helper `check --odds`, never estimated
 ```
 
 ### 10.4 Stakes
@@ -526,8 +530,8 @@ MP  actor with a power the setting draws from a pool
 max  derived, never stored; current HP/MP in actor_state
 V  overall level; without numeric progression, vitality at capability:
   ordinary 1 · seasoned 3 · veteran 5 · exceptional 8 · heroic 11 · legendary 20
-max HP  8 + 2V  small ×½ (round up) · large ×2 · huge ×4
-max MP  2V + 4 × tier bonus of best MP-drawing skill (T1 1 … T4 4); none → no MP
+max HP and MP  helper `vitals` (V, size, best MP-drawing skill's tier); no such
+  skill → no MP
 ```
 
 ```text
@@ -578,7 +582,7 @@ body condition  never by rest; check at each growth boundary; removed as own
   setting's own rule (BACKGROUND/canon) wins
 MP  BACKGROUND mp_powers.recovery: fast = full after ~10 min out of danger ·
   slow = ¼/hour rest, full on a night · rest_only = full on a night
-CASTING  cost 3 × tier bonus (T1 3 · T2 6 · T3 9 · T4 12), paid on cast whether it
+CASTING  cost by the power's tier (helper `cast`), paid on cast whether it
   works or not; no power above caster's tier; not enough MP → no cast;
   BACKGROUND mp_powers names MP powers; others follow their setting rule
 VISIBILITY  player sees own HP/MP exactly; others only as observable (I5, I9)
@@ -617,10 +621,7 @@ personal_skill_level = overall level + skill tier bonus (§A); no equipment/supp
   none without numeric progression (Difficulty route only)
 QUALIFIES  successful, materially distinct roll; skill bound as exercised before
   dice; numeric Challenge ≥ personal_skill_level − 1, or Difficulty ≥ 15
-numeric_gain  0 unless numeric Challenge qualifies; gap = Challenge − personal_skill_level:
-  ≤ +1 → 1 | +2..+4 → 2 | ≥ +5 → 3
-condition_gain  < 15 → 0 | 15–18 → 1 | 19–20 → 2
-evidence_gain  max(numeric_gain, condition_gain), never the sum
+evidence_gain  helper `accrue`: from the numeric gap or the Difficulty, never both
 LIMITS  failure 0 · each bound exercised skill once per roll · never incidental
   skills · never another actor via this roll · routine/easy/deterministic
   use and time never advance · training only via a distinct §10
@@ -634,9 +635,8 @@ PERIOD  one credit per skill between growth boundaries
 ```text
 DURING PLAY, before ROUND closes: evidence += evidence_gain (once per skill per period)
 AT GROWTH BOUNDARY, every actor with tracked skills (player + tracked companions):
-  WHILE tier < class ceiling AND evidence ≥ threshold(tier):
-  evidence −= threshold(tier); tier + 1
-  thresholds: T1→T2 10 | T2→T3 20 | T3→T4 40
+  helper `boundary` raises tiers while evidence meets the threshold, up to the class
+  ceiling
 BOUNDARY  good rest · dedicated training/downtime · settled aftermath of a
   resolved arc; never ordinary time passing or a lull mid-scene
 PERIOD  growth_period: {opened: <day_index>, credited: [skill_id]}; credit adds to
@@ -656,8 +656,8 @@ class_source (≥1, materially involved while the evidence accrued):
   recorded innovation tested under real challenge · LEGENDARY only: a
   source the setting treats as rare (named tradition, transformative event,
   discipline few reach)
-thresholds  NORMAL → ELITE 20 | ELITE → LEGENDARY 40
-RAISE  at growth boundary, at the ceiling: evidence ≥ threshold AND valid source →
+RAISE  at growth boundary, at the ceiling: evidence meets the class threshold
+  (helper `boundary --class-source`) AND valid source →
   class +1, evidence 0, record class_source (history only; never
   counts for the next raise); new class opens the next tier, earned via §11.1
 NO SOURCE  evidence keeps accruing, nothing happens; visible in play as the character
@@ -740,7 +740,8 @@ OFFSCREEN  otherwise moves only when elapsed time advances a recorded activity,
   pressure, or obligation, or a material event changed its state, knowledge,
   relationships, rights, risk, opportunity; time alone never changes
   personality, loyalty, goals, relationships, skill
-REPLAN  plan resolved, blocked, failed, obsolete, or undated → re-plan at once
+REPLAN  plan resolved, blocked, failed, obsolete, or undated, or the actor gains new
+  means or a channel opens to it → re-plan at once
   from wants, fears, means, knowledge (I5); never idle while a want is unmet and
   means exist; record open between fitting moves → `ask`: YES pursued (AND
   sooner/bigger) · NO, BUT weaker/later · NO, AND next want
@@ -760,7 +761,7 @@ OPEN QUESTIONS — the player's own ask (request, approach, offer, question to a
 actor; what a location/source holds now: goods, work, news, help), or an actor's
 REPLAN / WORK SOURCE, when the record doesn't settle it and it matters. All else
 decided, not rolled: actors from state, norms, canon; fights by exchange roll +
-settled morale (§12); news by real channels and travel time (I5); §13.3 incidents and
+settled morale (§12); news by real channels and travel time (I5); §13.3 encounters and
 §13.5 pressures keep their own rolls.
 1 SETTLE  record settles it (duty, drive, standing, authority, obvious cost,
   recorded fact, setting) → that way, for or against the player, no roll
@@ -882,12 +883,15 @@ world_state.time = {season, day_index, date, clock_minutes, daypart,
   precision: exact | daypart | degraded}
 date  only when recorded; else day_index; never invented
 clock  clock_minutes 0..1439 when known, else daypart
+daypart  night 00–06 · morning 06–12 · afternoon 12–18 · evening 18–24
 lost  precision null + degraded, reason in continuity_status, until an
   unambiguous in-world anchor (I12)
 ADVANCE  believable duration → resolve material duration uncertainty → update time,
-  day rollover (nerve day marks, §13.10) → every due ≤ new time fires, earliest
-  first (plans §13.1, pressures §13.5, payoffs §15; list: helper `dues`) →
-  exposure qualifies → §13.3 once
+  day rollover (nerve day marks, §13.10), month rollover (every 30 days of
+  day_index: §13.4 monthly marks) → every due ≤ new time fires, earliest first
+  (plans §13.1, pressures §13.5, pending and payoffs §15) → each daypart the PC
+  spent in a zone: §13.3 surface roll; one helper `dues --since` call lists the
+  dues and month steps and rolls the owed surface encounters
 FIRE  a due is a check, never a delivery: its cause still holds → resolve from
   state, uncertain → §13.1 ZONE; cause gone → STOPPED or REPLAN (§13.1, §13.5)
 EVERYWHERE  a due fires wherever its actor or pressure is, reaching the PC only by
@@ -899,37 +903,26 @@ HEADER  canonical time + location (§2.2); add closing time when elapsed time
   materially changes daylight, availability, urgency, travel, pressures
 ```
 
-### 13.3 What happens next
+### 13.3 Encounters
 
-TRIGGER: player moves or access changes · material time passes where change is possible · an actor or pressure gains means to act · a channel opens. One check per transition. Never: round count, idleness, quiet, wish for content.
+TRIGGER: each daypart the PC spends in a zone (surface) · contact with a zone's undercurrent. Never: round count, idleness, quiet, wish for content. Actors, pressures, and pending consequences move by §13.1 and §13.2 FIRE, never here.
 
 ```text
-1 SELECT recorded actors, pressures, pending consequences with BOTH reason and
-  opportunity to act now, wherever they are; dues by §13.2 FIRE
-2 EACH  resolve from own state, norms, canon (§13.1): decided, rolled only per §13.1;
-  uncertain execution → §10; size from its capability and intent, never the
-  weight table; reaches the PC only by real channels (I5)
-3 SURFACE  one roll per zone per daypart the PC spends there, whatever step 2
-  produced; an active quest, job, or travel to it never cancels it; helper
-  `encounter --surface N`
-  surface       +3   +2   +1    0   −1   −2   −3
-  occurs 1d10    —   10   10   9+   8+   7+   6+
-  hostile ≤      —    0    1    2    4    6  all
-  size die       —  low    ·    ·    ·   +1   +2
-  POOL  zone encounters of the rolled kind (hostile | ordinary) fitting time and
-  location; none of that kind → the other; empty → nothing
-  SIZE  size die places the cause in the challenge band: 1–5 low · 6–8 middle ·
-  9 top · 10 top + a rare cause the band allows
-4 UNDERCURRENT  on contact: PC enters one of its sites · is out during its hours ·
+SURFACE  one roll per zone per daypart the PC spends there; an active quest, job, or
+  travel to it never cancels it; helper `encounter --surface N` (or `dues --since`)
+  gives occurs, kind (hostile | ordinary), and where in the band (low · middle ·
+  top · top + a rare cause the band allows); +3 Sanctuary never rolls
+  POOL  zone encounters of the rolled kind fitting time and location; none of
+  that kind → the other; empty → nothing
+UNDERCURRENT  on contact: PC enters one of its sites · is out during its hours ·
   acts on its trail · its pressure advances while the PC is there; one roll per
-  zone per daypart; helper `encounter --depth N`: occurs 9+ · 8+ · 7+ at −1 · −2 ·
-  −3; result 1d10 + |depth|: ≤6 sign · 7–9 brush · 10–11 incident · 12+ hostile
+  zone per daypart; helper `encounter --depth N` gives occurs and the result
   sign  wrongness a local would misread
   brush  contact without harm → horror check (§13.10)
   incident  something happens to someone → horror check
   hostile  it acts against those present (§12) → horror check
   POOL  BACKGROUND undercurrent_pool, by result
-5 ELSE nothing happens
+ELSE  nothing happens
 CAUSE  chosen from the pool without looking at player cargo, secrets, plans; committed
   before its evidence (I2); acts from its own nature: fight, flight, parley (§10,
   §12); quest only if a bounded undertaking exists (§14)
@@ -954,29 +947,32 @@ NO LEVELS qualitative band ("ordinary work, occasional serious danger"), no numb
 
 ```text
 STABILITY  surface (−3..+3), undercurrent (none..−3), nerve (−3..+3, §13.10):
-  {baseline, current, tension}; baseline = what it normally is, from recorded
-  facts (a zone: the facts behind its band, never player level; a person: their
-  history); current starts at baseline; unset → derived and committed on first
-  contact
-TENSION  events add marks (helper `stability`); reaching the boundary's marks → current
-  one step, tension 0: 0↔±1 3 · ±1↔±2 5 · ±2↔±3 6; a mark against tension's sign
-  cancels first
-BASELINE  acts move current toward baseline only; past it takes a lasting cause
-  (garrison posted, ward built, breach that never closes), which moves baseline
-ZONES  one step per zone per week, extra marks wait; a building or room names its
+  {baseline, current, tension}, a zone layer also `stepped: <day_index>`;
+  baseline = what it normally is, from recorded facts (a zone: the facts behind
+  its band, never player level; a person: their history); current starts at
+  baseline; unset → derived and committed on first contact
+TENSION  events add marks; helper `stability` steps current when the boundary's marks
+  are reached (more marks for the outer steps); marks past it stay in tension;
+  a mark against tension's sign cancels first
+BASELINE  an act that improves a layer stops at its baseline; past it takes a
+  lasting cause (garrison posted, ward built, breach that never closes), which
+  moves baseline; worsening has no baseline limit
+ZONES  one step per zone layer per week (`stepped` records the day), extra marks
+  wait in tension; a building or room names its
   zone (zone: <id>) and uses it; a location with its own control (keep, vault)
   may be its own zone
 SURFACE  how the zone behaves openly: +3 Sanctuary · +2 Secure · +1 Calm ·
   0 Ordinary · −1 Uneasy · −2 Unstable · −3 Collapsed
   marks: its pressure advances 1, signed by direction (§13.5) · its cover fails
   −1 · the hidden goes public −2 · a visible cause removed +1 · a decisive act +2 ·
-  each month no pressure touches it, 1 toward baseline
+  each month (§13.2 ADVANCE) no pressure touched it, 1 toward baseline
 UNDERCURRENT  what is hidden there: {…, sites, hours, nature}; none · −1 · −2 · −3
   marks: its pressure advances 1, signed by direction (§13.5) · a hidden cause
   removed +1 · a decisive act +2; never heals with time
 COVER  an actor (the Foundation, a city office, plain denial); its covering is its
   plan; first receiver of witness reports of the hidden (§13.7); its plan failing →
   surface marks; no cover → undercurrent −2 or deeper takes surface −1 each month
+  (§13.2 ADVANCE)
 SIGNS  each state shows signs someone could notice; the player learns it from them
   (I5)
 ```
@@ -1038,12 +1034,12 @@ EVIDENCE baseline: competent + relevant skill + examining the right spot → fou
 SOLVABLE  a case tied to a quest needs ≥3 independent routes the player can reach
   from where they stand (different person, location, or record); routes that pass
   through one shared door, record, person, or access the player lacks count as one
-  fewer than 3 → its actors' plans carry a lead to the player through real
-  channels (I5): someone searching, a witness who comes forward, a nervous
-  accomplice, a client who calls
-CHECK  at creation and when a new quest attaches to it
+  fewer than 3 → add routes from its actors' own plans (someone searching, a
+  witness who comes forward, a nervous accomplice, a client who calls), committed
+  in the case before play reaches it; never added during play (I3)
+CHECK  at creation, and before a quest attaches to it (§14.2); never in play
 LIMIT  routes the player's own failures close stay closed (I11); governs how cases
-  are built, never a rescue after a fail
+  are built, never a lead, hint, or rescue after creation or after a fail
 STUCK  no reachable route left on an active quest, or player asks → known leads as
   numbered options (what, where, rough cost/risk); never a hidden route or new
   fact (I9); a menu, not a limit: free wording stays a normal action (§7)
@@ -1067,7 +1063,8 @@ RESPONSE within actual reach (§13.1 ZONE); costs people,
   money, attention; follows own priorities, not
   severity; officials may be corrupt, indifferent, overworked, invested; pursuit
   may stop when costly or run long when personal
-MACHINERY witness = channel, responder = actor deciding from own state; enters §13.3 step 1
+MACHINERY witness = channel, responder = actor deciding from own state when the report
+  reaches it (§13.1 REACT)
 ```
 
 ### 13.8 Character and values
@@ -1099,7 +1096,7 @@ DERIVE  requirements, paths, trainers, resources, contacts from canonical source
   not stored
 TIME  never advances it unless a recorded actor or pressure acts on it
 READ BY  existing actor who knows the direction and has own reason (teacher's test,
-  guild door, rival challenge, patron's favour) in §13.3 step 1
+  guild door, rival challenge, patron's favour) by §13.1 REACT and PLAN
 LIMIT  supplies no actor, opportunity, resource (I3, I5); none who knows and cares →
   nothing, however long
 CLOSE  advances only by own valid transitions; completed/abandoned recognised at a
@@ -1244,7 +1241,7 @@ PAYOFFS  derive from actual outcome + canonical sources; filter by ownership,
   books/records grant possession/access; expertise only via real learning
 DISCHARGE  an owed entry needs payer ability + willingness, contact/channel, met
   conditions; check on meeting the payer, a condition coming due, or a
-  delivery underway (§13.3); deliver once at owner, clear (I7); payer
+  delivery underway (§13.2); deliver once at owner, clear (I7); payer
   can't/won't → entry stays, changes, or fails (state, not error; I11)
 FATIGUE  endurance shifts limits, not infinite unless recorded; wakefulness,
   repeated fighting, forced travel, wounds, toxins, cold or heat, poor rest
@@ -1293,8 +1290,8 @@ EXPORTED  host cannot persist → due/requested save produced that same turn; sa
   plainly, continuing in a new chat depends on the player keeping it
 DELIVERY  one file save_<campaign>_R<round>.md (chapter 2 on: save_<campaign>_ch<N>_R<round>.md): readable save (SAVE_TEMPLATE Part A) + capsule
 (EXPORTED) built from previous save + every GM-Δ since, validated against the previous
-  save (valid: true); gap rounds → continuity_status.degraded; hidden content only in the capsule,
-  never reply text; no files → inline; procedure: AI_RULES
+  save (valid: true); gap rounds → continuity_status.degraded; hidden content only in the chain file
+  and capsule, never reply text (§2.2); no files → inline; procedure: AI_RULES
 ```
 
 ### 16.2 New game
@@ -1485,13 +1482,14 @@ AUTHORITY  carried records are established: §16.6 never revises them; new
 
 ---
 
-# PART 2 — OPTIONAL MODULES
+# PART 2 — MODULES
 
 ```text
-ACTIVATION  BACKGROUND or recorded configuration only; a save preserves, never
-  creates; disabled module leaves no trace on capability, rewards, output
+ACTIVATION  every module is on unless BACKGROUND sets it false; a save preserves the
+  setting, never changes it; a disabled module leaves no trace on capability,
+  rewards, output
 enabled_modules: {numeric_level_xp, flexible_item_entitlement}
-  default false; endings are core (§14.3); equipment tiers are core (§10.6)
+  default true; endings are core (§14.3); equipment tiers are core (§10.6)
 ```
 
 ## A. Numeric level and XP
@@ -1522,12 +1520,9 @@ CHALLENGE  fixed before any dependent roll:
 ```
 
 ```text
-BaseXP(R) = 20 + 6R  R = actual challenge
-D = R − P  P = participant's overall level
-D ≤ −5 → ×0 | −4..−3 → ×0.50 | −2..−1 → ×0.75 | else ×1.00
-RelevantBaseXP = round_half_up(BaseXP × learning multiplier)
-scope: routine ×0 | minor ×0.50 | meaningful ×1 | major ×1.25 | exceptional ×1.50
-ROUNDING  half-up both times, never banker's; above-level not multiplied again
+AWARD  helper `xp --r <actual challenge> --p <participant level> --scope <scope>`;
+  scope: routine · minor · meaningful · major · exceptional; the GM picks R and
+  scope, the helper owns the formula, gap multipliers, rounding, and level table
 NOT A POOL  every materially contributing tracked participant gets full XP; never
   divided by party size; no XP ledger for untracked actors
 APPLY(amount, source):
@@ -1540,16 +1535,6 @@ APPLY(amount, source):
 PASS  scope resolves → every tracked participant (player + tracked companions) in
   one pass, output together
 ONLY  no other rule mutates XP
-```
-
-```text
-XP to next level (key = current level)
-1:126  2:164  3:220  4:297  5:400  6:534  7:705  8:918  9:1181
-10:1500 11:1883 12:2339 13:2875 14:3500 15:4225 16:5059 17:6012
-18:7096 19:8321 20:9700 21:11245 22:12969 23:14885 24:17008
-25:19350 26:21928 27:24755 28:27849 29:31225 30:34900 31:38891
-32:43216 33:47892 34:52939
-35: cap, no next; persisted XP 0
 ```
 
 ```text
@@ -1579,10 +1564,10 @@ PURPOSE  buys back preparation play skipped (a GM fast-forward, a step the playe
   nothing (I3)
 STATE  player.item_points {current, max, rank}; integers ≥ 0; not money, XP,
   capability, loot; a spend covers the money cost (no money spent)
-MAX  by rank, from social standing and income: outcast 20 · commoner 40 ·
-  working_adult 60 · well_off 90 · elite 120; changes only when rank or income
+MAX  by rank, from social standing and income: outcast · commoner · working_adult ·
+  well_off · elite (helper `points --rank`); changes only when rank or income
   changes in play (new job, promotion, lost status), from then on
-REFILL  each good rest (§3): current += max ÷ 5 (round down), never above max
+REFILL  each good rest (§3): a fifth of max, never above max (helper `points --refill`)
 COST  small item or prep (rope, torch, a tip) 1 · solid item or prep (lockpicks,
   horse hire, a night's watch on a house, a real bribe) 3 · weapon or armour
   T1 10 · T2 30 · tool or kit T1 5 · T2 15 · BACKGROUND tool_prices: cheap → tool

@@ -70,6 +70,8 @@ v6.0, Oct 27 → v6.0, Oct 29
     dropped; what they recorded lives in credit and grievance (engine §13.1
     STANDING); a record of notable acts keeps its one-line entries, never a number
   stepped  a zone layer without it → not stepped this week
+  anchors  Last Train world_state.outside_anchors.<id> → npcs.<id>.state.anchors
+    (pc → player.anchors)
 ```
 
 ## Changes
@@ -107,8 +109,13 @@ v6.0, Oct 29 update (same version; from a review and a legacy sweep)
           (encoded entries, `- id:` capsules, invented calendars, `injuries`)
   templates  modules default true; development_threads shape; `stepped` on zone
           layers; legacy save lines removed
-  backgrounds  version ids, scores, misfiled threads, old wording, CoC ENEMIES COME
-          and Lin's due, Last Train anchors moved to each actor
+  backgrounds  all ten: scores dropped (SCP trust and probation-file number, Last
+          Train aboard_trust, Cyberpunk tallies and downtime counter); lore and
+          notes filed as threads moved to setting notes; calendar dues written as
+          Day N (Skyrim, Last Scion, Tarnstead: the helper reads Day N and ISO);
+          section references; "injury" → lasting condition; CoC ENEMIES COME
+          removed and Lin given a due; Last Train anchors held by each actor;
+          background_ids kept as they are (saves point to them)
   migration  rules for files older than v6.0 dropped except "< v6.0"
 v6.0, Oct 27 update (same version)
   engine  §15 PRICES: a price, wage, or payment the BACKGROUND list doesn't give

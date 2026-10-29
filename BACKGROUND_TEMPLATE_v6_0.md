@@ -29,9 +29,8 @@ ORDER  1 build the hidden reality first (§0.1)
   2 let complexity emerge from independently motivated actors (§0.2, §0.3)
   never start by deciding how many twists, conspiracies, or false leads the PC
   must meet
-  3 shape it into storylines and a spine (§0.4), then the player and the opening
-SELECTIVE  use ideas where the story benefits; never demonstrate all of them in
-  one background
+  3 shape it into storylines (§0.4) and quest spines (§0.5), then the player and
+  the opening
 TEST  the design yields several plausible explanations, independently motivated
   NPCs, genuine connections, and consequences that continue even if the PC
   misunderstands everything; false connections are required only when M4 is
@@ -64,12 +63,15 @@ LIMIT  D1–D7 are the information a complex background needs to simulate
 ### 0.2 Mystery principles
 
 ```text
-COUNT  new background: helper `roll 1d7` + 2 = N (3–9) principles
+COUNT  new background: helper `roll 1d5` + 4 = N (5–9) principles
 PICK  new background: helper `roll 1d9` until N distinct numbers → M#; never
   pick by habit · reworking an existing background: no dice; pick the
   principles that fix what it lacks · record in §1 design_logic
-APPLY  picked = deliberate design emphasis, applied meaningfully, not merely
-  mentioned; unpicked may appear naturally, never as extra requirements
+WEIGHT  new background: helper `roll 1d3` = W (1–3); roll among the picked until
+  W distinct → weighted M#; reworking: weight by need · record in §1 design_logic
+APPLY  picked = applied meaningfully, not merely mentioned; weighted = the
+  background is built around them; unpicked may appear naturally, never as
+  extra requirements
 FLOOR  M2 objective truth and M5 independent motives hold in every background
   whatever is picked: the pick sets emphasis, never which part of objective
   reality or world consistency may be skipped
@@ -248,9 +250,9 @@ FACTIONS — nobody controls the organisation as completely as they think
 ### 0.4 Story shape
 
 ```text
-SPINE  premise + question (§7) first: what this campaign is about, one line each;
-  every storyline bears on the question or on the PC's own life; one that
-  touches neither is cut
+CAMPAIGN  premise + question (§7) first: what this campaign is about, one line
+  each; every storyline bears on the question or on the PC's own life; one that
+  touches neither is cut; background is 1 big quest → question = its spine (§0.5)
 SITUATION, NOT PLOT  write what each actor does if the PC never acts (D4); never
   a sequence of scenes the PC must walk through
 STORYLINE  one reality, understandable alone (M6): its truth (§9), its actors (§11),
@@ -271,6 +273,33 @@ OWN PEOPLE  the PC has a life, not only contacts: a few people they share histor
   with (family, old friends, a mentor, an ex), each with a bond (§11)
 ```
 
+### 0.5 Quest spine
+
+```text
+SPINE  every quest the PC enters has exactly 1 spine; PC role stays free: the
+  spine attaches to the quest, never the PC
+PARTS  question: 1 question or goal statable in one sentence
+  stake: why this PC cares → stake_hooks, one per likely PC role; GM attaches
+    the fitting hook when the PC enters the quest
+  pressure: moves by the world's own logic (D4); never an imposed timer or countdown
+  end: visible end point; done may arrive with the truth still unclear (M7)
+SCOPE  background is 1 big quest → 1 spine for the whole background (Die Hard,
+  Jaws) · main + side main quests → each quest its own spine (The Witcher 3,
+  Red Dead Redemption 2)
+SOURCE  copied/modified story → take that story's spine; change it only as far as
+  the modifications require · original → generate topic options on the spot,
+  helper roll among them, build the spine from the result; topic = a real fact,
+  a mode (tone: comedy, dread, …), or a rule · record in §1 design_logic
+BUILD  write the spine from this background's own world first; only then check
+  it against the reference works for structure; references show structure only:
+  never reuse their plot, characters, setting, or spine
+TRANSPLANT  works unchanged in another setting, or reads like a reference with
+  names swapped → discard, build again
+THREADS  hang on the spine, never replace it: many threads, 1 spine per quest
+HIDDEN  spine lives in the quest record (§8); the player-facing hook is written
+  separately and never reveals locked truth
+```
+
 ---
 
 # PART A — FRAME
@@ -281,7 +310,7 @@ OWN PEOPLE  the PC has a life, not only contacts: a few people they share histor
 background_id:        # required; every save's background_ref points here
 provenance:           # authored | generated | mixed
 requested: []         # generated or mixed: what the person asked for, in their terms
-design_logic:         # Part 0 only: {mystery: {rolled_n: , picked: [M#]}, lenses: [romance|combat|factions]}
+design_logic:         # Part 0 only: {mystery: {rolled_n: , picked: [M#], weighted: [M#]}, spine_topic: , lenses: [romance|combat|factions]}
 chapter:              # campaigns played in chapters only: {campaign: , n: , previous: <background_id or none>, end: }
 replaces: {}          # only for a setting with its own system: {<engine part>: <this background's rule>} (engine §4)
 ```
@@ -396,7 +425,7 @@ A style seed only: it never adds facts, and the initial theme never regenerates 
 
 # PART B — THE SITUATION
 
-## 7. Spine
+## 7. Campaign premise
 
 ```yaml
 premise:              # one line: who the PC is, where, and the situation they are in
@@ -414,7 +443,10 @@ storylines:           # index only, never an owner (engine §6 INDEXES)
 ## 8. Quests, threads, pressures
 
 ```yaml
-quests: {}
+quests:
+  quest_id:
+    spine: {question: , stake_hooks: {<role>: <hook>}, pressure: , end: }   # GM truth (§0.5)
+    hook:                          # player-facing; never reveals locked truth
 development_threads:
   thread_id: {direction: , origin: , state: , status: }   # a player-development direction (engine §13.9)
 

@@ -17,7 +17,7 @@ Save timing, validation, and load authority belong to engine §16.
 
 # PART A — READABLE
 
-Never place an undiscovered cause, hidden actor state, a secret trajectory, a hidden layer's tension or an undiscovered clock the player has not inferred, a hidden ending condition, or internal reasoning in this part.
+Never place an undiscovered cause, hidden actor state, a secret trajectory, a hidden layer's tension or an undiscovered clock the player has not inferred, a hidden ending condition, a quest spine, or internal reasoning in this part.
 
 ## 1. Current state
 
@@ -200,6 +200,9 @@ quests:
     type: SHORT | LONG | CHAIN
     source_ref:
     objective:
+    spine: {question: , stake_hooks: {}, pressure: , end: , attached: }   # GM truth (BACKGROUND §0.5);
+                                   # attached = the stake hook set when the PC entered the quest
+    hook:                          # player-facing; never reveals locked truth
     quest_level:                   # committed; preserved while still available
     status: available | active | completed | failed | abandoned | blocked
     participants: []

@@ -38,10 +38,10 @@ HORRORS  a drowned body, plainly murdered: base 10, 0/1d3 · a ritual seen: base
   · one of the Drowned Kin up close: base 14, 1/1d6 · reading the bell's other script
   in full: base 13, 1d3/1d6 + mythos_knowledge +2 · the Old Man glimpsed: base 17,
   1d6/1d20 · the same horror again: loss halves (round down), never below 0
-BREAK  5+ lost in one check → temporary madness: one condition injury with a home and an
+BREAK  5+ lost in one check → temporary madness: one lasting mind condition with a home and an
   effect (e.g. home: sensory — "lapping water: lose the first action of the exchange"),
   until a full night's rest in safety; 20+ lost within one in-game week → an indefinite
-  injury, removed only by treatment (a physician's weeks, an asylum, or leaving Shanghai)
+  mind condition, removed only by treatment (a physician's weeks, an asylum, or leaving Shanghai)
 ZERO  sanity 0 → the PC is permanently mad: an ending path, weighed like any other
 RECOVER  +1d4 when a thread the PC worked on closes well; +1d6 when the Brotherhood is
   ended; never above max
@@ -49,7 +49,7 @@ KNOWLEDGE  mythos_knowledge rises only from reading Mythos texts or understandin
   Old Man (+1 to +5); it lowers max sanity and can be used as a skill for Mythos lore
 ```
 
-### Quest structure (setting-specific; engine §13.5 governs the rest)
+### Quest structure (setting-specific; engine §14 governs the rest)
 
 ```text
 STARTERS  dated, max 3 — m1 Day 0 · m2 Day 3 evening · m4 Day 8
@@ -57,9 +57,6 @@ TRIGGERED  m3 opens on its trigger; m5 opens when Abacus Cao first deals with th
   odd_jobs any time
 TIDES  the spring tides of this background fall on Day 4, Day 18, Day 32 and Day 47
   (night, ~23:00, Pudong); they are the main storyline's clock and never move
-ENEMIES COME  every enemy with a due turns up in person at it, where the PC is or where
-  their plan takes them; a fight happens if the scene calls for one — never a report
-  of what they did off-screen when the PC could be there
 CHAPTER END  m3 closes, or the night of Day 47 resolves — whichever first; then the full
   weigh-up and the prompt to continue (engine §16.8)
 ```
@@ -366,11 +363,7 @@ quests:
     quest_level: 1
     status: available
 
-development_threads:
-  pc_reputation:
-    note: who in the city knows the PC's name and for what; a tabloid story can make or ruin it
-  pc_and_yuhua:
-    note: the former sweetheart; neither has finished it; her father is why it ended
+development_threads: {}
 
 active_world_pressures:
   tide_hunger:
@@ -675,7 +668,7 @@ npcs:
     state:
       position: Natalia Orlova's room, Hongkew
       plan: hide until the gang forgets and the grey man stops looking; maybe go to Ningbo
-      due: incidental — stays hidden; flees if anyone knocks at night
+      due: Day 5 — Natalia makes him choose (Ningbo or face it); flees if anyone knocks at night
     drives: {wants: [to be safe, to be believed], fears: [Cao, the grey man, the river]}
     relationships: {natalia_orlova: {tie: lover, attitude: devoted and ashamed}}
     knowledge: {facts: {tide_night: saw a bound woman, lanterns, a ringing bell, something huge rising; saw no faces}}
@@ -1254,9 +1247,18 @@ world_state:
 - **Opening.** Monday 09:00, the PC's office. The widow Lin on the stairs with 10 yuan in a handkerchief. An ordinary missing-person job; nothing on the page points at the river. Let the case be a case.
 - **What the PC sees vs what is true.** Every `evidence` entry has `shows` (what the PC can actually find) and `true_cause` (GM-only). Narrate only `shows`. Never put a `true_cause`, a name from `prior_events`, or anything marked GM-ONLY on a page, in an NPC's mouth, or into a roll's stakes. An NPC says only what their own `knowledge` holds. A roll asks "what does the PC notice here", never "does the PC realise the answer". One finding per action; never chain lookups the player didn't ask for.
 - **No correction (M3).** If the PC blames the gang for the river bodies, the Society for everything, or Master Qiu's water ghost, the world answers what the PC does; nobody arrives to explain the truth. Pryce and the tabloids are often wrong too.
-- **Fights are real (M8, combat lens).** Cao's men at the widow's stall (Day 1), Jiang at Natalia's door (Day 6 night), the Brotherhood on the Day 4 tide, the gang's "informer" visit after Day 16 — each happens in person when its due comes and the PC is there or can be. Fighting is always a valid route. A won fight need not win the situation: Jiang may be driven off and still take Lin; Cao's men beaten means Cao returns with more. Morale per `norms`.
+- **Fights are real (M8, combat lens).** Cao's men at the widow's stall (Day 1), Jiang at Natalia's door (Day 6 night), the Brotherhood on the Day 4 tide, the gang's "informer" visit after Day 16 — each happens where its plan takes it when its due comes; the PC meets it if there or on the way there (engine §13.2 FIRE), and hears of it through real channels otherwise. Fighting is always a valid route. A won fight need not win the situation: Jiang may be driven off and still take Lin; Cao's men beaten means Cao returns with more. Morale per `norms`.
 - **Factions lens.** The Brotherhood is mostly frightened poor men who think they are worshipping He Bo; Sheng and Jiang want different things from the same rite; the Fortune Hall and the SMP each have a man selling to the other side.
 - **Sanity.** Roll it only for the listed horrors and by the rule; never skip it, never add it to ordinary violence. The Old Man is never described whole — a back like a hill, an eye in the mud, the river moving the wrong way.
 - **Sheng is breakable.** He is a human chandler; he can be shot, arrested, shamed in the press or bargained with. Killing him does not end the rite — the bell does.
 - **No paperwork scenes.** Police statements, newspaper copy, rent and fees stay off screen. Socials (Tang's drinks, Auntie Zhou's mahjong, the bookshop) auto-resolve in the background unless the player chooses one; never a choice list or a quest.
 - **Never at the end.** At the chapter end (m3 closes or Day 47 resolves) weigh everything the PC did — who was saved, who drowned, who the PC blamed, what it cost their mind — then give the future and prompt to continue. Never write "the end".
+
+### Reputation and Yuhua (GM notes, not threads)
+
+```text
+pc_reputation:
+  note: who in the city knows the PC's name and for what; a tabloid story can make or ruin it
+pc_and_yuhua:
+  note: the former sweetheart; neither has finished it; her father is why it ended
+```

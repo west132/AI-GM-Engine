@@ -19,7 +19,7 @@ requested:
   - Bandits are robbers with low morale; they break, run, or beg once a fight turns
   - Torvald starts at level 5 with a few fitting T2 skills
 design_logic: {mystery: {rolled_n: null, picked: [M2, M5, M8]}, lenses: [combat, factions]}
-# v5.4 update of a canon background: principles picked, not rolled (Part 0 PICK)
+# canon background: principles picked, not rolled (Part 0 PICK)
 chapter: {campaign: skyrim_dragonborn, n: 1, previous: none, end: "Alduin driven off the Throat of the World with Dragonrend, or killed in Sovngarde, whichever first"}
 
 # 1. Setting
@@ -152,7 +152,7 @@ content_bounds:
   excludes: []
   notes: Adjust before play if there is anything you do not want shown.
 
-# 5. Optional modules
+# 5. Modules
 enabled_modules:
   numeric_level_xp: true
   flexible_item_entitlement: true
@@ -214,7 +214,7 @@ active_world_pressures:
     state: {front: stalemate across the holds, notes: Ulfric's capture threatens to end it}
     actors: [imperial_legion, stormcloaks]
     trajectory: Legion advantage if Ulfric dies; escalation if he escapes
-    clock: {name: War escalates to open battle for the holds, segments: 8, filled: 3, pace: every month while a real campaign is under way, due: "Year 201, Heartfire 17", on_fill: The Legion and Stormcloaks move to besiege each other's held cities; neutral holds are forced to pick sides}
+    clock: {name: War escalates to open battle for the holds, segments: 8, filled: 3, pace: every month while a real campaign is under way, due: "Day 31 (Heartfire 17)", on_fill: The Legion and Stormcloaks move to besiege each other's held cities; neutral holds are forced to pick sides}
     discovered_information: {}
   dragon_return:
     name: The Return of the Dragons
@@ -222,7 +222,7 @@ active_world_pressures:
     state: {dragons: none risen yet; Alduin is abroad}
     actors: [alduin]
     trajectory: Alduin raises dragons from their burial mounds one at a time — few at first, more over the months (canon_course)
-    clock: {name: Dragons reclaim the skies, segments: 10, filled: 0, pace: every 2 weeks while Alduin is active and can reach burial sites, due: "Year 201, Last_Seed 31", on_fill: Enough dragons have risen that holds cannot defend their roads; travel and trade collapse and Alduin moves to feed on the souls of the dead}
+    clock: {name: Dragons reclaim the skies, segments: 10, filled: 0, pace: every 2 weeks while Alduin is active and can reach burial sites, due: "Day 14 (Last Seed 31)", on_fill: Enough dragons have risen that holds cannot defend their roads; travel and trade collapse and Alduin moves to feed on the souls of the dead}
     discovered_information: {}
 
 # 9. Hidden truth at Round 0
@@ -256,7 +256,7 @@ npcs:
     state:
       status: in Solitude; expects his son to be in Windhelm within days
       plan: run the house's trade; on Bjorn's report, send men and letters through Castle Dour to find and free Torvald
-      due: when Bjorn reaches Solitude (about Year 201, Last_Seed 27)
+      due: when Bjorn reaches Solitude (about Day 10 (Last Seed 27))
     drives: {wants: his house's standing and trade to grow, fears: scandal, loyalties: Jarl Elisif, the Empire}
     relationships:
       player:
@@ -277,7 +277,7 @@ npcs:
     state:
       status: in Solitude, at the warehouse by the East Empire docks
       plan: keep the house's books straight while his father courts the Jarl; go east himself if his father won't
-      due: when Bjorn reaches Solitude (about Year 201, Last_Seed 27)
+      due: when Bjorn reaches Solitude (about Day 10 (Last Seed 27))
     drives: {wants: the house steady, his brother home, fears: losing face at court, loyalties: his father, his brother}
     relationships:
       player:
@@ -298,7 +298,7 @@ npcs:
     state:
       status: escaped the ambush on foot in the dark; making his way back toward Solitude to report
       plan: reach Solitude and tell the Thane; then go back for the boy with whatever men he is given
-      due: reaches Solitude about Year 201, Last_Seed 27
+      due: reaches Solitude about Day 10 (Last Seed 27)
     drives: {wants: to get word to the Thane, fears: being blamed for losing the boy}
     relationships:
       player:
@@ -444,7 +444,7 @@ npcs:
     state:
       status: returned from beyond time; flying toward Helgen
       plan: burn Helgen in passing, then raise the dead dragons one at a time (canon_course)
-      due: when the prisoners are gathered at the block in Helgen; then Mirmulnir's raising about Year 201, Last_Seed 20
+      due: when the prisoners are gathered at the block in Helgen; then Mirmulnir's raising about Day 3 (Last Seed 20)
     drives: {wants: to raise the dead dragons and reclaim dominion over the world}
     relationships: {}
     knowledge: {facts: {}, channels: []}

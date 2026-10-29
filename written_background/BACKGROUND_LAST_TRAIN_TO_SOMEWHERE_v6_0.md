@@ -73,7 +73,7 @@ SANCTUARY  most carriages, most hours, are ordinary; never add danger just to ke
 
 ```text
 ANCHORS  every outside-born person aboard holds outside anchors — clear memories of
-  home (world_state.outside_anchors); Vesmark-born people have none and do not fade
+  home (each one's `anchors`); Vesmark-born people have none and do not fade
 FADE  at each departure, each outside-born passenger loses one anchor (GM picks the
   one least used since the last departure); photos and notes of it go blank too
 SHARED  an anchor told in detail to another passenger since the last departure, and
@@ -159,7 +159,7 @@ UNDESIGNED  beyond the stations written here, the GM designs each one ≥1 in-ga
 
 On arrival at Halvane Midline (Day 8) the crews change and the train stands 24 hours. The scene runs fully: what the PC did on the journey so far is weighed by the people aboard, credit and grievance alike (engine §14.3 REVIEW). **The campaign does not end there.** The GM prompts: *continue as is, or extend* — an extension is a new chapter built by the chapter rebase (engine §16.8) from this chapter's final state (new stations, threads carried over, fates carried over). If the PC ever uses Rule 4 and goes home, run a full epilogue — who they left aboard, what they still remember — then prompt continue (as someone else aboard) or end.
 
-### Pressure and quest endings (setting-specific; engine §13.5 governs the rest)
+### Pressure and quest endings (setting-specific; engine §13.5 and §14 govern the rest)
 
 - `kroll_collection`: retires when Kroll's dream breaks at Halvane, or he is exposed and stripped of what he took, or he is put off the train. Exposure always leaves stolen tickets recoverable.
 - `relief_conductor`: never retires.
@@ -297,7 +297,7 @@ storylines:
     kind: main
     line: The return half is a dream; the real way home is Rule 4, hidden in fragments between the train's rules,
       and it needs a home you still remember.
-    refs: [locked_case_truths.rule_four, locked_case_truths.train_rules, player.knowledge.train_rules, world_state.outside_anchors,
+    refs: [locked_case_truths.rule_four, locked_case_truths.train_rules, player.knowledge.train_rules,
       quests.the_missing_rule]
   kroll_collection:
     kind: wrongdoer
@@ -308,7 +308,7 @@ storylines:
   the_fade:
     kind: main
     line: Every stop takes a piece of home from every outside-born passenger; those who run out vanish into Vesmark.
-    refs: [world_state.outside_anchors, locked_case_truths.vesmark, npcs.greta_haldane, npcs.hollis_grey, npcs.ilse_varga]
+    refs: [locked_case_truths.vesmark, npcs.greta_haldane, npcs.hollis_grey, npcs.ilse_varga]
   relief:
     kind: side
     line: A conductor no one hired walks some nights and punches tickets. GM knows why; the passengers don't.
@@ -436,23 +436,7 @@ quests:
     end: CHAPTER BREAK — the journey so far is weighed; then the GM prompts continue or extend (new chapter by the chapter
       rebase, engine §16.8). Never a forced campaign end.
 
-development_threads:
-  station_seeds:
-    note: Seeds only for later stations the GM designs (station DISTINCT rule); use, change or drop.
-    seeds:
-      - a town where a promise, once spoken, is physically kept by the speaker's body
-      - a market where prices are paid in hours of your remaining day
-      - a village where only the youngest adult present may give orders
-      - a station that is ordinary in every way, and that is what frightens the passengers
-      - a station on a past lap — 1974, the night of the referendum
-  passenger_lore:
-    note: talk in the dining car; may be wrong; never a briefing
-    lines:
-      - '"Keep your return half safe — it''s honoured at the terminus." (the dream; everyone long aboard believes it)'
-      - '"Never sleep facing the engine." (habit; nobody knows why)'
-      - '"If a stub turns up in your pocket, don''t sleep." (true, half-understood)'
-      - '"The last serving is cursed." (Agathe''s joke card)'
-      - "Halvane changes crews and the coffee gets worse."
+development_threads: {}
 
 active_world_pressures:
   kroll_collection:
@@ -540,7 +524,7 @@ locked_case_truths:
       ticket: a punched or unpunched ticket of the holder's own (the outbound half; the return half does nothing)
       relief: only the Relief counts as "the conductor no one hired"
       watch: the holder must keep their eyes on the ticket through the punch
-      station: the holder must still hold the anchor of a real-world station (outside_anchors) and say its name
+      station: the holder must still hold the anchor of a real-world station (their `anchors`) and say its name
       result: the holder is set down at that station in the real world, on the date they boarded plus the days they
         spent aboard; what they remember of the train fades over the following week unless written by hand
       others: one ticket, one person; a passenger can't use another's anchors
@@ -591,8 +575,7 @@ locked_case_truths:
     prior_events:
       - He took Ilse's ticket years ago by "re-validation"; R2 is her warning.
       - Bram Tolley owes him a debt of work and favours from cards.
-    state: {tin: biscuit tin of return halves and two whole tickets under the seat of carriage 2 compartment 5,
-      anchors: Harrogate station and his mother's grave}
+    state: {tin: biscuit tin of return halves and two whole tickets under the seat of carriage 2 compartment 5}
     evidence:
       uniform: burgundy, not green; a Night Mail badge.
       tin: 31 return halves, every one with a name pencilled on the back.
@@ -632,6 +615,7 @@ npcs:
     in_disorder: neither
     state:
       position: with the PC, carriage 3
+      anchors: [Leeds railway station, her mother's kitchen radio, the van, her first gig, the smell of the canal, her flat's red door]
       status: outside-born, six anchors
       plan: record Vesmark for an album; would trade a "spare" ticket half for a sound she wanted
       due: Day 2 morning asks the PC to help record breakfast in the dining car
@@ -739,6 +723,7 @@ npcs:
     in_disorder: neither
     state:
       position: dining car corner table; sleeper compartment 1
+      anchors: []
       status: boarded the Night Mail in 1961; no anchors left; does not fade (the line counts her as its own)
       plan: play cards, watch new boarders, warn them her way without explaining
       due: Day 1 23:50 at the corner table; tells the PC she has been aboard "since before this train"
@@ -762,6 +747,7 @@ npcs:
     in_disorder: thrives
     state:
       position: carriage 2, compartment 5
+      anchors: [Harrogate station, his mother's grave]
       plan: post R7 after departure; walk carriage 3 in burgundy at 01:30 Day 2; trade with Noor (offers a wax cylinder of
         the Night Mail whistle); have Bram lift a ticket; present his halves at Halvane
       due: Day 1 23:59 posts R7; Day 2 01:30 first walk
@@ -798,6 +784,7 @@ npcs:
     in_disorder: suffers
     state:
       position: carriage 3, compartment 2
+      anchors: [Kraków Główny station, his father's workshop, his classroom, the wedding song, his mother's voice]
       status: outside-born; carries his father's ashes to scatter at Stillwater, his father's birthplace
       plan: scatter the ashes; make the trip a fresh start
       due: Day 2 breakfast explains the diesel to anyone near
@@ -820,6 +807,7 @@ npcs:
     in_disorder: neither
     state:
       position: carriage 3, compartment 2
+      anchors: [Kraków Główny station, her studio window, her sister, a summer lake, her first drawing prize]
       status: outside-born; separate small bag packed; a letter written
       plan: get off at Kessel Halt and stay in the room she has arranged by letter with Hanne Østergaard; leave the letter
       due: Day 2 Kessel departure
@@ -842,6 +830,7 @@ npcs:
     in_disorder: neither
     state:
       position: carriage 4
+      anchors: [Galway station, his parish church, his brother]
       status: outside-born, three anchors; boarded at Grenze Halt last lap
       plan: ride until he decides whether to go back; hear whoever wants to talk
       due: Day 2 evening, sits with whoever is alone in the dining car
@@ -859,6 +848,7 @@ npcs:
     in_disorder: neither
     state:
       position: carriage 4, sleeps sitting up
+      anchors: [Graz station, his unit's barracks, his sister Ana]
       status: outside-born, three anchors; boarded three stops before Grenze on the last lap
       plan: never go back; make himself useful so nobody asks
       due: Day 2 helps Bram with baggage; Day 6 at Stillwater runs to clear a loose wagon
@@ -875,6 +865,7 @@ npcs:
     in_disorder: suffers
     state:
       position: carriage 2, surrounded by sample volumes
+      anchors: [Rotterdam Centraal, the encyclopedia catalogue, his wife]
       status: outside-born, three anchors left after 38 years (he talks about them constantly — shared memory has saved him)
       plan: trade; find a buyer for the last full set of the Vesmark Encyclopaedia (1973 edition, the only printed record
         of the country)
@@ -894,6 +885,7 @@ npcs:
     in_disorder: neither
     state:
       position: carriage 3, opposite the PC
+      anchors: [Utrecht Centraal, her violin teacher's room, her mother's face]
       status: outside-born, three anchors
       plan: get far away and decide later
       due: Day 1 23:52 boards in a hurry behind the PC; Day 2 at Kessel nearly loses her violin to a claim
@@ -913,6 +905,7 @@ npcs:
     in_disorder: neither
     state:
       position: sleeper compartment 3
+      anchors: [Aarhus station]
       status: outside-born, one anchor left (Aarhus station) — and she can't always find it
       plan: finish a scarf for each passenger
       due: Day 3 gives the PC a scarf
@@ -930,6 +923,7 @@ npcs:
     in_disorder: suffers
     state:
       position: carriage 2
+      anchors: [a desk in a ministry]
       status: outside-born (Copenhagen) on a past lap; one anchor left (a ministry desk); knew the 1974 crew
       plan: complete his inspection report
       due: Day 2 "inspects" the PC's ticket — politely, and gives it back
@@ -945,7 +939,7 @@ npcs:
     gender: man
     character: silent, patient, never quite seen; counts
     in_disorder: neither
-    state: {position: anywhere aboard on Relief nights, plan: count every passenger, due: relief_conductor clock}
+    state: {position: anywhere aboard on Relief nights, plan: count every passenger, due: when the relief_conductor clock fills}
     capability: {overall_level: 5}
     discovered_information: {}
   ruth_engel:
@@ -1106,9 +1100,6 @@ factions:
     discovered_information: {}
   passengers:
     name: the passengers
-    aboard_trust:
-      value: 0
-      basis: how long-term passengers and crew regard the PC from witnessed acts; never a free favour
     role: everyone aboard; long-termers keep customs and the return-half dream, newcomers do not
     in_disorder: neither
     drives: {wants: [their own business]}
@@ -1271,6 +1262,7 @@ player:
   gender: '[UNASSIGNED]'
   character: '[ROLE character seed]; further disposition player-defined in play'
   status: rested, slightly damp from the rain; outside-born, six anchors
+  anchors: '[six anchors set before starting; first is the home station]'   # struck through as they fade (The fade)
   starting_activity: 23:38, on Grenze Halt platform with Noor under the one lamp as the train pulls in
   skills: '[ROLE skills — one T2 trade skill, three T1; all NORMAL, evidence 0]'
   traits: '[ROLE trait]'
@@ -1422,20 +1414,6 @@ rights_obligations:
 active_commitments: [ticket]
 
 world_state:
-  outside_anchors:
-    note: per outside-born passenger; list of named anchors, struck through as they fade; zero = faded at next departure
-    pc: '[six anchors set before starting; first is the home station]'
-    noor_aziz: [Leeds railway station, her mother's kitchen radio, the van, her first gig, the smell of the canal, her flat's red door]
-    tomasz_wierzba: [Kraków Główny station, his father's workshop, his classroom, the wedding song, his mother's voice]
-    dana_wierzba: [Kraków Główny station, her studio window, her sister, a summer lake, her first drawing prize]
-    fenna_dekker: [Utrecht Centraal, her violin teacher's room, her mother's face]
-    ansel_kroll: [Harrogate station, his mother's grave]
-    ilse_varga: []
-    greta_haldane: [Aarhus station]
-    hollis_grey: [a desk in a ministry]
-    lukas_brenner: [Graz station, his unit's barracks, his sister Ana]
-    tobiah_marsh: [Galway station, his parish church, his brother]
-    pieter_vos: [Rotterdam Centraal, the encyclopedia catalogue, his wife]
   location: grenze_halt
   time:
     season: late autumn
@@ -1548,3 +1526,24 @@ world_state:
 - **Romance lens.** Tomasz and Dana live different marriages; neither is the villain.
 - **Factions lens.** Halvard obeys the handbook without knowing why; Mira wants to know why; Bram serves Kroll; Ruth disbelieves the Relief; Bertil never leaves the cab. Nobody runs the train as fully as they think.
 - **Chapter break.** At Halvane, weigh the journey; then prompt continue or extend. If the PC ever goes home by Rule 4, run a full epilogue and prompt. Never write "the end".
+
+### Station seeds and passenger lore
+
+```text
+station_seeds:
+  note: Seeds only for later stations the GM designs (station DISTINCT rule); use, change or drop.
+  seeds:
+    - a town where a promise, once spoken, is physically kept by the speaker's body
+    - a market where prices are paid in hours of your remaining day
+    - a village where only the youngest adult present may give orders
+    - a station that is ordinary in every way, and that is what frightens the passengers
+    - a station on a past lap — 1974, the night of the referendum
+passenger_lore:
+  note: talk in the dining car; may be wrong; never a briefing
+  lines:
+    - '"Keep your return half safe — it''s honoured at the terminus." (the dream; everyone long aboard believes it)'
+    - '"Never sleep facing the engine." (habit; nobody knows why)'
+    - '"If a stub turns up in your pocket, don''t sleep." (true, half-understood)'
+    - '"The last serving is cursed." (Agathe''s joke card)'
+    - "Halvane changes crews and the coffee gets worse."
+```

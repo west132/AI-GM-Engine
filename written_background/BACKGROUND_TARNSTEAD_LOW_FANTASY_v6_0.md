@@ -472,7 +472,7 @@ npcs:
       status: Questioning Gerda about sheltering fugitives; two guards wait outside.
       plan: Find who feeds Kaelen; let any outsider tracker expose the hiding place, then move his own patrol to seize
         fugitive and property, claim credit and deny or reduce the bounty if he can make the terms appear unmet.
-      due: Year 318, Floodmonth 6 18:00 ends questioning and sets a watcher on the inn; Year 318, Floodmonth 7 dawn patrol to the west market
+      due: Day 0 18:00 (Floodmonth 6) ends questioning and sets a watcher on the inn; Day 1 (Floodmonth 7) dawn patrol to the west market
       blocked_plan: If contradicted by witnesses or a higher order, seek a paper justification and preserve his office.
     drives:
       wants: [quietly recover the reliquary, keep the Baron's favour, retain treasury control]
@@ -509,7 +509,7 @@ npcs:
       status: Exhausted, keeping Elara hidden behind the upper store partition; box is open, ward broken.
       carries: One large ward fragment wrapped in cloth and the opened iron box; the other fragment is lost in the millrace.
       plan: Secure food and care for Elara, bargain if a buyer will pay; flee by reed boat if the watch closes in.
-      due: Year 318, Floodmonth 7 dawn food run by reed boat with Maera; immediately if the watch closes on the mill
+      due: Day 1 (Floodmonth 7) dawn food run by reed boat with Maera; immediately if the watch closes on the mill
       blocked_plan: Resist surrender while he believes Elara will be left helpless; may trust proof of another refuge.
     drives:
       wants: [Elara alive, enough money for a healer, a way beyond the Baron's reach]
@@ -541,7 +541,7 @@ npcs:
       position: ruined_mill
       status: Fever and weakness from an older ordinary infection, with a new gray discoloration after touching the stone.
       plan: Persuade Kaelen to seek a real healer, even if it means leaving the stolen object behind.
-      due: Year 318, Floodmonth 6 night, her next lucid talk with Kaelen
+      due: Day 0 (Floodmonth 6) night, her next lucid talk with Kaelen
     drives:
       wants: [care, her brother safe, not being used as justification for more harm]
       fears: [being abandoned, fever worsening, frightening Kaelen]
@@ -568,7 +568,7 @@ npcs:
       status: Awaiting recovery of a stolen ancestral object, unaware it has been fractured.
       plan: Keep the relic and family records private; recover it discreetly. If told it is broken, protect manor holdings,
         secure the old threshold and manage blame before any wider panic costs him his tenants.
-      due: Year 318, Floodmonth 7 evening, Thorne's next signed report; immediately if told the stone is broken
+      due: Day 1 (Floodmonth 7) evening, Thorne's next signed report; immediately if told the stone is broken
     drives:
       wants: [the ward returned, productive estates, control of an embarrassing family secret]
       fears: [an old calamity returning, public exposure of his forebear's theft, collapse of tax income]
@@ -597,7 +597,7 @@ npcs:
       status: Accounting for missing property and settling the next tithe inventory.
       plan: Recover the manor goods on lawful record; protect estate workers from a prolonged manhunt and preserve the
         letters her master's father ordered her predecessor to keep.
-      due: Year 318, Floodmonth 8 morning tithe inventory
+      due: Day 2 (Floodmonth 8) morning tithe inventory
     drives:
       wants: [stable estate, consistent accounts, credible evidence]
       fears: [the original theft becoming public, fire in the record room]
@@ -623,7 +623,7 @@ npcs:
       position: rusty_boar
       status: Being pressed by Thorne, angry but concealing her fear for her kitchen boy.
       plan: Keep the inn open, shelter regulars where she can, avoid giving Thorne a pretext to search her rooms.
-      due: Year 318, Floodmonth 6 21:00 closes the common room
+      due: Day 0 21:00 (Floodmonth 6) closes the common room
     drives:
       wants: [paying guests, the boy not beaten or arrested, winter wood]
       fears: [closure of her inn, Thorne's reprisal]
@@ -648,7 +648,7 @@ npcs:
       position: ruined_mill
       status: Keeping tally of dwindling food among twelve sheltering people.
       plan: Protect the camp and trade cautiously for food; expel Kaelen if retaining the box endangers everybody.
-      due: Year 318, Floodmonth 7 noon food tally; decides on Kaelen once stores fall to two days
+      due: Day 1 (Floodmonth 7) noon food tally; decides on Kaelen once stores fall to two days
       blocked_plan: Try an orderly withdrawal to the peat huts rather than die defending the mill.
     drives:
       wants: [food, warmth, time, a place out of levy reach]
@@ -675,7 +675,7 @@ npcs:
       position: ash_cutter_road
       status: Checking whether bailiff scouts have crossed Crooked Alder Ford.
       plan: Gather food and accurate information for Tomwen, keep strangers off the direct mill path when possible.
-      due: Year 318, Floodmonth 6 18:30 returns to the mill with her ford report
+      due: Day 0 18:30 (Floodmonth 6) returns to the mill with her ford report
     drives:
       wants: [safe routes, enough provisions, her family left alone]
       fears: [exposure of the camp, bog water rising through burial ground]
@@ -701,7 +701,7 @@ npcs:
       position: ruined_mill
       status: Overheard Kaelen and Elara arguing about the box; worked at the manor long enough to know Ysabet guards the family's secrets.
       plan: Take the opened iron box (not the shard, which he fears) and sell it privately to Ysabet, who he guesses will pay well to keep it quiet; slip out by the reed channel while Maera is scouting.
-      due: Year 318, Floodmonth 7 night, when Maera is away and the skiff is free; earlier if the camp looks about to break up
+      due: Day 1 (Floodmonth 7) night, when Maera is away and the skiff is free; earlier if the camp looks about to break up
       blocked_plan: Sell what he knows to Thorne instead, for less.
     drives:
       wants: [silver enough to leave the marches, to be paid before the camp falls apart]
@@ -728,7 +728,7 @@ npcs:
       position: harrow_manor
       status: Five men fit for patrol; two on village duty; awaiting Thorne's actual orders.
       plan: Keep roads secure and his people supplied, obey a credible order unless it plainly wastes lives.
-      due: Year 318, Floodmonth 7 06:00 road patrol
+      due: Day 1 06:00 (Floodmonth 7) road patrol
     drives:
       wants: [soldiers paid, order without a fire, his daughter healthy]
       fears: [flood cutting the supply road, Thorne sacrificing men to save face]
@@ -755,7 +755,7 @@ npcs:
       position: chantry_chapel
       status: Treating ordinary fevers; short of clean cloth and dried willow bark.
       plan: Obtain fresh supplies and see anyone with a severe infection if safe transport is possible.
-      due: Year 318, Floodmonth 7 morning herb gathering; immediately if a severe case is brought to her
+      due: Day 1 (Floodmonth 7) morning herb gathering; immediately if a severe case is brought to her
     drives:
       wants: [fewer preventable deaths, dry herbs, reliable apprentices]
       fears: [epidemic rumours, out-of-control flood, armed men taking supplies]
@@ -778,7 +778,7 @@ npcs:
       position: chantry_chapel
       status: Copying a damp register, unaware the manor relic has been opened.
       plan: Preserve records and warn villagers if evidence shows the Old Threshold has been breached.
-      due: Year 318, Floodmonth 7 morning service; immediately on evidence the Old Threshold is breached
+      due: Day 1 (Floodmonth 7) morning service; immediately on evidence the Old Threshold is breached
     drives:
       wants: [protect parish, keep the old pages legible, avoid blame for superstition]
       fears: [loss of the archives, an unauthorized excavation]
@@ -801,7 +801,7 @@ npcs:
       position: peat_huts
       status: Has stopped work near an old mound since seeing water rise in a place usually dry.
       plan: Move his nets and tools inland, warn his cousin Maera if the ground continues to shift.
-      due: Year 318, Floodmonth 7 dawn moves nets and tools inland
+      due: Day 1 (Floodmonth 7) dawn moves nets and tools inland
     drives:
       wants: [a stable cutting patch, family safe, paid work]
       fears: [losing his boat, a hidden sinkhole]
@@ -941,7 +941,7 @@ active_world_pressures:
       segments: 6
       filled: 1
       pace: Every full day heavy rain continues; dry weather or drainage can halt or reverse the rise.
-      due: Year 318, Floodmonth 7 16:45
+      due: Day 1 16:45 (Floodmonth 7)
       on_fill: Crooked Alder Ford becomes impassable on foot, low landing floods, and ferry becomes unreliable;
         the event does not teleport people or automatically drown them.
     discovered_information: {}
@@ -957,7 +957,7 @@ active_world_pressures:
       segments: 6
       filled: 1
       pace: Every second night while both broken pieces remain out of the threshold and unrestrained.
-      due: Year 318, Floodmonth 8 00:00
+      due: Day 2 00:00 (Floodmonth 8)
       on_fill: The Old Threshold opens enough for several Drowned to enter navigable waterways; people still
         learn of danger through witnesses, tracks and actual encounters, not universal omniscience.
     discovered_information: {}
@@ -973,7 +973,7 @@ active_world_pressures:
       segments: 4
       filled: 1
       pace: Each day without clean care and relief from the stone's influence; effective care can slow or improve it.
-      due: Year 318, Floodmonth 7 16:45
+      due: Day 1 16:45 (Floodmonth 7)
       on_fill: Elara becomes seriously bedridden and requires sustained care; further decline follows actual
         circumstances, not a mandatory scripted death.
     discovered_information: {}
@@ -989,7 +989,7 @@ active_world_pressures:
       segments: 4
       filled: 1
       pace: Every day while Thorne remains tasked, funded and still without the reliquary.
-      due: Year 318, Floodmonth 7 16:45
+      due: Day 1 16:45 (Floodmonth 7)
       on_fill: Thorne orders a targeted sweep of documented suspect locations based on reports he actually has;
         he does not automatically discover the mill or the PC's identity.
     discovered_information: {}
@@ -1004,7 +1004,7 @@ active_world_pressures:
       segments: 4
       filled: 0
       pace: Each full day with no successful resupply or reduction in consumption.
-      due: Year 318, Floodmonth 7 16:45
+      due: Day 1 16:45 (Floodmonth 7)
       on_fill: Camp runs out of staple food; people bargain, depart, steal or quarrel by their actual drives.
     discovered_information: {}
 

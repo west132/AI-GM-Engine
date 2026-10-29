@@ -25,7 +25,7 @@ Design: a fallen Gold-grade hero, his power-mark cracked at the Cinderbell Dispa
 You were the Gold-grade hero **Rook**, carrier of the **Ember Mark**, a fire-pact burned over your heart. At the Cinderbell Dispatch the Mark cracked, a teammate died, and the Registry knocked you down to **Tin**, the lowest grade. Now you take the jobs nobody wants. Some people mock you, some still believe in you, and something has started talking to you from inside the crack.
 你曾是金级英雄 **鲁克**，胸口烙着与火灵立约的 **余烬印记**。在辛德贝尔护送任务中，印记碎裂，一名队友身亡，公会把你贬为最低的 **锡级**。如今你接别人不要的活。有人嘲笑你，有人仍然相信你，而裂缝里，有个东西开始跟你说话了。
 
-### Quest structure (setting-specific; engine §13.5 governs the rest)
+### Quest structure (setting-specific; engine §14 governs the rest)
 
 ```text
 STARTERS  dated, max 3: M1 Day 0 · M2 Day 5 · M3 Day 14
@@ -48,7 +48,7 @@ FIXED  the Mark's truth and the four routes' real costs (locked_case_truths.embe
   never change to suit the story; a route opens only by its stated conditions
 NO RESCUE  the Mark never flares back by itself in a crisis; only Old Lamp's
   flicker (one small fire effect a day) works until a route is completed
-FREEZE  the PC's lasting injury `cinderbell_freeze` applies every time its condition
+FREEZE  the PC's lasting mind condition `cinderbell_freeze` applies every time its condition
   is met; never skip it, never add it when the condition is absent
 OLD LAMP  a character, not a narrator: it wants to live, lies by omission, jokes,
   sulks, and gives advice that serves itself; it is the PC's banter partner
@@ -409,14 +409,7 @@ quests:
     end: cookware returned, gone out of town, or Rook bought off
     support_refs: [toll_store_goods]
 
-development_threads:
-  reputation:
-    note: not a score — who saw what, who believes what; Garrick spreads the worst version, Ressa the kindest, Aurel the
-      most public
-  rook_and_jory:
-    note: rivals forced into pairs; Jory jokes to test people and stops when told plainly; can become a real partner
-  rook_and_nella:
-    note: admiration is not readiness; she copies his choices, right and wrong; she carries a latent spark she doesn't know of
+development_threads: {}
 
 active_world_pressures:
   lamp_hunger:
@@ -445,7 +438,7 @@ active_world_pressures:
       segments: 1
       filled: 0
       pace: once, at m12's end
-      due: m12 end
+      due: when m12 ends
       on_fill: Sera states the result — Tin kept, Copper path, licence suspended, or a Gold review if a route was completed
         and the pass was answered
     discovered_information: {}
@@ -593,7 +586,7 @@ npcs:
     state:
       status: dormant until m5
       plan: survive; steer Rook to the Restore route because only Restore makes it strong; avoid mentioning the lock
-      due: wakes at m5
+      due: when m5 opens (wakes)
       flicker: once a day, one small T1 fire effect (light, warmth, a spark in someone's face, dry a cloak)
     drives:
       wants: [to live, to be a whole spirit again, an audience]
@@ -1372,3 +1365,15 @@ world_state:
 - **No paperwork scenes.** The review, reports and licence work stay off screen; only the field test and the people are played.
 - **Sera.** Not a villain: she told the truth she saw. She can be convinced only by Hamm, Ressa, or Rook telling the whole story himself.
 - **The Old Days.** It always comes. Bring everyone with a stake to the pass. Settle the Mark there if a route is ready; if not, its state stands. Then weigh everything he did — credit and grievance, Nella's spark, Ewan, Isolde, Low Cinder — and prompt continue or extend. Never write "the end".
+
+### Reputation and pairings (GM notes, not threads)
+
+```text
+reputation:
+  note: not a score — who saw what, who believes what; Garrick spreads the worst version, Ressa the kindest, Aurel the
+    most public
+rook_and_jory:
+  note: rivals forced into pairs; Jory jokes to test people and stops when told plainly; can become a real partner
+rook_and_nella:
+  note: admiration is not readiness; she copies his choices, right and wrong; she carries a latent spark she doesn't know of
+```

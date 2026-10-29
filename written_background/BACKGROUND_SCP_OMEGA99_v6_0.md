@@ -118,7 +118,7 @@ WHO COVER  on paper the Foundation works through the WHO "Special Containment
 
 West's probation review falls on Day 90 (`probation_review` quest). The review scene runs fully: the board weighs everything West actually did (every cover identity included), credit and grievance alike (engine §14.3 REVIEW). **The campaign does not end there.** After the scene, the GM prompts the player: *continue as is, or extend* — an extension is a new chapter built by the chapter rebase (engine §16.8) from this chapter's final state (new assignments, new SCPs, threads carried over). The 1999 folder may sit on the review table; opening it is the player's choice.
 
-### Pressure and quest endings (setting-specific; engine §13.5 governs the rest)
+### Pressure and quest endings (setting-specific; engine §13.5 and §14 govern the rest)
 
 - `darrow_scheme`: retires when Darrow is exposed, caught, bought off, or completes his buy; a completed buy leaves a recoverable trail, never a lost cause.
 - `stag_network`: retires when the network's coordinator is captured or dead, or the herd network disperses; scattered cells stay as local trouble, not a new pressure.
@@ -572,30 +572,8 @@ quests:
     end: CHAPTER BREAK — the review is weighed and stated; then the GM prompts the player to continue or extend
       (new chapter by the chapter rebase, engine §16.8). Never a forced campaign end.
 
-development_threads:
-  safe_perks:
-    note: Safe-class (and a few Euclid) items used for staff morale need a Morale Use Request, Form MU-2,
-      approved in 1–3 days, a limited number per month. Real perks, real paperwork.
-    perks:
-      - SCP-999 visit — the orange tickle blob; clears stress and fatigue from one bad week (Safe).
-      - SCP-294 drink — the coffee machine that pours any liquid you name; staff may request ordinary drinks
-        only, tested first; dangerous requests get you banned (Euclid; the joke is that it is not even Safe).
-      - SCP-458 slice — the never-ending pizza box, for unit parties if someone has a researcher friend (Safe).
-      - SCP-261 snack — the vending machine with strange snacks; you pay in yen (Safe).
-      - SCP-131 escort — the "eye pods" follow you around while you file reports; harmless and adorable (Safe).
-    note_on_effects: a perk gives comfort, rest or a good story; never a combat bonus, cure or plot key.
-  staff_lore:
-    note: Old-timers' stories in the cafeteria and smoking area; told for laughs or chills; may be exaggerated.
-      These anomalies are never West's jobs in this chapter.
-    lines:
-      - 'Don''t blink — everyone has a SCP-173 story; Gus has three.'
-      - '"682 got out again" is how Site-19 says "bad Monday".'
-      - 'Don''t look at the photo — SCP-096 drills; one rookie a year looks.'
-      - 'What was I saying? — the SCP-055 joke nobody can finish.'
-      - 'Never put your lunch in 914 on Very Fine.'
-      - 'SCP-500? You could be dying and they''d still say no.'
-      - 'The Horsemen eat pie at a highway diner — nobody believes Meg''s Diner is real until they get the job.'
-      - 'The Class of ''99 already handled it. You''re welcome.'
+development_threads: {}
+
 active_world_pressures:
   darrow_scheme:
     name: Darrow's list
@@ -1003,9 +981,6 @@ factions:
     discovered_information: {}
   mtf_omega_99:
     name: MTF Omega-99 "Class of '99"
-    trust:
-      value: 0
-      basis: witnessed acts that help or hurt the unit; affects who backs West, never a free favour
     role: small odd-jobs MTF for low-priority anomalies worldwide; borrows muscle from other MTFs
     in_disorder: suffers
     state: {members: [commander_lindqvist, rosa_delgado, dmitri_volkov, priya_raman, tomas_reyes_hart, pc], budget: tight}
@@ -1180,9 +1155,7 @@ rights_obligations:
     type: employment, probationary
     parties: [pc, foundation]
     state: {start: Day 1, review: Day 90, terms: follow orders, file reports, keep secrecy}
-    file:
-      value: 0
-      basis: notable acts in West's file, good and bad, each with one line; read on Day 90
+    file: []                       # one line per notable act, good or bad; read on Day 90
   oath:
     type: non-disclosure
     parties: [pc, foundation]
@@ -1352,3 +1325,31 @@ world_state:
 ## Sources (CC BY-SA 3.0, SCP Wiki)
 
 Entries adapted (paraphrased, not copied): SCP-1999 "Loewes" by TL333s · SCP-4711 · SCP-4048 by notgull · SCP-3947 by Crocket_Lawnchair and Doctor Cimmerian · SCP-4557 by JanitorCakeworth · SCP-3761 by Westrin · SCP-3683 by Weryllium · SCP-4968 · SCP-3870 by CuriousCoffee and Zyn · SCP-1295 "Meg's Diner". Lore mentions: SCP-173, SCP-682, SCP-096, SCP-055, SCP-914, SCP-500, SCP-999, SCP-294, SCP-458, SCP-261, SCP-131. Foundation structure: the wiki's Security Clearance Levels and Object Classes guides. All at https://scp-wiki.wikidot.com. This background is a derivative work under CC BY-SA 3.0.
+
+### Staff perks and staff lore
+
+```text
+safe_perks:
+  note: Safe-class (and a few Euclid) items used for staff morale need a Morale Use Request, Form MU-2,
+    approved in 1–3 days, a limited number per month. Real perks, real paperwork.
+  perks:
+    - SCP-999 visit — the orange tickle blob; clears stress and fatigue from one bad week (Safe).
+    - SCP-294 drink — the coffee machine that pours any liquid you name; staff may request ordinary drinks
+      only, tested first; dangerous requests get you banned (Euclid; the joke is that it is not even Safe).
+    - SCP-458 slice — the never-ending pizza box, for unit parties if someone has a researcher friend (Safe).
+    - SCP-261 snack — the vending machine with strange snacks; you pay in yen (Safe).
+    - SCP-131 escort — the "eye pods" follow you around while you file reports; harmless and adorable (Safe).
+  note_on_effects: a perk gives comfort, rest or a good story; never a combat bonus, cure or plot key.
+staff_lore:
+  note: Old-timers' stories in the cafeteria and smoking area; told for laughs or chills; may be exaggerated.
+    These anomalies are never West's jobs in this chapter.
+  lines:
+    - 'Don''t blink — everyone has a SCP-173 story; Gus has three.'
+    - '"682 got out again" is how Site-19 says "bad Monday".'
+    - 'Don''t look at the photo — SCP-096 drills; one rookie a year looks.'
+    - 'What was I saying? — the SCP-055 joke nobody can finish.'
+    - 'Never put your lunch in 914 on Very Fine.'
+    - 'SCP-500? You could be dying and they''d still say no.'
+    - 'The Horsemen eat pie at a highway diner — nobody believes Meg''s Diner is real until they get the job.'
+    - 'The Class of ''99 already handled it. You''re welcome.'
+```

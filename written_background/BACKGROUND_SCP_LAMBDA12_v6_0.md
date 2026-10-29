@@ -6,8 +6,6 @@ For `NEW ENGINE v6.0`. **Round-0 truth**; once play begins this file is history 
 
 Design: SCP Foundation, present day, played light. Ridiculous anomalies that make you sweat and think, real fights where the canon allows them, office comedy, staff lore and perks, slow-burn romance, and a rookie's life between jobs. **Not dark, not rushed into work, no world-ending plot.** Work arrives at a human pace with downtime between. Every quest has a clear finish; no quest is a 50-round investigation fog. Tone and structure partly borrowed from *Control* (a shifting HQ that opens up, side jobs that are rules-puzzles with a fight attached, sudden site alerts, deadpan memos). **No Control characters, names or places.**
 
-**Changes in v5.6:** every mission is new. Different SCP entries, a new wrongdoer plot (Conrad Vale's perk-rental racket), and a new long main op (the lost survey team in SCP-3008). Leo's arc is new. The romance characters are re-tied to the new jobs. Rosa, Dima, the unit, the 1999 secret and the perks are unchanged.
-
 ### Before starting
 
 - Player sets `[UNASSIGNED]` fields: West's given name, age (24–30), gender, appearance, and sidearm name. "West" is the surname everyone uses.
@@ -139,7 +137,7 @@ WHO COVER  on paper the Foundation works through the WHO "Special Containment
 
 West's probation review falls on Day 90 (`probation_review` quest). The review scene runs fully: the board weighs everything West actually did (every cover identity included), credit and grievance alike (engine §14.3 REVIEW). **The campaign does not end there.** After the scene, the GM prompts the player: *continue as is, or extend* — an extension is a new chapter built by the chapter rebase (engine §16.8) from this chapter's final state (new assignments, new SCPs, threads and relationships carried over). The 1999 folder may sit on the review table; opening it is the player's choice.
 
-### Pressure and quest endings (setting-specific; engine §13.5 governs the rest)
+### Pressure and quest endings (setting-specific; engine §13.5 and §14 govern the rest)
 
 - `vale_racket`: retires when Vale is exposed, caught, bought off, or flees; a bell lost to a buyer leaves a recoverable trail, never a lost cause.
 - `team_birch`: retires when the survey team is out of SCP-3008, or settles with the enclave by choice; never "presumed dead" off-screen.
@@ -444,7 +442,7 @@ storylines:
     kind: ordinary_life
     line: Four people West might fall for — the unit's engineer, the site doctor, an Iota-9 agent, a falconer
       who may be leaving — each with their own life and a reason to hesitate.
-    refs: [development_threads.romance, npcs.priya_rolynn, npcs.sofia_marchetti, npcs.jun_takeda, npcs.elias_grant,
+    refs: [npcs.priya_rolynn, npcs.sofia_marchetti, npcs.jun_takeda, npcs.elias_grant,
       active_world_pressures.elias_reassignment]
   vale_racket:
     kind: wrongdoer
@@ -603,49 +601,8 @@ quests:
     end: CHAPTER BREAK — the review is weighed and stated; then the GM prompts the player to continue or extend
       (new chapter by the chapter rebase, engine §16.8). Never a forced campaign end.
 
-development_threads:
-  safe_perks:
-    note: Safe-class (and a few Euclid) items used for staff morale need a Morale Use Request, Form MU-2,
-      approved in 1–3 days by the site morale officer (Conrad Vale), a limited number per month.
-    perks:
-      - SCP-999 visit — the orange tickle blob; clears stress and fatigue from one bad week (Safe).
-      - SCP-294 drink — the coffee machine that pours any liquid you name; staff may request ordinary drinks
-        only, tested first; dangerous requests get you banned (Euclid; the joke is that it is not even Safe).
-      - SCP-458 slice — the never-ending pizza box, for unit parties (Safe).
-      - SCP-261 snack — the vending machine with strange snacks; you pay in yen (Safe).
-      - SCP-131 escort — the "eye pods" follow you around while you file reports (Safe).
-      - SCP-529 lap time — Josie the half-cat chooses who she sits on; no form needed, no form works (Safe).
-      - SCP-662 butler — Mr. Deeds tidies, cooks or fetches one thing; bookings rarely approved (Safe).
-    note_on_effects: a perk gives comfort, rest or a good story; never a combat bonus, cure or plot key.
-      A perk booked for two (an SCP-294 "date coffee", an SCP-458 pizza night) counts as a date.
-  romance:
-    note: Four romance options, each met naturally in the first two weeks or through their quest. Interest
-      grows from bond credit; each has one thing that makes them hesitate. None is a reward to be won.
-    options:
-      - priya_rolynn — Lambda-12 engineer; teasing rivalry that turns warm; builds the guide-line rig for
-        SCP-3008; hesitates because dating a teammate means Form R-7 and Lindqvist's raised eyebrow.
-      - sofia_marchetti — Site-19 medical officer; on duty at comedy night; hesitates because she has watched too
-        many agents not come back.
-      - jun_takeda — Iota-9 agent; tracing perk items through the society auction scene; hesitates because his
-        last relationship ended when he picked the job over a person.
-      - elias_grant — Gamma-119 falconer; the flamingo job; hesitates because he has a transfer offer to Alaska
-        (elias_reassignment).
-    date_spots: [the site observation deck at night, a diner in town, the Site-19 rooftop with an SCP-294 coffee,
-      an auction preview after hours (Jun), the raptor mews (Elias), the van bay at 2 a.m. (Priya), the medical
-      wing's terrible coffee (Sofia), a picnic in the SCP-3008 showroom "on duty" (anyone brave)]
-  staff_lore:
-    note: Old-timers' stories in the cafeteria and smoking area; told for laughs or chills; may be exaggerated.
-      These anomalies are never West's jobs in this chapter.
-    lines:
-      - 'Don''t blink — everyone has a SCP-173 story; Gus has three.'
-      - '"682 got out again" is how Site-19 says "bad Monday".'
-      - 'Don''t look at the photo — SCP-096 drills; one rookie a year looks.'
-      - 'What was I saying? — the SCP-055 joke nobody can finish.'
-      - 'Never put your lunch in 914 on Very Fine.'
-      - 'SCP-500? You could be dying and they''d still say no.'
-      - 'Never write down what lives in 2521''s file. Draw it. Badly.'
-      - 'The Class of ''99 already handled it. You''re welcome.'
-      - 'Form R-7 has a box for "anomalous influence suspected". Someone always ticks it as a joke.'
+development_threads: {}
+
 active_world_pressures:
   vale_racket:
     name: Vale's weekend rentals
@@ -1269,9 +1226,6 @@ factions:
     discovered_information: {}
   mtf_lambda_12:
     name: MTF Lambda-12 "Loose Ends"
-    trust:
-      value: 0
-      basis: witnessed acts that help or hurt the unit; affects who backs West, never a free favour
     role: small odd-jobs MTF that ties up low-priority anomalies worldwide; borrows muscle from bigger MTFs
     in_disorder: suffers
     state:
@@ -1440,9 +1394,7 @@ rights_obligations:
     type: employment, probationary
     parties: [pc, foundation]
     state: {start: Day 1, review: Day 90, terms: follow orders, file reports, keep secrecy}
-    file:
-      value: 0
-      basis: notable acts in West's file, good and bad, each with one line; read on Day 90
+    file: []                       # one line per notable act, good or bad; read on Day 90
   oath:
     type: non-disclosure
     parties: [pc, foundation]
@@ -1614,3 +1566,50 @@ world_state:
 ## Sources (CC BY-SA 3.0, SCP Wiki)
 
 Entries adapted (paraphrased, not copied; details may be simplified, and this file decides where it differs): SCP-2006 "Too Spooky" · SCP-504 "Critical Tomatoes" · SCP-3008 "A Perfectly Normal, Regular Old IKEA" · SCP-1507 · SCP-5031 "Yet Another Murder Monster" · SCP-1171 "Humans Go Home" · SCP-1867 "Lord Blackwood" · SCP-529 "Josie the Half-Cat" · SCP-662 "Butler's Hand Bell". Lore mentions: SCP-173, SCP-682, SCP-096, SCP-055, SCP-914, SCP-500, SCP-2521, SCP-999, SCP-294, SCP-458, SCP-261, SCP-131. Groups: Wilson's Wildlife Solutions, Marshall, Carter & Dark, Are We Cool Yet?. Foundation structure: the wiki's Security Clearance Levels and Object Classes guides. All at https://scp-wiki.wikidot.com. MTF Lambda-12 "Loose Ends", Thayne Events, the Showroom Republic and all original characters are original to this background. This background is a derivative work under CC BY-SA 3.0.
+
+### Staff perks, romance options and staff lore
+
+```text
+safe_perks:
+  note: Safe-class (and a few Euclid) items used for staff morale need a Morale Use Request, Form MU-2,
+    approved in 1–3 days by the site morale officer (Conrad Vale), a limited number per month.
+  perks:
+    - SCP-999 visit — the orange tickle blob; clears stress and fatigue from one bad week (Safe).
+    - SCP-294 drink — the coffee machine that pours any liquid you name; staff may request ordinary drinks
+      only, tested first; dangerous requests get you banned (Euclid; the joke is that it is not even Safe).
+    - SCP-458 slice — the never-ending pizza box, for unit parties (Safe).
+    - SCP-261 snack — the vending machine with strange snacks; you pay in yen (Safe).
+    - SCP-131 escort — the "eye pods" follow you around while you file reports (Safe).
+    - SCP-529 lap time — Josie the half-cat chooses who she sits on; no form needed, no form works (Safe).
+    - SCP-662 butler — Mr. Deeds tidies, cooks or fetches one thing; bookings rarely approved (Safe).
+  note_on_effects: a perk gives comfort, rest or a good story; never a combat bonus, cure or plot key.
+    A perk booked for two (an SCP-294 "date coffee", an SCP-458 pizza night) counts as a date.
+romance:
+  note: Four romance options, each met naturally in the first two weeks or through their quest. Interest
+    grows from bond credit; each has one thing that makes them hesitate. None is a reward to be won.
+  options:
+    - priya_rolynn — Lambda-12 engineer; teasing rivalry that turns warm; builds the guide-line rig for
+      SCP-3008; hesitates because dating a teammate means Form R-7 and Lindqvist's raised eyebrow.
+    - sofia_marchetti — Site-19 medical officer; on duty at comedy night; hesitates because she has watched too
+      many agents not come back.
+    - jun_takeda — Iota-9 agent; tracing perk items through the society auction scene; hesitates because his
+      last relationship ended when he picked the job over a person.
+    - elias_grant — Gamma-119 falconer; the flamingo job; hesitates because he has a transfer offer to Alaska
+      (elias_reassignment).
+  date_spots: [the site observation deck at night, a diner in town, the Site-19 rooftop with an SCP-294 coffee,
+    an auction preview after hours (Jun), the raptor mews (Elias), the van bay at 2 a.m. (Priya), the medical
+    wing's terrible coffee (Sofia), a picnic in the SCP-3008 showroom "on duty" (anyone brave)]
+staff_lore:
+  note: Old-timers' stories in the cafeteria and smoking area; told for laughs or chills; may be exaggerated.
+    These anomalies are never West's jobs in this chapter.
+  lines:
+    - 'Don''t blink — everyone has a SCP-173 story; Gus has three.'
+    - '"682 got out again" is how Site-19 says "bad Monday".'
+    - 'Don''t look at the photo — SCP-096 drills; one rookie a year looks.'
+    - 'What was I saying? — the SCP-055 joke nobody can finish.'
+    - 'Never put your lunch in 914 on Very Fine.'
+    - 'SCP-500? You could be dying and they''d still say no.'
+    - 'Never write down what lives in 2521''s file. Draw it. Badly.'
+    - 'The Class of ''99 already handled it. You''re welcome.'
+    - 'Form R-7 has a box for "anomalous influence suspected". Someone always ticks it as a joke.'
+```

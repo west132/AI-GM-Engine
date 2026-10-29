@@ -189,10 +189,6 @@ player:
   progression:
     system: numeric_level_xp
     state: {level: 1, xp: 0}
-  downtime_counter:
-    value: 0
-    basis: completed, actually elapsed downtime/work periods; no free increment from dialogue or waiting in combat
-    consequence: influences which job leads/people return calls, never whether already-existing evidence can exist
   condition:
     nerve: {baseline: 0, current: 0, tension: 0}
     conditions: []
@@ -900,23 +896,13 @@ npcs:
 factions:
   south_dock_harbor_cops:
     name: South Dock Harbor Cops
-    tallies:
-      grievance:
-        value: 0
-        basis: verified offenses known to an individual Harbor Cop with a reliable route to command
-        increment: plus 1 for a substantiated provocation, plus 2 for serious and traceable loss or public exposure
-        consequence: at 2 or more, commanders with credible attribution may initiate targeted inquiries or harassment;
-          a number does not grant supernatural knowledge of the PC's identity
-      credit:
-        value: 0
-        basis: witnessed value the PC actually provided to authorized police members or Vance's network
-        increment: plus 1 per genuine service of meaningful value, not mere obedience or imagined goodwill
-        consequence: can be traded for specific favors only when the involved actor knows and agrees; not global loyalty
     role: corrupt NCPD subcontractor operating the local waterfront patrol and evidence compound
     in_disorder: neither
     state:
       public_status: legitimate badge holders locally
       compromise: Vance's leadership directs graft; individual officers know different parts of it
+      attribution: a grievance reaches command only through an officer who knows it and has a route to Vance;
+        targeted inquiries or harassment need credible attribution; a credit is traded only with the actor who holds it
     drives:
       wants: [bribes, seizure proceeds, continued policing contract]
       fears: [credible independent audit, corporate disciplinary leverage, organized witnesses]
@@ -935,13 +921,6 @@ factions:
     discovered_information: {}
   iron_sights:
     name: The Iron Sights
-    tallies:
-      grievance:
-        value: 0
-        basis: attributed disruption of gang property, income or status; recorded with relationship evidence
-      credit:
-        value: 0
-        basis: attributable paid deals, rescues or benefits, not mere non-aggression
     role: gang and salvage merchants holding patches of the Combat Zone
     in_disorder: thrives
     state:

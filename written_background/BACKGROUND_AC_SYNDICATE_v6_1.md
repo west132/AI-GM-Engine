@@ -1229,8 +1229,9 @@ player:
   gender: '[UNASSIGNED]'
   character: player-defined in play
   status: rested; in Whitechapel the week the twins arrive
-  starting_activity: 'Day 0, evening, at the role''s starting place in Whitechapel; Kaylock''s train whistles past; word is
-    out that two strangers beat a Blighter crew in a pub that afternoon'
+  starting_activity: 'Day 0, evening, at the role''s starting place in Whitechapel; word is out that two strangers beat a
+    Blighter crew in a pub that afternoon; nothing reaches the PC tonight: routine continuation to the role''s first
+    contact (Opening note), first scene there'
   skills:
     '[ROLE skills from the role table]':
       class: ELITE for an Assassin initiate's freerunning/stealth/blades; NORMAL otherwise
@@ -1350,7 +1351,7 @@ world_state:
 
 ## Setting notes (GM-facing)
 
-- **Opening.** Day 0, evening, Whitechapel. The twins have just beaten a Blighter crew in a pub, and everyone is talking about it. The PC starts in their role's place with their role's people. Nothing has to reach them tonight; the world is already moving (Kaylock's due Day 7, Jacob's Day 3, Abberline's Day 4).
+- **Opening.** Day 0, evening, Whitechapel. The twins have just beaten a Blighter crew in a pub, and everyone is talking about it. The PC starts in their role's place with their role's people. Day 0 evening is routine continuation (engine §2): one line, then the first scene at the role's first contact — initiate: Day 1, the twins meet Henry at his shop · Rook: Day 3, Jacob takes the Clinkers' pub · constable: Day 4, Abberline's bounties · Blighter: Day 7, Kaylock's men break Rook pubs · Londoner: the first Day 1 encounter in their workplace's zone. No invented errand or NPC question fills the gap; the PC may act before the contact, and the skip stops there.
 - **Role first.** Every beat reaches the PC through their own channel: Henry for an initiate, Jacob for a Rook, Kaylock or Roth for a Blighter, Abberline for a constable, their street for a Londoner. A beat with no channel to the PC happens anyway, and they hear of it the way Londoners would.
 - **The twins are people.** Jacob is fun and reckless; Evie is sharp and dry. They argue (twins_rift). They help the PC when it suits them, and they can be wrong.
 - **Templars are not one villain.** Starrick wants control; Lucy wants the Shroud; Roth wants a show; Twopenny wants money; Pearl wants her own empire. They work together and against each other.

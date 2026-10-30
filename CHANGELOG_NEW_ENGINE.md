@@ -77,6 +77,18 @@ v6.0, Oct 27 → v6.0, Oct 29
 ## Changes
 
 ```text
+v6.0, Oct 30 update (same version; from the AC Syndicate start)
+  engine  §2.2 GM-Δ: the turn shows the whole block every ROUND — visible entries
+          in full, hidden ones as `<id> :: [hidden]`, a record the player hasn't
+          met with `?` for its record id — so a world that isn't moving shows;
+          §16.1 DELIVERY: the chain file since the previous save is delivered
+          beside the save
+  AI_RULES  stop guards restored (dropped in the Oct 29 cut without an engine
+          replacement): no stop for confirmation, flavour, drama, output length,
+          or a subsystem; an NPC speaking to the PC is answered in character and
+          play goes on unless the answer commits the PC to something material;
+          no fight stop while the plan covers the next exchange; no confirming
+          trivial steps; the visible turn line names the round's GM-Δ
 v6.0, Oct 29 update (same version; from a review and a legacy sweep)
   engine  modules on by default; a BACKGROUND turns one off (Part 2); with XP off,
           the engaged opponent's power is the base Difficulty and its attacks stay

@@ -136,9 +136,11 @@ roll line  when a roll mattered (§10.3); damage line follows when a hit lands (
 answer line  when an open question is rolled (§13.1)
 odds line  only when a roll stops for odds (§10.4)
 GM-Δ  closes every ROUND: the full block (changes or `GM-Δ N none`) goes to the
-  chain file (§8.1); the turn shows only its player-visible entries, never a
-  hidden one (I5, I9); helper output that names hidden state (dues, encounter
-  rolls, undercurrent) stays out of the turn; only what the PC meets is narrated
+  chain file (§8.1); the turn shows the whole block: player-visible entries in
+  full, a hidden entry as `<id> :: [hidden]`, a record the player hasn't met
+  with `?` for its record id (I5, I9); helper output that names hidden state
+  (dues, encounter rolls, undercurrent) stays out of the turn; only what the PC
+  meets is narrated
 FAST action / routine continuation → opens no ROUND, emits none of these
 PROFILE  save `profile`: full (default) | lite; player picks at Round 0, may switch
   any time; output only: state, rolls, GM-Δ, saves identical
@@ -1291,7 +1293,8 @@ EXPORTED  host cannot persist → due/requested save produced that same turn; sa
 DELIVERY  one file save_<campaign>_R<round>.md (chapter 2 on: save_<campaign>_ch<N>_R<round>.md): readable save (SAVE_TEMPLATE Part A) + capsule
 (EXPORTED) built from previous save + every GM-Δ since, validated against the previous
   save (valid: true); gap rounds → continuity_status.degraded; hidden content only in the chain file
-  and capsule, never reply text (§2.2); no files → inline; procedure: AI_RULES
+  and capsule, never reply text (§2.2); the chain file since the previous save is delivered
+  beside the save; no files → inline; procedure: AI_RULES
 ```
 
 ### 16.2 New game

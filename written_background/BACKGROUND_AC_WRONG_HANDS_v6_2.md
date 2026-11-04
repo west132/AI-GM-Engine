@@ -299,7 +299,7 @@ quests:
     spine:
       question: Who walks out of Roth's party with the orb — and which orb?
       stake_hooks: {assassin_initiate: Templars will be there with money and guns, rook: Jacob wants in,
-        blighter: Roth's own party, you're working it, scotland_yard: half of London's wanted men under one
+        blighter: Roth's own party; you're working it, scotland_yard: half of London's wanted men under one
         roof, londoner: you're serving drinks}
       pressure: Roth's plan; Lucy's plan; Jacob's plan
       end: the auction held, ruined, or never held; who bought what
@@ -328,8 +328,8 @@ active_world_pressures:
         the real one, the Illustrated London News prints a letter about Egyptian curses, and pawnshops are
         burgled for anything round and shiny
       stages: {early: 1-3, late: 4-6}
-      signs: {early: the story in every pub, kids playing "the orb" with a painted ball, late: fake orbs for
-        sale, a pawnshop on the Strand burgled, a sermon against heathen trinkets}
+      signs: {early: the story in every pub; kids playing "the orb" with a painted ball, late: fake orbs for
+        sale; a pawnshop on the Strand burgled; a sermon against heathen trinkets}
     discovered_information: {}
   twins_rift:
     name: The twins' rift
@@ -387,7 +387,7 @@ locked_case_truths:
       - Crane sold the eleven pieces over February and March as "property of a gentleman, deceased" at Dacre's
         Rooms, Holborn.
       - Day −3 — Crane reported a burglary; Lady Pelham believes it.
-    state: {insurance: claim lodged, paid on the Yard's report, crane: wants an arrest to close it}
+    state: {insurance: claim lodged; paid on the Yard's report, crane: wants an arrest to close it}
     evidence:
       crane_ledger: Crane's private ledger in his Westminster office — the sales, the money, his debts
       dacres_sale_book: the auction room's sale book lists the eleven items, consigned by "Mr H. Cole"
@@ -406,7 +406,7 @@ locked_case_truths:
     prior_events:
       - She has run sittings at the Ghost Club's rooms twice; Dickens is half-convinced and half-delighted.
       - On Day 2 she hears about the glowing orb and wants it for her act.
-    state: {next_sitting: Day 6, evening, the Ghost Club's rooms}
+    state: {next_sitting: Day 6 evening at the Ghost Club's rooms}
     evidence:
       paint: a chemist in Lambeth sells her phosphorus paint — the same green glow as the orb's lining, by chance
       sid: Sid is the hand behind the gauze; he is frightened of prison for her sake
@@ -445,8 +445,8 @@ npcs:
       due: Day 2 hears of the orb from the Rooks' pub talk; then goes after whoever has it
     drives: {wants: [London free of Starrick, his gang strong, to prove the Council wrong], fears: [being his father's lesser], values: [his people, freedom]}
     relationships:
-      evie_frye: {tie: twin, attitude: loving, impatient, bond: {history: raised together, trained by their father,
-        means: the half of him that thinks first, habits: teasing, bets, cutting each other off, wants: her to see the
+      evie_frye: {tie: twin, attitude: loving, impatient, bond: {history: raised together; trained by their father,
+        means: the half of him that thinks first, habits: teasing; bets; cutting each other off, wants: her to see the
         gangs matter, unsaid: afraid she'll leave him behind}}
       henry_green: {tie: ally, attitude: fond, teasing, bond: {history: met in February, means: the quiet one who knows
         things, habits: teases him about Evie, wants: him to loosen up}}
@@ -466,12 +466,12 @@ npcs:
     drives: {wants: [the Pieces of Eden out of Templar hands, her father's work finished], fears: [Jacob getting them both killed], values: [the Creed, knowledge]}
     relationships:
       jacob_frye: {tie: twin, attitude: exasperated, loving, bond: {history: raised together, means: the brother who
-        never looks before he leaps, habits: correcting him, saving him, wants: him to think, unsaid: she envies how
+        never looks before he leaps, habits: correcting him; saving him, wants: him to think, unsaid: she envies how
         easily people follow him}}
       henry_green: {tie: ally, attitude: warm, curious, bond: {history: met in February, means: a quiet man who knows
         more than he says, habits: research late in his shop, wants: him in the field beside her, unsaid: she likes
         him more than is useful}}
-    knowledge: {facts: {ethan_notes: her father's notes, including the line about "empty vessels"}, channels: [Henry, the papers, Clara's kids]}
+    knowledge: {facts: {ethan_notes: her father's notes; including the line about "empty vessels"}, channels: [Henry, the papers, Clara's kids]}
     capability: {overall_level: 7, skills: {stealth: T3, freerunning: T3, blades: T2, scholarship: T2}}
     discovered_information: {}
   henry_green:
@@ -538,7 +538,7 @@ npcs:
     gender: woman
     character: Scottish, hard-working, stubborn, warm once trusted; has opinions about everything on her train
     in_disorder: suffers
-    state: {position: Whitechapel, plan: keep the train running and the twins fed, due: none — on the train, found by asking}
+    state: {position: Whitechapel, plan: keep the train running and the twins fed, due: none — on the train and found by asking}
     drives: {wants: [her train kept whole], fears: [losing her livelihood]}
     capability: {overall_level: 2, skills: {engineering: T2}}
     discovered_information: {}
@@ -556,7 +556,7 @@ npcs:
       if_blocked: buys it; failing that, has it stolen; never goes near Roth himself
     drives: {wants: [total control, the Shroud], fears: [disorder, losing face, Roth's jokes], values: [order, himself]}
     relationships:
-      maxwell_roth: {tie: his man, attitude: distaste, needs him, grievance: [mocks him in company]}
+      maxwell_roth: {tie: his man, attitude: distaste; needs him, grievance: [mocks him in company]}
     capability: {overall_level: 7, skills: {command: T3, brawling: T3, wealth: T4}}
     discovered_information: {}
   lucy_thorne:
@@ -758,7 +758,7 @@ factions:
     name: The Blighters
     role: Starrick's street gang under Roth; green coats
     in_disorder: thrives
-    state: {condition: gone from Whitechapel, angry about it; hold every other borough}
+    state: {condition: gone from Whitechapel; angry about it; hold every other borough}
     drives: {wants: [the streets, pay, fun], fears: [Roth when he's bored]}
     capability: {reach: every borough but Whitechapel}
     discovered_information: {}
@@ -790,14 +790,14 @@ factions:
     role: gentlemen investigating the supernatural; Dickens among them
     in_disorder: neither
     drives: {wants: [proof one way or the other, a good evening]}
-    capability: {reach: a few rooms, good dinners, the newspapers}
+    capability: {reach: a few rooms; good dinners; the newspapers}
     discovered_information: {}
 
 locations:
   whitechapel:
     name: Whitechapel
     surface: {baseline: -1, current: -1, tension: 0}
-    undercurrent: {baseline: -1, current: -1, tension: 0, sites: [Blighter remnants' cellars, the mills], hours: night, nature: Blighters who stayed, and Starrick's mills still running}
+    undercurrent: {baseline: -1, current: -1, tension: 0, sites: [Blighter remnants' cellars, the mills], hours: night, nature: Blighters who stayed; and Starrick's mills still running}
     cover: templars
     encounters:
       hostile:
@@ -810,7 +810,7 @@ locations:
       - Rooks celebrating too loudly
       - a street seller with a "glowing ball" (once orb fever is late)
     conditions: {features: [Moss's pawnshop, Henry Green's shop, the Lamb and Flag, the police station, the twins' train at the rail yards]}
-    challenge_band: {min: 1, max: 3, basis: Rook streets, leftover Blighters}
+    challenge_band: {min: 1, max: 3, basis: Rook streets; leftover Blighters}
   southwark:
     name: Southwark
     surface: {baseline: -1, current: -1, tension: 0}
@@ -988,7 +988,7 @@ rights_obligations:
   nells_pledge:
     type: pledge
     parties: [nell_carrow, ada_moss]
-    state: {item: the orb, loan: 15s, ticket: held by Nell Carrow, redeemable by the ticket-holder}
+    state: {item: the orb, loan: 15s, ticket: held by Nell Carrow; redeemable by the ticket-holder}
 active_commitments: []
 
 world_state:

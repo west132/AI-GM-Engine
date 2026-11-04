@@ -37,6 +37,9 @@ context models handle it better.
 - SCP: Lambda-12
 - Tarnstead (low fantasy)
 - Skyrim: Dragonborn
+- Assassin's Creed Syndicate: London 1868
+- Assassin's Creed Syndicate: The Wrong Hands
+- The Sheet Anchor (India, 1991)
 
 ### Making your own world
 

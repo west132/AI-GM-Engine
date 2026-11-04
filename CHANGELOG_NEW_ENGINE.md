@@ -75,11 +75,48 @@ v6.0, Oct 27 → v6.0, Oct 29
 v6.0 → v6.1
   saves and BACKGROUNDs load unchanged; a v6.0 chain file is read as the deltas
   file for the next save, then dropped
+v6.1 → v6.2
+  saves and BACKGROUNDs load unchanged; a canon_course beat without `quest` is
+  read as before (the helper lists only beats that name their quest)
 ```
 
 ## Changes
 
 ```text
+v6.2, Nov 4 (after the AC Syndicate v6.1 run; a full rule audit)
+  engine  §1 WORLD: the world owes the player no content and holds none back (was
+          "nothing must reach the player", read as "keep scenes empty")
+          §2.1 routes added: an actor reacting to or judging the PC (§9, §13.8),
+          a stated development direction (§13.9), a dues TRIGGER line or a blocked
+          quest's trigger (§13.2, §14.2)
+          §9 GRADE, JUDGEMENT, ENEMIES: no moral commentary in narration or any
+          actor, moved from §13.8 into Part 0; ENEMIES: no pity and no worse opinion
+          of the PC for an enemy killed, beaten, captured or humiliated, from the
+          PC's side, unharmed bystanders or the narration; fear shown as caution,
+          never disapproval; only real cruelty beyond the setting's norms turns them
+          §13.1 DUE AT CREATION: a due is a clock time or a registered trigger (was
+          "dated")
+          §13.2 FIRE: a plan acts at its due if its cause still holds; an actor
+          REPLANs, a pressure is STOPPED; a TRIGGER line met, even earlier and
+          unnoticed, fires now from current state
+          §14.2 BLOCKED (a quest waiting on its trigger) and CANON BEAT (opens on
+          `opens`; its quest(s) are its record) defined
+          §16.2 step 7: after the intro, routine continuation runs to the first
+          point the world reaches the PC; that is the first scene; nothing
+          invented fills the gap; step 8: a restart with the same PC keeps the
+          player's setup
+  AI_RULES  dues: --deltas replaces checking by hand; settle TRIGGER lines too;
+          the mid-job stop sized to an uncovered material cost or risk in the
+          player's order; the no-pity line widened to bystanders and narration
+  helper  version 6.2; dues lists blocked quests' triggers and unopened canon
+          beats as TRIGGER lines; due text shown to 240 characters; FIRE wording
+  templates  BACKGROUND_TEMPLATE: canon_course as beats with opens and quest;
+          quests status and trigger; actor due may be a time or a trigger; §13.3
+          reference fixed
+  backgrounds  AC Syndicate: version 6.2; each canon beat names its quest;
+          Starrick's due watches the Rooks' first Whitechapel mark; Londoner first
+          contact Day 3; mill-children channel noted; background_id kept
+  size  engine 87,436 → 89,431 bytes; AI_RULES 14,688 → 15,156 bytes
 v6.1, Oct 30 (after the AC Syndicate v6.0 run)
   engine  GM-Δ back in the turn: every ROUND ends with its whole block, plain text,
           as in v5.4; no chain file; a save is built from the previous save plus

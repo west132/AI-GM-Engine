@@ -1,6 +1,6 @@
-# BACKGROUND — Assassin's Creed Syndicate: London 1868 v6.1
+# BACKGROUND — Assassin's Creed Syndicate: London 1868 v6.2
 
-For `NEW ENGINE v6.1`. **Round-0 truth**; once play begins this file is history and the Ledger changes instead. **Player: pick a role and set the `[UNASSIGNED]` entries before starting; the GM fills the `[ROLE]` entries from the role table at Round 0.** The GM withholds `locked_case_truths`, Templar plans not yet seen, undiscovered NPC knowledge and hidden faction information during play.
+For `NEW ENGINE v6.2`. **Round-0 truth**; once play begins this file is history and the Ledger changes instead. **Player: pick a role and set the `[UNASSIGNED]` entries before starting; the GM fills the `[ROLE]` entries from the role table at Round 0.** The GM withholds `locked_case_truths`, Templar plans not yet seen, undiscovered NPC knowledge and hidden faction information during play.
 
 **Undefined parts:** anything this background leaves undefined is the AI GM's to develop in play, consistent with its setting anchors, the game's canon and established facts (engine I3, §13.1 CANON MODE, §16.6) — never a gap to wait on, refuse over, or expect the engine to fill. Unsure what canon says → search if a tool exists, never guess.
 
@@ -106,6 +106,7 @@ canon_course:
   # (timed_templar_plans). A borough is held when the Rooks win its gang war (templar_grip on_step −1).
   beat_1_whitechapel:
     opens: Day 0 (the twins arrive); the opening week is dated, the rest of the beat runs on events
+    quest: tq_whitechapel
     twins: >-
       Day 1 they meet Henry Green at his shop; he lays out Starrick's London. Jacob wants a gang to fight the Blighters,
       Evie wants the Piece of Eden first; they agree to start with Whitechapel. Jacob takes over the Clinkers, a small
@@ -120,6 +121,7 @@ canon_course:
       lieutenants to crush it; when Kaylock dies, the other six borough leaders double their guards.
   beat_2_kenway_and_syrup:
     opens: beat_1 closed (Whitechapel's gang war resolved)
+    quest: tq_syrup
     twins: >-
       Evie follows her father's notes to a hidden map; it leads to Edward Kenway's old London mansion, which the
       Blighters and Lucy Thorne have taken; she opens a hatch through a piano code and recovers documents and an
@@ -131,6 +133,7 @@ canon_course:
       stalls in Lambeth; Starrick's men go after Darwin as a witness.
   beat_3_omnibus_and_st_pauls:
     opens: beat_2 closed AND the Rooks hold 2 boroughs
+    quest: tq_omnibus
     twins: >-
       Pearl Attaway, owner of the omnibus company, presents herself as Starrick's rival and hires Jacob to kill Malcolm
       Millner, the Templar whose lines carry Starrick's contraband. Jacob does it; dying, Millner tells him Pearl is
@@ -143,6 +146,7 @@ canon_course:
       to the Shroud vault.
   beat_4_bank_and_tower:
     opens: beat_3 closed AND the Rooks hold 3 boroughs
+    quest: tq_bank
     twins: >-
       Abberline's investigation shows Philip Twopenny, Governor of the Bank of England, robbing his own bank as
       "Plutus" and flooding the city with false goods and notes for Starrick. Jacob catches him in the act during a
@@ -156,6 +160,7 @@ canon_course:
       lost his scholar; he moves to get the Shroud vault's plans himself.
   beat_5_parliament_and_vault_plans:
     opens: beat_4 closed AND the Rooks hold 4 boroughs
+    quest: [tq_parliament, tq_vault_plans]
     twins: >-
       Jacob, helped by Benjamin and Mary Anne Disraeli, protects the Prime Minister and kills the Earl of Cardigan
       ("Mr. B") at the Palace of Westminster. Evie hunts the plans to the Buckingham Palace vault with Henry in the field;
@@ -167,6 +172,7 @@ canon_course:
       talking with Duleep Singh she reconsiders.
   beat_6_roth:
     opens: beat_5 closed AND the Rooks hold Lambeth and the Thames (the game gates this sequence on those two)
+    quest: tq_alhambra
     twins: >-
       Maxwell Roth, the Blighters' founder and Starrick's own street general, approaches Jacob to wreck Starrick's
       business together; they destroy much of Starrick's goods and kidnap three of his henchmen. Roth sends Jacob a
@@ -179,6 +185,7 @@ canon_course:
       Blighters without their founder; their men keep defecting to the Rooks.
   beat_7_ball:
     opens: beat_6 closed → the Queen's ball is announced and held 7 days later; if beat_6 never closes, the ball is held Day 180 regardless (Starrick has the plans and moves on his own)
+    quest: tq_ball
     twins: >-
       The twins enter Queen Victoria's ball at Buckingham Palace with the Gladstones' invitations and carriage; Abberline
       smuggles weapons in; Mary Anne Disraeli introduces Evie to the Queen. Starrick takes Evie for a dance and tells her
@@ -841,7 +848,7 @@ npcs:
     state:
       position: The City of London (his office); his estates
       plan: hold London through industry, telegraph and gangs; answer each loss (canon_course templars lines); take the Shroud and kill the Queen and London's elite at the ball
-      due: when the first Whitechapel stronghold falls, hears of the new gang and orders his lieutenants to crush it
+      due: when the Rooks' first mark lands on Whitechapel (rooks_rising; the first stronghold falls), hears of the new gang and orders his lieutenants to crush it
       if_blocked: brings more Templars into London; buys loyalty (raises wages); takes what he needs himself
     drives: {wants: [total control, the Shroud], fears: [disorder, losing face], values: [order, himself]}
     capability: {overall_level: 7, skills: {command: T3, brawling: T3, wealth: T4}, note: "with the Shroud on, blows mostly fail until it is torn off (game); the Shroud is T4 and can be removed"}
@@ -1351,7 +1358,8 @@ world_state:
 
 ## Setting notes (GM-facing)
 
-- **Opening.** Day 0, evening, Whitechapel. The twins have just beaten a Blighter crew in a pub, and everyone is talking about it. The PC starts in their role's place with their role's people. Day 0 evening is routine continuation (engine §2): one line, then the first scene at the role's first contact — initiate: Day 1, the twins meet Henry at his shop · Rook: Day 3, Jacob takes the Clinkers' pub · constable: Day 4, Abberline's bounties · Blighter: Day 7, Kaylock's men break Rook pubs · Londoner: the first Day 1 encounter in their workplace's zone. No invented errand or NPC question fills the gap; the PC may act before the contact, and the skip stops there.
+- **Opening.** Day 0, evening, Whitechapel. The twins have just beaten a Blighter crew in a pub, and everyone is talking about it. The PC starts in their role's place with their role's people. Day 0 evening is routine continuation (engine §2): one line, then the first scene at the role's first contact — initiate: Day 1, the twins meet Henry at his shop · Rook: Day 3, Jacob takes the Clinkers' pub · constable: Day 4, Abberline's bounties · Blighter: Day 7, Kaylock's men break Rook pubs · Londoner: Day 3, word of Jacob's new gang reaches their street and workplace, first scene there, unless an encounter in their workplace's zone reaches them first. No invented errand or NPC question fills the gap; the PC may act before the contact, and the skip stops there.
+- **Mill children.** side_mill_children reaches the PC through Clara's runner (Day 5, to whoever is fighting the Blighters) or by the PC finding the mill; no other channel.
 - **Role first.** Every beat reaches the PC through their own channel: Henry for an initiate, Jacob for a Rook, Kaylock or Roth for a Blighter, Abberline for a constable, their street for a Londoner. A beat with no channel to the PC happens anyway, and they hear of it the way Londoners would.
 - **The twins are people.** Jacob is fun and reckless; Evie is sharp and dry. They argue (twins_rift). They help the PC when it suits them, and they can be wrong.
 - **Templars are not one villain.** Starrick wants control; Lucy wants the Shroud; Roth wants a show; Twopenny wants money; Pearl wants her own empire. They work together and against each other.

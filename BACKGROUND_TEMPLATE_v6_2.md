@@ -1,6 +1,6 @@
-# BACKGROUND TEMPLATE — v6.1
+# BACKGROUND TEMPLATE — v6.2
 
-For `NEW ENGINE v6.1`.
+For `NEW ENGINE v6.2`.
 
 This file defines **Round-0 truth**: the setting, the character's starting state, and whatever the world already contains before play begins.
 
@@ -338,9 +338,12 @@ The bones of the main quest and major questlines, written as the plans of the ac
 
 ```yaml
 canon_course:
-  actor_or_group_id:
-    - <step of their default plan, in order>
+  beat_<n>_<name>:
+    opens:              # the event that opens it ("beat_1 closed", "the Rooks hold 2 boroughs"); a Day only for the opening
+    quest:              # the MAIN chain child (or children) that records it (engine §14.2 CANON BEAT)
+    <actor_or_group>:   # what each side does in this beat, in order
   later_steps:          # optional: "as in the game — …"
+  timed_plans:          # optional: plans that run on their own dates whatever else happens
 ```
 
 ## 3. Setting anchors
@@ -368,7 +371,7 @@ setting_anchors:
     recovery:               # fast | slow | rest_only
     notes:
   horrors: []               # optional: {what: , base: , marks: <low>/<high>} (engine §13.10)
-  undercurrent_pool:        # only if the setting has a hidden layer (engine §13.3 step 4)
+  undercurrent_pool:        # only if the setting has a hidden layer (engine §13.3 UNDERCURRENT)
     sign: []
     brush: []
     incident: []
@@ -447,6 +450,8 @@ quests:
   quest_id:
     spine: {question: , stake_hooks: {<role>: <hook>}, pressure: , end: }   # GM truth (§0.5)
     hook:                          # player-facing; never reveals locked truth
+    status:                        # available | active | blocked (engine §14.2 BLOCKED)
+    trigger:                       # blocked only: the event that opens it
 development_threads:
   thread_id: {direction: , origin: , state: , status: }   # a player-development direction (engine §13.9)
 
@@ -553,7 +558,7 @@ Populate only material fields. `attitude` is a few plain words; a first meeting 
 
 `bond` is what the relationship is to this actor, this side only, never mirrored onto the other: `history` what they have been through together, `means` what the other is to them, `habits` how they are together (names, banter, rituals, small care), `wants` what they want from it, `unsaid` what they feel or hide and do not say. Fill it for the PC's own people and anyone the relationship matters to; ties with extras stay practical. A familiar actor meets the PC from it, never as a stranger; it plays the scene and never counts in dice (engine §13.1 BOND).
 
-Every actor a quest, pressure, or case names has a dated `plan` and `due` here (engine §13.1 DUE AT CREATION). A work source (fixer, guild, employer, patron) carries its `pace` in `state.routines.work_source`, else the engine asks weekly (engine §13.1 WORK SOURCE).
+Every actor a quest, pressure, or case names has a `plan` and `due` here: a clock time, or a trigger written as an event ("when …") that the helper's `dues` lists (engine §13.1 PLAN, DUE AT CREATION). A work source (fixer, guild, employer, patron) carries its `pace` in `state.routines.work_source`, else the engine asks weekly (engine §13.1 WORK SOURCE).
 
 ---
 
@@ -698,4 +703,4 @@ The opening is this state, `player.starting_activity` (§13), the quests active 
 
 ---
 
-*End of Background Template v6.1*
+*End of Background Template v6.2*

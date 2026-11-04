@@ -1,6 +1,6 @@
-# SAVE TEMPLATE — v6.1
+# SAVE TEMPLATE — v6.2
 
-For `NEW ENGINE v6.1`.
+For `NEW ENGINE v6.2`.
 
 A save is a projection of the Ledger. Every field is canonical state or an explicitly derived convenience that cannot create or strengthen anything. Save-only world facts are forbidden.
 
@@ -289,4 +289,4 @@ A pressure has a `track` (bound to zones) or a `clock` (bound to none), never bo
 - Missing noncritical detail is marked degraded and the save stays valid. A continuation-critical gap makes the save invalid until repaired from authoritative evidence.
 - This template owns layout. Meaning and state-transition authority stay in the engine.
 
-*End of Save Template v6.1*
+*End of Save Template v6.2*

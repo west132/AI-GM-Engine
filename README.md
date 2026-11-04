@@ -11,8 +11,8 @@ You need a model that can run code, because the dice and math go through the
 Python helper.
 
 1. Open a new chat.
-2. Attach `NEW_ENGINE_v6_0.md`, `AI_RULES_v6_0.md`, `SAVE_TEMPLATE_v6_0.md`,
-   `engine_math_v6_0.py` and **one** background from `written_background/`.
+2. Attach `NEW_ENGINE_v6_2.md`, `AI_RULES_v6_2.md`, `SAVE_TEMPLATE_v6_2.md`,
+   `engine_math_v6_2.py` and **one** background from `written_background/`.
    If you're using a Project, put the files in the project's knowledge instead
    of the chat. The helper only needs to be there for the AI to run; it doesn't
    need to read it. The background template is only for making your own world,
@@ -41,7 +41,7 @@ context models handle it better.
 ### Making your own world
 
 Play one of the written backgrounds first so you know what a finished one looks
-like. Then attach `BACKGROUND_TEMPLATE_v6_0.md` with the engine files, tell the
+like. Then attach `BACKGROUND_TEMPLATE_v6_2.md` with the engine files, tell the
 AI the basics (genre, tone, who you play, what the story is about), and ask it
 to check its own design at least twice before you start.
 
@@ -106,11 +106,11 @@ All files share one version number. Don't mix versions.
 
 | File | Purpose |
 |---|---|
-| `NEW_ENGINE_v6_0.md` | The rules. Part 0 runs every turn, Part 1 sections open when something triggers them, Part 2 modules are on unless a background turns one off. |
-| `BACKGROUND_TEMPLATE_v6_0.md` | Template for a world: setting, character, and everything that exists before Round 1. |
-| `SAVE_TEMPLATE_v6_0.md` | Save format: a readable save plus a hidden capsule. |
-| `AI_RULES_v6_0.md` | How the AI should run the engine in a chat. No game rules here, just discipline. |
-| `engine_math_v6_0.py` | Dice, arithmetic, record merge and checks. It calculates; it never decides. |
+| `NEW_ENGINE_v6_2.md` | The rules. Part 0 runs every turn, Part 1 sections open when something triggers them, Part 2 modules are on unless a background turns one off. |
+| `BACKGROUND_TEMPLATE_v6_2.md` | Template for a world: setting, character, and everything that exists before Round 1. |
+| `SAVE_TEMPLATE_v6_2.md` | Save format: a readable save plus a hidden capsule. |
+| `AI_RULES_v6_2.md` | How the AI should run the engine in a chat. No game rules here, just discipline. |
+| `engine_math_v6_2.py` | Dice, arithmetic, record merge and checks. It calculates; it never decides. |
 | `CHANGELOG_NEW_ENGINE.md` | What changed over time, and how old saves and backgrounds are brought forward. Only needed for older files. |
 | `written_background/` | Ready-to-play worlds (list above). |
 

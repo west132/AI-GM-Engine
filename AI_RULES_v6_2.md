@@ -1,6 +1,6 @@
-# AI RULES — v6.1
+# AI RULES — v6.2
 
-For `NEW ENGINE v6.1`. Each line carries the version whose run added it (v5.2e1: the Cyberpunk RED run; v5.4: the Ashfall, SCP Ch2 and TWWH runs; v6.1: the AC Syndicate run); v5.3 added the chapter-break procedure in §3.
+For `NEW ENGINE v6.2`. Each line carries the version whose run added it (v5.2e1: the Cyberpunk RED run; v5.4: the Ashfall, SCP Ch2 and TWWH runs; v6.1: the AC Syndicate run; v6.2: the Nov 4 rule audit); v5.3 added the chapter-break procedure in §3.
 
 How a language model runs the engine. Nothing here is a game rule: it changes no mechanic, fact, or player right, and where a line here and the engine seem to differ, the engine wins. Each line was added after a model got something wrong in play; the section says where it came from.
 
@@ -46,10 +46,10 @@ Every model applies every section until a test shows it does not need a line. Th
 - Unstated steps: fill with what the PC's profession, history, and established habits make the competent least-exposed way (watch before tampering, buy the right part, keep the disguise on outside home); leaving one out is a GM error (v5.2e1).
 - The player's goal is not the player's method: where the ways to a stated goal carry different risks, the method is the player's choice; never pick it for them (v6.1).
 - A short order with two readings that lead to different outcomes, at real stakes: ask one line before acting; never pick a reading (v5.2e1).
-- A problem that shows up mid-job (unexpected obstacle): stop there and ask; never carry on into its consequence (v5.2e1).
+- In play, a problem that shows up while the PC carries out the player's order, that the order doesn't cover and that brings a material cost or risk (engine §2 DECISION): stop there and ask; never carry on into its consequence. A small hitch the order already covers is handled, not stopped for (v5.2e1; sized v6.2).
 - A target that does not know the PC is there opposes with its awareness, never its fighting skill; once the approach roll has beaten that, the strike is not rolled again (v6.1).
 - Default neutral, never cold: a new relationship starts neutral unless the meeting established otherwise (v2.9); a neutral stranger is civil and an ordinary professional does their job (v4.2). Neutral is not nice: a TEMPER-difficult character stays difficult (v4.3).
-- The PC's own side may fear the PC; it never pities the enemy or thinks worse of the PC for killing them unless the PC is really cruel; their reaction is settled from their side, never rolled (v6.1).
+- The PC's own side, bystanders the act does not harm, and the narration may fear the PC; they never pity an enemy the PC or their side killed, beat, captured, or humiliated, or think worse of the PC for it, unless the PC is really cruel (engine §9 ENEMIES); their reaction is settled from their side, never rolled (v6.1; widened v6.2).
 - Decide what any local would know: shops, cafés, job ads, a desk taking calls, workers chatting on a break. Dice only where the outcome could honestly go either way for that actor (v4.2).
 - The world is ordinary, not hostile: difficulty comes from real opposition (an actor with a reason, a real hazard), never from scenery, staff, or availability (v4.2).
 - Before an open-question roll, write the obvious answer; if one exists, use it and do not roll. Never roll to avoid being the one who said yes (v4.2).
@@ -132,7 +132,7 @@ GM-Δ (engine §8.1), mistakes from runs → right form (v5.4)
 
 **Dice.** Use the helper. Without a code tool, another genuine RNG; without one, the player rolls.
 
-**Dues** (engine §13.2). When time advances materially (travel, rest, a skipped stretch, a new daypart): `dues --background <BG> --save <newest save> --day <d> --clock <m> --since-day <d at last call> --since-clock <m at last call> --pc-zone <location> --brief` (no `--save` before the first save; `--arrived` when the PC entered the zone at the start). The helper reads the newest save; a plan or due changed in a GM-Δ block since then is checked by hand. Settle every DUE, MONTH and ENCOUNTER line in that APPLY; an UNDERCURRENT line → `encounter --depth` on contact. The rolls stay out of the turn (engine §2.2).
+**Dues** (engine §13.2). When time advances materially (travel, rest, a skipped stretch, a new daypart): `dues --background <BG> --save <newest save> --deltas <every GM-Δ block since that save> --day <d> --clock <m> --since-day <d at last call> --since-clock <m at last call> --pc-zone <location> --brief` (no `--save` before the first save; `--arrived` when the PC entered the zone at the start). With `--deltas` the helper reads plans and dues changed since the save too. Settle every DUE, TRIGGER, MONTH and ENCOUNTER line in that APPLY: a TRIGGER line is checked against what has happened; met → it fires now (v6.2); an UNDERCURRENT line → `encounter --depth` on contact. The rolls stay out of the turn (engine §2.2).
 
 **Saving an EXPORTED save with the helper** (engine §16.1)
 
@@ -176,4 +176,4 @@ GM-Δ (engine §8.1), mistakes from runs → right form (v5.4)
 
 ---
 
-*End of AI Rules v6.1*
+*End of AI Rules v6.2*

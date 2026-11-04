@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""Stateless mechanics helper for NEW ENGINE v6.1: dice, arithmetic, record handling.
+"""Stateless mechanics helper for NEW ENGINE v6.2: dice, arithmetic, record handling.
 Owns no state and decides nothing (engine §2.3). Commands and options: --help.
 --brief / --lite print the engine §2.2 lines, to be copied into the turn verbatim."""
 from __future__ import annotations
 import argparse, json, math, re, secrets
 
-ENGINE_VERSION = "6.1"
+ENGINE_VERSION = "6.2"
 _rng = secrets.SystemRandom()
 
 XP_REQ = {
@@ -1455,7 +1455,7 @@ def do_dues(a):
         base = rid[:-len(".due")]
         owner = base.split(".")[0]
         actor = ".".join(base.split(".")[:2]) if owner in ("npcs", "factions") else None
-        item = {"id": rid, "due": body[:110]}
+        item = {"id": rid, "due": body[:240]}
         loc = None
         if actor:
             whole = cur.get(actor, "")
@@ -1492,6 +1492,23 @@ def do_dues(a):
             trigger.append(item)
         else:
             unread.append(item)
+    # engine §14.2 BLOCKED and CANON BEAT: a blocked quest's trigger, and the `opens` of
+    # each canon beat whose quest(s) are still blocked, wait on an event like any trigger
+    def _status(qid):
+        st = re.sub(r"^R\d+:\s*", "", cur.get(f"quests.{qid}.status", "")).strip()
+        if not st:
+            m = re.search(r"\bstatus:\s*(\w+)", cur.get(f"quests.{qid}", ""))
+            st = m.group(1) if m else ((bg.get("quests") or {}).get(qid) or {}).get("status", "")
+        return str(st).strip().lower()
+    for qid, qd in sorted((bg.get("quests") or {}).items()):
+        if isinstance(qd, dict) and qd.get("trigger") and _status(qid) == "blocked":
+            trigger.append({"id": f"quests.{qid}.trigger", "due": str(qd["trigger"])[:240]})
+    for beat, bd in (bg.get("canon_course") or {}).items():
+        if not (isinstance(bd, dict) and bd.get("opens") and bd.get("quest")):
+            continue
+        qs = bd["quest"] if isinstance(bd["quest"], list) else [bd["quest"]]
+        if qs and all(_status(str(q)) == "blocked" for q in qs):
+            trigger.append({"id": f"canon_course.{beat}.opens", "due": str(bd["opens"])[:240]})
     due_now.sort(key=lambda x: x[0])
     upcoming.sort(key=lambda x: x[0])
     stamp = lambda p: (f"day {p[0][1]}" if p[1] == 1439 and p is not now
@@ -1502,10 +1519,11 @@ def do_dues(a):
            "due_now": [dict(at=stamp(p), **i) for p, i in due_now],
            "next": [dict(at=stamp(p), **i) for p, i in upcoming[:a.ahead]],
            "on_trigger": trigger, "unread": unread,
-           "note": "engine §13.2 FIRE: each due is a check, never a delivery — cause still "
+           "note": "engine §13.2 FIRE: at its due a plan acts if its cause still "
                    "holds → resolve from state (uncertain → §13.1 ZONE, the zone_point for an "
                    "open or hidden act); cause gone → STOPPED or REPLAN; it reaches the PC only "
-                   "by real channels (I5). on_trigger: check whether the trigger has happened."}
+                   "by real channels (I5). on_trigger: check against what has happened; met → "
+                   "it fires now."}
     if extra:
         out.update(extra)
     if not a.brief:
@@ -1535,7 +1553,8 @@ def do_dues(a):
         rows += [f"MONTH {m['day']} :: {m['check']}" for m in extra.get("months", [])]
         rows += [f"ENCOUNTER {e['at']} :: {e['line']}" for e in extra.get("encounters", [])]
         rows += [f"UNDERCURRENT :: {u}" for u in extra.get("undercurrent", [])]
-    rows.append("Each due is a check, never a delivery (engine §13.2 FIRE).")
+    rows.append("At its due a plan acts if its cause still holds; TRIGGER: check against "
+                "what has happened, met → fires now (engine §13.2 FIRE).")
     return "\n".join(rows)
 
 
@@ -2057,7 +2076,7 @@ def do_time(a):
 
 
 def main():
-    ap = argparse.ArgumentParser(description="Stateless mechanics helper for NEW ENGINE v6.1")
+    ap = argparse.ArgumentParser(description="Stateless mechanics helper for NEW ENGINE v6.2")
     sp = ap.add_subparsers(dest="cmd", required=True)
 
     p = sp.add_parser("roll", help="roll NdM")

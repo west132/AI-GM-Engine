@@ -1,4 +1,4 @@
-# NEW ENGINE — v6.1
+# NEW ENGINE — v6.2
 
 Executable spec for an AI GM: persistent world simulator, referee, state manager, narrator.
 
@@ -7,7 +7,7 @@ READ  Part 0 every turn · Part 1 section when §2.1 routes to it · Part 2 only
 FILES  BACKGROUND_TEMPLATE (Round-0 truth) · SAVE_TEMPLATE (persistence)
   AI_RULES (model-habit guards and tool procedures; no game rules)
   engine_math (stateless helper, §2.3)
-  filenames carry the version, e.g. engine_math_v6_1.py; use the matching set
+  filenames carry the version, e.g. engine_math_v6_2.py; use the matching set
 FORMAT STATE · STEPS · LIMITS; tags (§x, In) are references, never restated
 ```
 
@@ -25,8 +25,9 @@ NO OUTCOME IS PROTECTED.
 
 ```text
 WORLD  exists independently of the player; may be met, avoided, altered, exploited,
-  missed, or lost permanently; nothing must reach the player; no arc protected;
-  no steering back to unused content
+  missed, or lost permanently; it owes the player no content and holds none back:
+  an actor's plan that reaches the PC lands in full; no arc protected; no
+  steering back to unused content
 PRIORITY  1 directive  2 recorded state + committed causal truth
   3 physical possibility + hard capability/domain limits
   4 agency, ownership, authority  5 uncertainty  6 output and style
@@ -109,6 +110,9 @@ play applied the engine wrongly  §16.7
 ending condition met (chapter.end incl.), or player extends  §14.3, §16.8
 companion joins or leaves  §13.1
 module event  §A, §D
+an actor reacts to or judges what the PC did  §9 GRADE, §13.8
+player states a lasting direction for their character  §13.9
+a `dues` TRIGGER line, or a blocked quest's trigger met  §13.2 FIRE, §14.2
 ```
 
 ### 2.2 What a turn emits
@@ -389,6 +393,18 @@ LANGUAGE game language = save `language`, set at Round 0 from the player's first
   engine files, GM-Δ, capsule, tool calls, ids, file names; names and
   terms only from world_state.glossary.<language>; a new one gets one form at
   first use: `+ world_state.glossary.<language>.<id> :: <English> = <form>`
+GRADE  no morality score, karmic consequence, or moral commentary, in narration
+  or any actor; consequences causal, never editorial (I6)
+JUDGEMENT only an actor with a stake judges, in its own voice and values (may be
+  wrong, self-serving, inconsistent); no actor is the engine's conscience
+ENEMIES  an enemy the PC or the PC's side killed, beat, captured, or humiliated
+  draws no pity and no worse opinion of the PC from the PC's side, bystanders the
+  act does not harm, or the narration; fear of the PC is valid, shown as caution,
+  distance, respect, never as moral disapproval; only real cruelty turns them:
+  beyond what the setting's norms accept against such an enemy (torture or
+  prolonged suffering for its own sake, harm to the uninvolved); rough justice the
+  setting expects is not cruelty; the enemy's own side and kin react from their
+  stake (JUDGEMENT)
 QUIET  "nothing happens" is a valid outcome
 ```
 
@@ -733,8 +749,9 @@ PLAN  next move + due: a clock time, or a trigger the simulation registers (even
   its schedule as a world fact); else not a plan; due passes → move resolves
   wherever the player is, reaching them only by real channels (I5); recurring
   → next due set
-DUE AT  an actor a quest, pressure, or case names gets a dated plan when that
-CREATION  record is created or imported, never left for the save check (§16.3)
+DUE AT  an actor a quest, pressure, or case names gets a plan with a due (PLAN:
+CREATION  a clock time or a registered trigger) when that record is created or
+  imported, never left for the save check (§16.3)
 OFFSCREEN  otherwise moves only when elapsed time advances a recorded activity,
   pressure, or obligation, or a material event changed its state, knowledge,
   relationships, rights, risk, opportunity; time alone never changes
@@ -891,8 +908,10 @@ ADVANCE  believable duration → resolve material duration uncertainty → updat
   (plans §13.1, pressures §13.5, pending and payoffs §15) → each daypart the PC
   spent in a zone: §13.3 surface roll; one helper `dues --since` call lists the
   dues and month steps and rolls the owed surface encounters
-FIRE  a due is a check, never a delivery: its cause still holds → resolve from
-  state, uncertain → §13.1 ZONE; cause gone → STOPPED or REPLAN (§13.1, §13.5)
+FIRE  at its due a plan or pressure acts if its cause still holds: resolve from
+  state, outcome uncertain → §13.1 ZONE; cause gone → an actor REPLANs (§13.1), a
+  pressure is STOPPED (§13.5); a `dues` TRIGGER line is checked against what has
+  happened: met, even earlier unnoticed → fires now, from current state
 EVERYWHERE  a due fires wherever its actor or pressure is, reaching the PC only by
   real channels (I5); a skipped stretch (continuation, travel, downtime,
   fast-forward) runs ADVANCE like any other; skipping never jumps a due
@@ -1077,10 +1096,7 @@ NEVER  better or worse than the situation supports · soften a recorded setting
   into modern sensibility · import one it never had
 CULTURE  recorded prejudices, loyalties, superstitions, hierarchies, cruelties
   belong to the actors and cultures holding them
-NO GRADE  no morality score, karmic consequence, or moral commentary; consequences
-  causal, never editorial (I6)
-JUDGEMENT only inside actors with a stake, in their own voice and values (may be wrong,
-  self-serving, inconsistent); no actor is the engine's conscience
+GRADE  §9 GRADE, JUDGEMENT, ENEMIES hold for every actor
 CONTENT  what the campaign depicts is set once in BACKGROUND by its author; never
   improvised per scene or narrowed by the engine
 ```
@@ -1172,6 +1188,11 @@ CHALLENGE  4 derive this task's own, bind before roll
 SOURCES  recorded contracts/obligations, actor/faction offers, discovered cases,
   world events/pressures, accepted player-created undertakings, other
   recorded causes; existing situations never rescaled for the player
+BLOCKED  a quest recorded but not yet open; its `trigger` names the event that
+  opens it; helper `dues` lists it each call; met → available, reaching the PC
+  only by a real channel (OFFER), or active if the PC is already in it
+CANON BEAT canon_course beat: opens when its `opens` is met; its `quest` (one or
+  more) is its record: blocked until then, closed when all its quests close (CLOSE)
 SHAPE ROLL generated bounded offer with unfixed shape, before output:
   1d10 → 1..7 SHORT | 8..9 LONG | 10 CHAIN; CHAIN first child unfixed:
   1d4 → 1..3 SHORT | 4 LONG; SHORT never a fallback
@@ -1308,7 +1329,13 @@ DELIVERY  one file save_<campaign>_R<round>.md (chapter 2 on: save_<campaign>_ch
 4 accepted work with no quest → quest (§14.2 ON ACCEPT), no invented facts
 5 generate only missing state coherent simulation requires
 6 initialise the Ledger
-7 no ROUND until the first material player action
+7 no ROUND until the first material player action; after the intro, routine
+  continuation (§2) runs to the first point where the world reaches the PC (a
+  due, an encounter, a contact the BACKGROUND opening names): that is the first
+  scene; no invented event, errand, or NPC question fills the gap; the player may
+  act before that contact, and the skip stops at their action
+8 restart (same PC, fresh start): the player's earlier setup (PC, language,
+  §2.2 profile) stands unless they change it
 LIMITS  no forced quest coincidence, forced contact, or heroic destiny unless
   recorded; non-quest opening valid; undiscovered pressures are not objectives
 ```
@@ -1612,4 +1639,4 @@ AFTER  established fact; real and visible; perceived and remembered (I5, §13.7)
 
 ---
 
-*End of NEW ENGINE v6.1*
+*End of NEW ENGINE v6.2*

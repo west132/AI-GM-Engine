@@ -388,7 +388,7 @@ quests:
       question: Who holds London's throat, and who takes it back?
       stake_hooks:
         assassin_initiate: the Creed, Henry Green's trust, and the Brotherhood's last chance in London
-        rook: your gang, your streets, your share
+        rook: your gang; your streets, your share
         blighter: your gang, your pay, and the twins coming for both
         scotland_yard: the law in a city where the law is for sale
         londoner: your street, your family, your wage, and whoever wins
@@ -438,7 +438,7 @@ quests:
     spine:
       question: Who runs the roads — and who is using whom?
       stake_hooks: {assassin_initiate: two Templars and a cousin's trust, rook: a rival's fleet, blighter: Templar
-        contract work, scotland_yard: contraband nobody searches, londoner: your fare, your job, your street}
+        contract work, scotland_yard: contraband nobody searches, londoner: your fare; your job; your street}
       pressure: Millner's and Attaway's plans; templar_grip.southwark
       end: Millner and Attaway dead, ruined, allied or untouched
     quest_level: 5
@@ -709,7 +709,7 @@ locked_case_truths:
       - The Assassins of Crawley learned of the Templars' interest; Brewster's Piece of Eden was destroyed when Evie
         killed him; she learned the Templars had found a new one.
       - Ethan Frye, the twins' late father, researched Pieces of Eden in London; his notes passed to Evie.
-    state: {shroud: sealed in the vault under the palace, key: in the Tower's keeping, records: scattered (palace, Tower, Templar archive)}
+    state: {shroud: sealed in the vault under the palace, key: in the Tower's keeping, records: scattered (palace; Tower; Templar archive)}
     evidence:
       ethan_notes: what Evie carries — her father's notes, pointing to London and to a Piece hidden near the Crown
       tower_records: Tower of London documents naming the vault and its key, read only by someone who knows what to look for
@@ -720,7 +720,7 @@ locked_case_truths:
   soothing_syrup:
     cause: Dr John Elliotson brews Starrick's Soothing Syrup — laudanum and worse — sold at a penny a bottle to tired
       mothers and workers across Lambeth and Whitechapel. It keeps the poor docile and buying.
-    state: {brewery: Lambeth asylum, distribution: dock crates, chemists, street sellers}
+    state: {brewery: Lambeth asylum, distribution: dock crates; chemists; street sellers}
     evidence:
       bottles: a cheap brown bottle with Starrick's company mark — sold everywhere, proves nothing alone
       deaths: children who sleep and don't wake, in streets where it's sold — the coroner calls it fever
@@ -743,8 +743,8 @@ npcs:
       due: Day 3 takes over the Clinkers in a Whitechapel pub and renames them the Rooks
     drives: {wants: [London free of Starrick, his gang strong, to prove the Council wrong], fears: [being his father's lesser], values: [his people, freedom]}
     relationships:
-      evie_frye: {tie: twin, attitude: loving, impatient, bond: {history: raised together, trained by their father,
-        means: the half of him that thinks first, habits: teasing, bets, cutting each other off, wants: her to see the
+      evie_frye: {tie: twin, attitude: loving, impatient, bond: {history: raised together; trained by their father,
+        means: the half of him that thinks first, habits: teasing; bets; cutting each other off, wants: her to see the
         gangs matter, unsaid: afraid she'll leave him behind}}
     capability: {overall_level: 7, skills: {brawling: T3, freerunning: T3, blades: T2, leadership: T2}}
     discovered_information: {}
@@ -762,7 +762,7 @@ npcs:
     drives: {wants: [the Piece of Eden safe, her father's work finished], fears: [Jacob getting them both killed], values: [the Creed, knowledge]}
     relationships:
       jacob_frye: {tie: twin, attitude: exasperated, loving, bond: {history: raised together, means: the brother who
-        never looks before he leaps, habits: correcting him, saving him, wants: him to think, unsaid: she envies how
+        never looks before he leaps, habits: correcting him; saving him, wants: him to think, unsaid: she envies how
         easily people follow him}}
       henry_green: {tie: ally, attitude: warm, curious, bond: {history: met Day 1, means: a quiet man who knows more than he says, habits: research late in his shop, wants: him in the field beside her, unsaid: she likes him more than is useful}}
     capability: {overall_level: 7, skills: {stealth: T3, freerunning: T3, blades: T2, scholarship: T2}}
@@ -948,7 +948,7 @@ npcs:
     gender: man
     character: old, proud, a believer in his own cures; mesmerist; experiments on asylum patients
     in_disorder: neither
-    state: {position: Lambeth, plan: spread the syrup across London from the distillery; experiment on asylum patients (canon_course), due: Day 20 a new shipment from the docks, then every 14 days}
+    state: {position: Lambeth, plan: spread the syrup across London from the distillery; experiment on asylum patients (canon_course), due: Day 20 a new shipment from the docks; then every 14 days}
     capability: {overall_level: 3, skills: {medicine: T3}}
     discovered_information: {}
   malcolm_millner:
@@ -958,7 +958,7 @@ npcs:
     gender: man
     character: hard-nosed businessman; moves Templar contraband on his lines
     in_disorder: neither
-    state: {position: Southwark, plan: keep the lines moving Templar goods (canon_course), due: Day 14 a contraband train runs, then every 14 days}
+    state: {position: Southwark, plan: keep the lines moving Templar goods (canon_course), due: Day 14 a contraband train runs; then every 14 days}
     capability: {overall_level: 4, skills: {business: T3}}
     discovered_information: {}
   pearl_attaway:
@@ -968,7 +968,7 @@ npcs:
     gender: woman
     character: Starrick's cousin, which she hides; gracious, ambitious, a better schemer than she shows; uses charm as a tool
     in_disorder: neither
-    state: {position: Southwark, plan: pose as Starrick's rival and hire the Rooks' leader to kill Millner, then take his lines (canon_course), due: when beat_3 opens, invites the Rooks' leader to her office}
+    state: {position: Southwark, plan: pose as Starrick's rival and hire the Rooks' leader to kill Millner; then take his lines (canon_course), due: when beat_3 opens; invites the Rooks' leader to her office}
     capability: {overall_level: 4, skills: {business: T3, persuasion: T3}}
     discovered_information: {}
   philip_twopenny:
@@ -998,7 +998,7 @@ npcs:
     gender: man
     character: theatrical, witty, charming, bored, in love with chaos; founded the Blighters for Starrick and hates him for being dull; courts whoever interests him
     in_disorder: thrives
-    state: {position: The Strand (the Alhambra), plan: turn on Starrick — court the Rooks' leader, wreck Starrick's goods, then blow up a factory full of children and burn the Alhambra (canon_course), due: Day 150 the factory (timed_templar_plans) — and when beat_6 opens he courts the Rooks' leader}
+    state: {position: The Strand (the Alhambra), plan: turn on Starrick — court the Rooks' leader; wreck Starrick's goods; then blow up a factory full of children and burn the Alhambra (canon_course), due: Day 150 the factory (timed_templar_plans) — and when beat_6 opens he courts the Rooks' leader}
     capability: {overall_level: 6, skills: {blades: T3, persuasion: T3}}
     discovered_information: {}
   charles_darwin:
@@ -1085,7 +1085,7 @@ factions:
     name: The Blighters
     role: Starrick's street gang; green coats; protection, muscle, enforcement
     in_disorder: thrives
-    state: {condition: hold every borough; led by Roth, with a leader per borough}
+    state: {condition: hold every borough; led by Roth; with a leader per borough}
     drives: {wants: [the streets, pay, fun], fears: [Roth when he's bored]}
     capability: {reach: every borough's streets}
     discovered_information: {}
@@ -1102,7 +1102,7 @@ factions:
     role: Henry Green and the Frye twins; the Crawley Council far off and against it
     in_disorder: neither
     drives: {wants: [the Templars broken, the Piece of Eden safe]}
-    capability: {reach: three people, until they have more}
+    capability: {reach: three people; until they have more}
     discovered_information: {}
   metropolitan_police:
     name: The Metropolitan Police
@@ -1116,7 +1116,7 @@ factions:
     name: The Crown and Government
     role: the Queen, the Prime Minister, Parliament
     in_disorder: suffers
-    capability: {reach: everything, through others}
+    capability: {reach: everything; through others}
     discovered_information: {}
 
 locations:
@@ -1135,7 +1135,7 @@ locations:
       - Abberline's bounty notice goes up
       - a street fight between drunks
     conditions: {features: [rail yards, Henry Green's shop, mills with child workers, Blighter pubs, the police station], activities: [Blighter strongholds, child labour at the mills, Abberline's bounties, Templar hunts]}
-    challenge_band: {min: 1, max: 4, basis: gang territory, Kaylock's crews}
+    challenge_band: {min: 1, max: 4, basis: gang territory; Kaylock's crews}
   lambeth:
     name: Lambeth
     surface: {baseline: -1, current: -1, tension: 0}

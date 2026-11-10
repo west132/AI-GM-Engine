@@ -1,4 +1,4 @@
-# NEW ENGINE — v6.2
+# NEW ENGINE — v6.3
 
 Executable spec for an AI GM: persistent world simulator, referee, state manager, narrator.
 
@@ -7,7 +7,7 @@ READ  Part 0 every turn · Part 1 section when §2.1 routes to it · Part 2 only
 FILES  BACKGROUND_TEMPLATE (Round-0 truth) · SAVE_TEMPLATE (persistence)
   AI_RULES (model-habit guards and tool procedures; no game rules)
   engine_math (stateless helper, §2.3)
-  filenames carry the version, e.g. engine_math_v6_2.py; use the matching set
+  filenames carry the version, e.g. engine_math_v6_3.py; use the matching set
 FORMAT STATE · STEPS · LIMITS; tags (§x, In) are references, never restated
 ```
 
@@ -795,6 +795,8 @@ settled morale (§12); news by real channels and travel time (I5); §13.3 encoun
   "here" = settlement size and the zone's surface (§13.4), read together; an
   actor's own plan or act reads ZONE (below) instead, never both
   attitude counts ±1 only where no credit/grievance entry counts (I8)
+  the asked actor's own want or fear the answer touches takes a column slot
+  first, at record weight (they need this · real cost/risk to them)
   ≥16  YES, AND  more than asked, within means and authority
   12–15  YES  as asked
   7–11  NO, BUT  partly: less, later, or on their terms (price, condition,
@@ -890,6 +892,23 @@ COMPANIONS  joining/leaving needs causal support; no auto-joining; solo stays va
   refuse a reckless order (§7); player property stays the player's; standing
   permission may cover routine shared supplies
   earns XP (§A) and skill evidence from own rolls (§11), same pass as the player
+JOIN AIM  an actor joins the PC's undertaking (companion, partner, hire, ally):
+  before its first act, weigh from the record, never by default:
+  want  its own, at record weight: strong = tied to an obligation, client, debt,
+    fear, identity · weak = a preference
+  clash  with the PC's goal now, on this path, not in principle
+  ties  bond, credit, grievance as recorded (STANDING); never from friendliness
+  → own  strong want that clashes or will: want and plan stay its own; mode:
+    paths together → follows fully · split ahead → follows outwardly, keeps and
+    may hide the aim · split now → works against
+  → adopt  weak want, no clash, or recorded ties outweigh it: takes the PC's
+    goal, helps in earnest (§7 AUTHORITY)
+  → none  no want of its own: any reason follows (pay, curiosity, nowhere
+    better); a thin record is filled from character first, never read as none
+  record  npcs.<id>.state.aim {row, mode, want, split}; own: plan = its own next
+    move with a due (PLAN), split = a registered trigger; never "follow/help the PC"
+  weigh again only on a material relationship event (CHANGE), the split reached,
+    or the want met or lost; never per scene
 ```
 
 ### 13.2 Time
@@ -1096,6 +1115,9 @@ NEVER  better or worse than the situation supports · soften a recorded setting
   into modern sensibility · import one it never had
 CULTURE  recorded prejudices, loyalties, superstitions, hierarchies, cruelties
   belong to the actors and cultures holding them
+TRAIT  a character line sets what an actor tries, how, and its voice; never whether
+  it works: uncertain → §10/§12, actor vs actor = one roll, the other as
+  Challenge; comic luck colours a result, never makes it
 GRADE  §9 GRADE, JUDGEMENT, ENEMIES hold for every actor
 CONTENT  what the campaign depicts is set once in BACKGROUND by its author; never
   improvised per scene or narrowed by the engine
@@ -1639,4 +1661,4 @@ AFTER  established fact; real and visible; perceived and remembered (I5, §13.7)
 
 ---
 
-*End of NEW ENGINE v6.2*
+*End of NEW ENGINE v6.3*

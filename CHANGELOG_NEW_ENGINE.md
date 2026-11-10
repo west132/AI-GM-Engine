@@ -78,11 +78,37 @@ v6.0 → v6.1
 v6.1 → v6.2
   saves and BACKGROUNDs load unchanged; a canon_course beat without `quest` is
   read as before (the helper lists only beats that name their quest)
+v6.2 → v6.3
+  saves and BACKGROUNDs load unchanged; an actor already with the PC and no
+  `state.aim` is weighed by §13.1 JOIN AIM at its next act and recorded then
 ```
 
 ## Changes
 
 ```text
+v6.3, Nov 10 (after the Sheet Anchor v6.2 run, R1–R38)
+  engine  §13.1 JOIN AIM: an actor joining the PC's undertaking is weighed from the
+          record (its own want at record weight, clash with the PC's goal now,
+          recorded ties) into one row: own (keeps want and plan; follows fully,
+          follows outwardly, or works against), adopt (takes the PC's goal), none
+          (any reason follows); recorded at state.aim; own needs its own move with
+          a due and a split trigger, never "follow/help the PC"; re-weighed only on
+          a material relationship event, the split, or the want met or lost
+          §13.1 ROLL: the asked actor's own want or fear the answer touches takes a
+          column slot first, at record weight
+          §13.8 TRAIT: a character line sets what an actor tries, how, and its
+          voice, never whether it works; actor vs actor = one roll, the other as
+          Challenge; comic luck colours a result, never makes it
+  AI_RULES  unstated steps are the PC's own only: an ally never plans or decides
+          for the PC
+  helper  version 6.3; validate/dues list joined_aim_open: an npc with aim row own
+          and no due or no split
+  templates  SAVE_TEMPLATE, BACKGROUND_TEMPLATE: optional aim field in actor state
+  backgrounds  AC Syndicate, AC Wrong Hands, Sheet Anchor: version 6.3 only;
+          background_id kept (saves point to it); the v6.0 backgrounds unchanged
+  size  engine 89,431 → 90,990 bytes; AI_RULES 15,156 → 15,253 bytes;
+          SAVE_TEMPLATE 14,657 → 14,784; BACKGROUND_TEMPLATE 36,879 → 37,006;
+          helper 111,665 → 113,167
 v6.2, Nov 4 (after the AC Syndicate v6.1 run; a full rule audit)
   engine  §1 WORLD: the world owes the player no content and holds none back (was
           "nothing must reach the player", read as "keep scenes empty")

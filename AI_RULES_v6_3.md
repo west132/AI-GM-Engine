@@ -1,6 +1,6 @@
-# AI RULES — v6.2
+# AI RULES — v6.3
 
-For `NEW ENGINE v6.2`. Each line carries the version whose run added it (v5.2e1: the Cyberpunk RED run; v5.4: the Ashfall, SCP Ch2 and TWWH runs; v6.1: the AC Syndicate run; v6.2: the Nov 4 rule audit); v5.3 added the chapter-break procedure in §3.
+For `NEW ENGINE v6.3`. Each line carries the version whose run added it (v5.2e1: the Cyberpunk RED run; v5.4: the Ashfall, SCP Ch2 and TWWH runs; v6.1: the AC Syndicate run; v6.2: the Nov 4 rule audit; v6.3: the Sheet Anchor run); v5.3 added the chapter-break procedure in §3.
 
 How a language model runs the engine. Nothing here is a game rule: it changes no mechanic, fact, or player right, and where a line here and the engine seem to differ, the engine wins. Each line was added after a model got something wrong in play; the section says where it came from.
 
@@ -43,7 +43,7 @@ Every model applies every section until a test shows it does not need a line. Th
 - Never stop for drama. In a fight, never stop while the plan covers the next exchange: not per strike, not for a wound, not for low HP the plan already answers ("retreat and heal when needed") (v3.0).
 - An NPC speaking to or asking the PC is answered in character, within what the PC knows, and play goes on, unless the answer commits the PC to something material (v6.1).
 - Before each scene, check the PC's standing routines, fighting_style, and current identity/disguise; they hold in every scene until the player changes them (v5.2e1).
-- Unstated steps: fill with what the PC's profession, history, and established habits make the competent least-exposed way (watch before tampering, buy the right part, keep the disguise on outside home); leaving one out is a GM error (v5.2e1).
+- Unstated steps: fill with what the PC's profession, history, and established habits make the competent least-exposed way (watch before tampering, buy the right part, keep the disguise on outside home); leaving one out is a GM error (v5.2e1); the PC's own only: an ally never plans or decides for the PC (v6.3).
 - The player's goal is not the player's method: where the ways to a stated goal carry different risks, the method is the player's choice; never pick it for them (v6.1).
 - A short order with two readings that lead to different outcomes, at real stakes: ask one line before acting; never pick a reading (v5.2e1).
 - In play, a problem that shows up while the PC carries out the player's order, that the order doesn't cover and that brings a material cost or risk (engine §2 DECISION): stop there and ask; never carry on into its consequence. A small hitch the order already covers is handled, not stopped for (v5.2e1; sized v6.2).
@@ -176,4 +176,4 @@ GM-Δ (engine §8.1), mistakes from runs → right form (v5.4)
 
 ---
 
-*End of AI Rules v6.2*
+*End of AI Rules v6.3*

@@ -1,6 +1,6 @@
-# BACKGROUND — Assassin's Creed Syndicate: London 1868 v6.2
+# BACKGROUND — Assassin's Creed Syndicate: London 1868 v6.3
 
-For `NEW ENGINE v6.2`. **Round-0 truth**; once play begins this file is history and the Ledger changes instead. **Player: pick a role and set the `[UNASSIGNED]` entries before starting; the GM fills the `[ROLE]` entries from the role table at Round 0.** The GM withholds `locked_case_truths`, Templar plans not yet seen, undiscovered NPC knowledge and hidden faction information during play.
+For `NEW ENGINE v6.3`. **Round-0 truth**; once play begins this file is history and the Ledger changes instead. **Player: pick a role and set the `[UNASSIGNED]` entries before starting; the GM fills the `[ROLE]` entries from the role table at Round 0.** The GM withholds `locked_case_truths`, Templar plans not yet seen, undiscovered NPC knowledge and hidden faction information during play.
 
 **Undefined parts:** anything this background leaves undefined is the AI GM's to develop in play, consistent with its setting anchors, the game's canon and established facts (engine I3, §13.1 CANON MODE, §16.6) — never a gap to wait on, refuse over, or expect the engine to fill. Unsure what canon says → search if a tool exists, never guess.
 

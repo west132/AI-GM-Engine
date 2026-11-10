@@ -1,6 +1,6 @@
-# BACKGROUND TEMPLATE — v6.2
+# BACKGROUND TEMPLATE — v6.3
 
-For `NEW ENGINE v6.2`.
+For `NEW ENGINE v6.3`.
 
 This file defines **Round-0 truth**: the setting, the character's starting state, and whatever the world already contains before play begins.
 
@@ -530,6 +530,7 @@ npcs:
     in_disorder:                   # thrives | suffers | neither (engine §13.1 ZONE)
     state: {}                      # status, position, current HP/MP when below max, nerve when it matters, plan, due (a time or registered trigger), what they do if blocked
                                    # work source: routines: {work_source: {pace: , kinds: []}} (engine §13.1)
+                                   # joined the PC: aim: {row: own | adopt | none, mode, want, split} (engine §13.1 JOIN AIM)
     drives: {}                     # wants, fears, loyalties, values
     relationships:
       toward_id: {tie: , attitude: , credit: [], grievance: [], believes_identity: ,
@@ -703,4 +704,4 @@ The opening is this state, `player.starting_activity` (§13), the quests active 
 
 ---
 
-*End of Background Template v6.2*
+*End of Background Template v6.3*

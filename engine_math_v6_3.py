@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""Stateless mechanics helper for NEW ENGINE v6.2: dice, arithmetic, record handling.
+"""Stateless mechanics helper for NEW ENGINE v6.3: dice, arithmetic, record handling.
 Owns no state and decides nothing (engine §2.3). Commands and options: --help.
 --brief / --lite print the engine §2.2 lines, to be copied into the turn verbatim."""
 from __future__ import annotations
 import argparse, json, math, re, secrets
 
-ENGINE_VERSION = "6.2"
+ENGINE_VERSION = "6.3"
 _rng = secrets.SystemRandom()
 
 XP_REQ = {
@@ -1166,7 +1166,7 @@ def _dues(path, caps, retired=(), bg=None, save_round=None):
     nowk = now[1] if now else None
     same = lambda pts: [p for p in pts if nowk and p[0][0] == nowk[0][0]]
     overdue, unregistered, unclosed, no_quest, pressure_no_due, no_plan = [], [], [], [], [], []
-    unread, incidental = [], []
+    unread, incidental, aim_open = [], [], []
     for rid, txt in cur.items():
         body = re.sub(r"^R\d+:\s*", "", txt)
         if rid.endswith(".due"):
@@ -1204,7 +1204,23 @@ def _dues(path, caps, retired=(), bg=None, save_round=None):
                 if owner == "npcs" or f"{base}.state.plan" in cur or re.search(r"\bplan\b",
                                                                                 cur.get(base, "")):
                     no_plan.append(base)
-            elif re.search(r"\bincidental\b", due):
+            if owner == "npcs":   # engine §13.1 JOIN AIM: row own needs its own due and a split
+                aim = " ".join(t for i, t in cur.items() if i.startswith(f"{base}.state.aim"))
+                for whole in (cur.get(base, ""), cur.get(f"{base}.state", "")):
+                    m = re.search(r"\baim['\"]?:\s*\{[^}]*\}", whole)
+                    if m:
+                        aim += " " + m.group(0)
+                if re.search(r"\brow['\"]?:\s*['\"]?own\b", aim) or f"{base}.state.aim.row" in cur \
+                        and re.search(r"\bown\b", cur[f"{base}.state.aim.row"]):
+                    split = re.search(r"\bsplit['\"]?:\s*['\"]?([^,}'\"]+)", aim)
+                    split = split.group(1).strip() if split else cur.get(f"{base}.state.aim.split", "")
+                    split = re.sub(r"^R\d+:\s*", "", split).strip()
+                    if due is None or re.search(r"\b(none|incidental)\b", due) or not split \
+                            or re.fullmatch(r"(none|null|~)?", split, re.I):
+                        aim_open.append(f"{base} :: aim row own, missing "
+                                        + ("due" if due is None or re.search(r"\b(none|incidental)\b", due)
+                                           else "split"))
+            if due is not None and re.search(r"\bincidental\b", due):
                 nm = re.search(r"\bname:\s*([^,}]+)", cur.get(base, ""))
                 names = [k] + ([nm.group(1).strip()] if nm else [])
                 if any(re.search(r"\b" + re.escape(n) + r"\b", refs) for n in names if n):
@@ -1233,11 +1249,14 @@ def _dues(path, caps, retired=(), bg=None, save_round=None):
            "overdue": overdue, "unregistered_trigger": unregistered,
            "unread_date": unread, "pressure_without_due": pressure_no_due,
            "actors_without_plan": no_plan, "incidental_but_referenced": incidental,
+           "joined_aim_open": aim_open,
            "open_past_all_dates": unclosed, "work_without_quest": no_quest,
            "note": "advisory (engine §16.3 DUES): fire, replan, or close each in the next "
                    "APPLY; incidental_but_referenced: give a real plan or confirm; unread_date: "
                    "a date on another scale (ISO vs Day N with no anchor); work_without_quest lists work-type "
-                   "deals no quest names — only work the player does needs one"}
+                   "deals no quest names — only work the player does needs one; joined_aim_open: "
+                   "an ally keeping its own aim needs its own move with a due and a split "
+                   "trigger (engine §13.1 JOIN AIM)"}
     if bg is None:
         out["coverage"] = "capsule only: pass --background to check unchanged BACKGROUND dues"
     if save_round and save_round % 20 == 0:
@@ -2076,7 +2095,7 @@ def do_time(a):
 
 
 def main():
-    ap = argparse.ArgumentParser(description="Stateless mechanics helper for NEW ENGINE v6.2")
+    ap = argparse.ArgumentParser(description="Stateless mechanics helper for NEW ENGINE v6.3")
     sp = ap.add_subparsers(dest="cmd", required=True)
 
     p = sp.add_parser("roll", help="roll NdM")

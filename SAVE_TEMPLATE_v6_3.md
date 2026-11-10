@@ -1,6 +1,6 @@
-# SAVE TEMPLATE — v6.2
+# SAVE TEMPLATE — v6.3
 
-For `NEW ENGINE v6.2`.
+For `NEW ENGINE v6.3`.
 
 A save is a projection of the Ledger. Every field is canonical state or an explicitly derived convenience that cannot create or strengthen anything. Save-only world facts are forbidden.
 
@@ -224,6 +224,7 @@ npcs:
     in_disorder:                   # thrives | suffers | neither (engine §13.1 ZONE)
     state: {}                      # status, position, current HP/MP when below max, plan, due;
                                    # a companion's carried equipment and consumables (engine §13.1)
+                                   # joined the PC: aim: {row: own | adopt | none, mode, want, split} (engine §13.1 JOIN AIM)
     drives: {}
     relationships:
       toward_id: {tie: , attitude: , credit: [], grievance: [], believes_identity: ,
@@ -289,4 +290,4 @@ A pressure has a `track` (bound to zones) or a `clock` (bound to none), never bo
 - Missing noncritical detail is marked degraded and the save stays valid. A continuation-critical gap makes the save invalid until repaired from authoritative evidence.
 - This template owns layout. Meaning and state-transition authority stay in the engine.
 
-*End of Save Template v6.2*
+*End of Save Template v6.3*

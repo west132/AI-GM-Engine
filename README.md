@@ -41,6 +41,7 @@ context models handle it better.
 - Assassin's Creed Syndicate: London 1868
 - Assassin's Creed Syndicate: The Wrong Hands
 - The Sheet Anchor (India, 1991)
+
 大多数实际上我都加入了中文翻译，但是文件主体还是英文，中文固定了名字和名词所以不容易出现每次翻译不一样。
 
 ### Making your own world

@@ -2,6 +2,7 @@
 
 A rule set and a small Python helper that turn a chat AI into a Game Master
 that keeps track of things.
+English-designed, multilingual gameplay, model-independent AI Game Master.
 
 ---
 

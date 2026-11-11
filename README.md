@@ -1,4 +1,4 @@
-# AI-GM-Engine (v6)
+# AI-GM-Engine (v6.3) -- 支持中文
 
 A rule set and a small Python helper that turn a chat AI into a Game Master
 that keeps track of things.
@@ -40,6 +40,7 @@ context models handle it better.
 - Assassin's Creed Syndicate: London 1868
 - Assassin's Creed Syndicate: The Wrong Hands
 - The Sheet Anchor (India, 1991)
+大多数实际上我都加入了中文翻译，但是文件主体还是英文，中文固定了名字和名词所以不容易出现每次翻译不一样。
 
 ### Making your own world
 
@@ -160,6 +161,21 @@ Everything comes back to three ideas:
 If any rule goes against these three, the rule loses.
 
 ---
+## Language support
+
+AI-GM-Engine supports playing in Chinese as well as English.
+
+You can play in:
+- Simplified Chinese (简体中文)
+- English
+
+The engine rules and technical files are currently written in English. However, the AI can run the campaign, narrate events, handle dialogue, and communicate with the player in Chinese.
+
+To play in Chinese, add this instruction when starting a game:
+
+> Run the entire campaign in Simplified Chinese. All narration, dialogue, descriptions, notifications, and player-facing output must be in Simplified Chinese. Keep the engine rules and internal state consistent. Do not translate proper nouns or technical terms inconsistently.
+
+For Traditional Chinese, replace Simplified Chinese with Traditional Chinese.
 
 ## License
 

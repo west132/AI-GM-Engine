@@ -4,8 +4,8 @@ A rule set and a small Python helper that turn a chat AI into a Game Master
 that keeps track of things.
 English-designed, multilingual gameplay, model-independent AI Game Master.
 
-一套规则加一个小型 Python 辅助程序，让聊天 AI 变成一个会记账的游戏主持人（GM）。
-英文设计，支持多语言游玩，不依赖特定模型的 AI 游戏主持人。
+一套规则加一个小型 Python 辅助程序，让聊天 AI 变成一个能牢牢记住游戏状态的 GM。
+英文设计，支持多语言游玩，不挑模型的 AI GM。
 
 **[English ↓](#english) · [中文说明 ↓](#中文说明)**
 
@@ -49,7 +49,8 @@ context models handle it better.
 - Assassin's Creed Syndicate: The Wrong Hands
 - The Sheet Anchor (India, 1991)
 
-大多数实际上我都加入了中文翻译，但是文件主体还是英文，中文固定了名字和名词所以不容易出现每次翻译不一样。
+Most backgrounds include Chinese translations, but the main text is still in English.
+The Chinese fixes names and terms, so they don't come out translated differently each time.
 
 ### Making your own world
 
@@ -175,7 +176,7 @@ If any rule goes against these three, the rule loses.
 AI-GM-Engine supports playing in Chinese as well as English.
 
 You can play in:
-- Simplified Chinese (简体中文)
+- Simplified Chinese
 - English
 
 The engine rules and technical files are currently written in English. However, the AI can run the campaign, narrate events, handle dialogue, and communicate with the player in Chinese.
@@ -196,48 +197,50 @@ MIT. Fork it, change it, sell what you make with it. Your worlds belong to you.
 
 ### 这是什么
 
-一套规则加一个小型 Python 辅助程序，让聊天 AI 变成一个会记账的游戏主持人（GM）。世界会自己运转，不确定的行动用真实的骰子决定，游戏状态以 AI 无法悄悄修改的形式记录下来。玩上几百回合，那个店员还是同一个店员，那把刀还在你的背包里。
+世界会自己运转，没把握的行动用真骰子决定，游戏状态都记录在案，AI 没法偷偷改动。就算玩上几百回合，店员还是原来那个店员，刀也还在你包里。
 
-这不是剧本，也不是角色提示词，而是底层引擎：你带来一个世界，引擎负责运行它。MIT 协议，免费使用，你用它做出来的东西都归你。
+它不是剧本，也不是角色提示词，而是跑在底下的引擎：你提供世界，引擎负责运行。MIT 协议，免费使用，你用它做出来的东西都归你。
 
 ### 开始游戏
 
-你需要一个能运行代码的模型，因为骰子和计算都由 Python 辅助程序完成。
+模型必须能运行代码，因为掷骰和计算都交给 Python 辅助程序。
 
-1. 新开一个对话。
-2. 上传 `NEW_ENGINE_v6_3.md`、`AI_RULES_v6_3.md`、`SAVE_TEMPLATE_v6_3.md`、`engine_math_v6_3.py`，再加 `written_background/` 里的**一个**背景文件。如果你用的是 Project，就把文件放进 Project 的知识库，而不是对话里。辅助程序只需要存在，让 AI 能运行，AI 不需要阅读它。背景模板只在自己做世界时才用，更新日志只用于旧存档。
+1. 开一个新对话。
+2. 上传 `NEW_ENGINE_v6_3.md`、`AI_RULES_v6_3.md`、`SAVE_TEMPLATE_v6_3.md`、`engine_math_v6_3.py`，加上 `written_background/` 里的**一个**背景。用 Project 的话，把文件放进 Project 知识库，不要放在对话里。辅助程序只要上传给 AI 运行就行，不用让它读。背景模板只有自己做世界时才用，更新日志只有读旧存档时才用。
 3. 发送：
 
    > Load the engine files, start <背景名称>.
 
-只上传一个背景。引擎约 91 KB，每个背景 40–100 KB，这已经占用了不少上下文窗口。上下文越大的模型表现越好。
+背景只上传一个。引擎约 91 KB，每个背景 40–100 KB，光这些就占掉不少上下文。上下文越大的模型跑得越稳。
+
+大多数实际上我都加入了中文翻译，但是文件主体还是英文，中文固定了名字和名词所以不容易出现每次翻译不一样。
 
 ### 继续战役
 
-新开一个对话，上传：
+开一个新对话，上传：
 
-- 引擎文件（如果已经在 Project 里就不用）
-- 你的存档文件
-- 这个存档所属的背景
+- 引擎文件（已经在 Project 里的可以跳过）
+- 你的存档
+- 这个存档对应的背景
 
 发送：
 
 > Continue from this save.
 
-背景必须上传，因为存档只记录第 0 回合之后发生的变化。如果存档或背景来自旧版本，还要上传 `CHANGELOG_NEW_ENGINE.md`，GM 会在开始前用它把旧文件更新到当前版本。
+背景一定要上传，因为存档只记录第 0 回合之后的变化。存档或背景是旧版本的话，再加上 `CHANGELOG_NEW_ENGINE.md`，GM 会在开局前把旧文件升级到当前版本。
 
 ### 游戏中
 
-- **存档。** GM 每 10 回合自动存档，你要求时也会存。它直接存，不会先问你。如果存档失败，你可以选 `retry`（重试）或 `continue unsaved`（不存档继续）。不存档会让你多玩一回合，然后再试一次。
-- **章节。** 如果背景有章节分段，你会得到选择：**按原样继续**，或**延伸**到新章节。选择延伸时，GM 会先告诉你哪些内容将被收尾，然后才开始写。
-- **完整或精简。** 第 0 回合时 GM 会问你要完整（full）还是精简（lite）输出。精简只是文字更短，其他一切不变：同样的状态、同样的掷骰、同样的存档。之后可以随时切换。
-- **物品点数（Item points）。** 如果 GM 跳过了一段时间，你没机会买绳子或给门卫小费，可以花物品点数补上：绳子一直在你包里，或者你昨晚已经给过小费。点数多少取决于你的角色身份（普通上班族有 60 点），每次在安全的地方好好睡一晚会恢复一些。不能超过 Tier 2。
-- **场外发言。** 消息以 `ps` 开头，就是在跟 GM 说话，而不是在游戏里行动。
+- **存档。** GM 每 10 回合自动存档，你要求时也会存，不会先问你。存档失败时可以选 `retry`（重试）或 `continue unsaved`（不存档继续）。选不存档的话，可以再玩一回合，之后会重新尝试存档。
+- **章节。** 背景如果分了章节，到时你可以选**照原样继续**，或**延伸**成新章节。如果选延伸，GM 会先列出哪些内容要收尾，再开始写新章节。
+- **完整或精简。** 第 0 回合 GM 会问你要完整（full）还是精简（lite）输出。精简只是文字短一些，其他完全一样：状态、掷骰、存档都不变。之后随时可以切换。
+- **物品点数（Item points）。** GM 跳过一段时间，你没来得及买绳子或给门卫塞小费？花物品点数补上就行：绳子本来就在你包里，或者小费昨晚已经给了。点数多少看你的角色身份（普通上班族 60 点），每次在安全的地方睡个好觉会回复一些。最高只能到 Tier 2。
+- **场外发言。** 消息开头加 `ps`，就是在跟 GM 说话，不算游戏里的行动。
 
 ### 用中文玩
 
-引擎规则和技术文件是英文的，但 AI 可以全程用中文主持、叙述和对话。开始游戏时加上这句：
+引擎规则和技术文件是英文的，但 AI 可以全程用中文跑团、叙述和对话。开局时加上这句：
 
 > 整个战役使用简体中文进行。所有叙述、对话、描写、提示和面向玩家的输出都必须使用简体中文。保持引擎规则和内部状态一致。专有名词和术语的翻译要前后一致。
 
-想用繁体中文，把"简体中文"换成"繁體中文"即可。
+想玩繁体中文，把"简体中文"换成"繁體中文"就行。

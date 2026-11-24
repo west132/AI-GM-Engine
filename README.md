@@ -4,7 +4,62 @@ A rule set and a small Python helper that turn a chat AI into a Game Master
 that keeps track of things.
 English-designed, multilingual gameplay, model-independent AI Game Master.
 
+**[中文说明 ↓](#中文说明)**
+
 ---
+
+## 中文说明
+
+### 这是什么
+
+一套规则加一个小型 Python 辅助程序，让聊天 AI 变成一个会记账的游戏主持人（GM）。世界会自己运转，不确定的行动用真实的骰子决定，游戏状态以 AI 无法悄悄修改的形式记录下来。玩上几百回合，那个店员还是同一个店员，那把刀还在你的背包里。
+
+这不是剧本，也不是角色提示词，而是底层引擎：你带来一个世界，引擎负责运行它。MIT 协议，免费使用，你用它做出来的东西都归你。
+
+### 开始游戏
+
+你需要一个能运行代码的模型，因为骰子和计算都由 Python 辅助程序完成。
+
+1. 新开一个对话。
+2. 上传 `NEW_ENGINE_v6_3.md`、`AI_RULES_v6_3.md`、`SAVE_TEMPLATE_v6_3.md`、`engine_math_v6_3.py`，再加 `written_background/` 里的**一个**背景文件。如果你用的是 Project，就把文件放进 Project 的知识库，而不是对话里。辅助程序只需要存在，让 AI 能运行，AI 不需要阅读它。背景模板只在自己做世界时才用，更新日志只用于旧存档。
+3. 发送：
+
+   > Load the engine files, start <背景名称>.
+
+只上传一个背景。引擎约 91 KB，每个背景 40–100 KB，这已经占用了不少上下文窗口。上下文越大的模型表现越好。
+
+### 继续战役
+
+新开一个对话，上传：
+
+- 引擎文件（如果已经在 Project 里就不用）
+- 你的存档文件
+- 这个存档所属的背景
+
+发送：
+
+> Continue from this save.
+
+背景必须上传，因为存档只记录第 0 回合之后发生的变化。如果存档或背景来自旧版本，还要上传 `CHANGELOG_NEW_ENGINE.md`，GM 会在开始前用它把旧文件更新到当前版本。
+
+### 游戏中
+
+- **存档。** GM 每 10 回合自动存档，你要求时也会存。它直接存，不会先问你。如果存档失败，你可以选 `retry`（重试）或 `continue unsaved`（不存档继续）。不存档会让你多玩一回合，然后再试一次。
+- **章节。** 如果背景有章节分段，你会得到选择：**按原样继续**，或**延伸**到新章节。选择延伸时，GM 会先告诉你哪些内容将被收尾，然后才开始写。
+- **完整或精简。** 第 0 回合时 GM 会问你要完整（full）还是精简（lite）输出。精简只是文字更短，其他一切不变：同样的状态、同样的掷骰、同样的存档。之后可以随时切换。
+- **物品点数（Item points）。** 如果 GM 跳过了一段时间，你没机会买绳子或给门卫小费，可以花物品点数补上：绳子一直在你包里，或者你昨晚已经给过小费。点数多少取决于你的角色身份（普通上班族有 60 点），每次在安全的地方好好睡一晚会恢复一些。不能超过 Tier 2。
+- **场外发言。** 消息以 `ps` 开头，就是在跟 GM 说话，而不是在游戏里行动。
+
+### 用中文玩
+
+引擎规则和技术文件是英文的，但 AI 可以全程用中文主持、叙述和对话。开始游戏时加上这句：
+
+> 整个战役使用简体中文进行。所有叙述、对话、描写、提示和面向玩家的输出都必须使用简体中文。保持引擎规则和内部状态一致。专有名词和术语的翻译要前后一致。
+
+想用繁体中文，把"简体中文"换成"繁體中文"即可。
+
+---
+
 
 ## Starting a game
 
@@ -22,8 +77,8 @@ Python helper.
 
    > Load the engine files, start <background name>.
 
-Only attach one background. The engine is about 87 KB and each background is
-60–95 KB, so this already takes a big bite out of the context window. Bigger
+Only attach one background. The engine is about 91 KB and each background is
+40–100 KB, so this already takes a big bite out of the context window. Bigger
 context models handle it better.
 
 ### Written backgrounds
